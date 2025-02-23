@@ -48,7 +48,7 @@ endif()
 
 check_cxx_compiler_flag("-Werror" COMPILER_HAS_WERROR)
 if (COMPILER_HAS_WERROR)
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -Wno-error=unused-but-set-variable -Wno-error=unused-parameter")
 endif()
 
 check_cxx_compiler_flag("-Wextra" COMPILER_HAS_WEXTRA)

@@ -154,7 +154,7 @@ CStackDescriptor::BackTrace(ULONG top_frames_to_skip)
 
 void CStackDescriptor::BackTrace(ULONG)
 {
-	GPOS_CPL_ASSERT(!"Backtrace is not supported for this platform");
+	// GPOS_CPL_ASSERT(!"Backtrace is not supported for this platform");
 }
 
 #endif
