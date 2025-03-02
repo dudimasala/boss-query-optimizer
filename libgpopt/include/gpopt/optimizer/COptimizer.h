@@ -53,10 +53,6 @@ private:
 	// handle exception after finalizing minidump
 	static void HandleExceptionAfterFinalizingMinidump(CException &ex);
 
-	// optimize query in the given query context
-	static CExpression *PexprOptimize(CMemoryPool *mp, CQueryContext *pqc,
-									  CSearchStageArray *search_stage_array);
-
 	// translate an optimizer expression into a DXL tree
 	static CDXLNode *CreateDXLNode(CMemoryPool *mp, CMDAccessor *md_accessor,
 								   CExpression *pexpr,
@@ -82,6 +78,10 @@ private:
 	static void CheckCTEConsistency(CMemoryPool *mp, CExpression *pexpr);
 
 public:
+	// optimize query in the given query context
+	static CExpression *PexprOptimize(CMemoryPool *mp, CQueryContext *pqc,
+									  CSearchStageArray *search_stage_array);
+
 	// main optimizer function
 	static CDXLNode *PdxlnOptimize(
 		CMemoryPool *mp,
