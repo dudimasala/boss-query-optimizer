@@ -168,7 +168,7 @@ public:
 	// Initialization/Destruction of provider file
 	//-------------------------------------------------------------------
 	// initialize provider file
-	static void InitProviderFile(CMemoryPool *mp);
+	static void InitProviderFile(CMemoryPool *mp, const CHAR *szMDFileName=NULL);
 
 	// destroy metadata provider
 	static void DestroyMDProvider();

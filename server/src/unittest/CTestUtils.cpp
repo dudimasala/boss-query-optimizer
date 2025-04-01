@@ -83,8 +83,8 @@ CSystemId CTestUtils::m_sysidDefault(IMDId::EmdidGPDB,
 const CHAR *CTestUtils::m_szXSDPath =
 	"http://greenplum.com/dxl/2010/12/ dxl.xsd";
 
-// metadata file
-const CHAR *CTestUtils::m_szMDFileName = "../query-explorer/data/dxl/metadata/md.xml";
+// metadata file (test)
+const CHAR *CTestUtils::m_szMDFileName = "../data/dxl/metadata/md.xml";
 
 // provider file
 CMDProviderMemory *CTestUtils::m_pmdpf = NULL;
@@ -136,13 +136,17 @@ CTestUtils::CTestSetup::CTestSetup()
 //
 //---------------------------------------------------------------------------
 void
-CTestUtils::InitProviderFile(CMemoryPool *mp)
+CTestUtils::InitProviderFile(CMemoryPool *mp, const CHAR *szMDFileName)
 {
 	GPOS_ASSERT(NULL == m_mp);
 	GPOS_ASSERT(NULL != mp);
 
 	m_mp = mp;
-	m_pmdpf = GPOS_NEW(m_mp) CMDProviderMemory(m_mp, m_szMDFileName);
+	if (szMDFileName == NULL) {
+		m_pmdpf = GPOS_NEW(m_mp) CMDProviderMemory(m_mp, m_szMDFileName);
+	} else {
+		m_pmdpf = GPOS_NEW(m_mp) CMDProviderMemory(m_mp, szMDFileName);
+	}
 }
 
 
