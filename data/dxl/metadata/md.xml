@@ -1621,13 +1621,13 @@
     <dxl:RelationStatistics Mdid="2.22222.1.1" Name="Rel2" Rows="2000.000000"/>
     <dxl:Relation Mdid="0.22222.1.1" Name="Rel2" IsTemporary="false" StorageType="Heap" DistributionPolicy="Random">
       <dxl:Columns>
-        <dxl:Column Name="column_0000" Attno="1" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="column_0003" Attno="1" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="column_0001" Attno="2" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="column_0004" Attno="2" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="column_0002" Attno="3" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="column_0005" Attno="3" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
       </dxl:Columns>
@@ -1638,13 +1638,13 @@
     <dxl:RelationStatistics Mdid="2.33333.1.1" Name="Rel3" Rows="3000.000000"/>
     <dxl:Relation Mdid="0.33333.1.1" Name="Rel3" IsTemporary="false" StorageType="Heap" DistributionPolicy="Random">
       <dxl:Columns>
-        <dxl:Column Name="column_0000" Attno="1" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="column_0006" Attno="1" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="column_0001" Attno="2" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="column_0007" Attno="2" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="column_0002" Attno="3" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="column_0008" Attno="3" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
       </dxl:Columns>
