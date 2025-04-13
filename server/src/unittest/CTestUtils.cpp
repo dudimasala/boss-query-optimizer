@@ -2487,8 +2487,8 @@ CTestUtils::PqcGenerate(CMemoryPool *mp, CExpression *pexpr)
 
 	// generate a sort order
 	COrderSpec *pos = GPOS_NEW(mp) COrderSpec(mp);
-	pos->Append(GPOS_NEW(mp) CMDIdGPDB(GPDB_INT4_LT_OP), pcrsOutput->PcrAny(),
-				COrderSpec::EntFirst);
+	// pos->Append(GPOS_NEW(mp) CMDIdGPDB(GPDB_INT4_LT_OP), pcrsOutput->PcrAny(),
+	// 			COrderSpec::EntFirst);
 
 	CDistributionSpec *pds = GPOS_NEW(mp)
 		CDistributionSpecSingleton(CDistributionSpecSingleton::EstMaster);
