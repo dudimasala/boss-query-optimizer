@@ -1741,7 +1741,7 @@ CUtils::PexprCountStar(CMemoryPool *mp)
 
 	CExpressionArray *pdrgpexpr = GPOS_NEW(mp) CExpressionArray(mp);
 	CMDIdGPDB *mdid = GPOS_NEW(mp) CMDIdGPDB(GPDB_COUNT_STAR);
-	CWStringConst *str = GPOS_NEW(mp) CWStringConst(GPOS_WSZ_LIT("count"));
+	CWStringConst *str = GPOS_NEW(mp) CWStringConst(GPOS_WSZ_LIT("Count"));
 
 	CScalarAggFunc *popScAggFunc =
 		PopAggFunc(mp, mdid, str, false /*is_distinct*/,
