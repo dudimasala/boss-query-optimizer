@@ -1616,7 +1616,7 @@
       <dxl:Triggers/>
       <dxl:CheckConstraints/>
     </dxl:Relation>
-    <dxl:RelationStatistics Mdid="2.11111.1.1" Name="LINEITEM" Rows="1000.000000"/>
+    <dxl:RelationStatistics Mdid="2.11111.1.1" Name="LINEITEM" Rows="6000000.000000"/>
     <dxl:Relation Mdid="0.11111.1.1" Name="LINEITEM" IsTemporary="false" StorageType="Heap" DistributionPolicy="Random">
       <dxl:Columns>
         <dxl:Column Name="l_orderkey" Attno="1" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
@@ -1672,7 +1672,7 @@
       <dxl:Triggers/>
       <dxl:CheckConstraints/>
     </dxl:Relation>
-    <dxl:RelationStatistics Mdid="2.22222.1.1" Name="CUSTOMER" Rows="2000.000000"/>
+    <dxl:RelationStatistics Mdid="2.22222.1.1" Name="CUSTOMER" Rows="1500000.000000"/>
     <dxl:Relation Mdid="0.22222.1.1" Name="Rel2" IsTemporary="false" StorageType="Heap" DistributionPolicy="Random">
       <dxl:Columns>
         <dxl:Column Name="c_custkey" Attno="1" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
@@ -1704,7 +1704,7 @@
       <dxl:Triggers/>
       <dxl:CheckConstraints/>
     </dxl:Relation>
-    <dxl:RelationStatistics Mdid="2.33333.1.1" Name="ORDERS" Rows="3000.000000"/>
+    <dxl:RelationStatistics Mdid="2.33333.1.1" Name="ORDERS" Rows="1500000.000000"/>
     <dxl:Relation Mdid="0.33333.1.1" Name="ORDERS" IsTemporary="false" StorageType="Heap" DistributionPolicy="Random">
       <dxl:Columns>
         <dxl:Column Name="o_orderkey" Attno="1" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
@@ -1739,7 +1739,7 @@
       <dxl:Triggers/>
       <dxl:CheckConstraints/>
     </dxl:Relation>
-    <dxl:RelationStatistics Mdid="2.44444.1.1" Name="REGION" Rows="4000.000000"/>
+    <dxl:RelationStatistics Mdid="2.44444.1.1" Name="REGION" Rows="5.000000"/>
     <dxl:Relation Mdid="0.44444.1.1" Name="REGION" IsTemporary="false" StorageType="Heap" DistributionPolicy="Random">
       <dxl:Columns>
         <dxl:Column Name="r_regionkey" Attno="1" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
@@ -1756,7 +1756,7 @@
       <dxl:Triggers/>
       <dxl:CheckConstraints/>
     </dxl:Relation>
-    <dxl:RelationStatistics Mdid="2.55555.1.1" Name="NATION" Rows="5000.000000"/>
+    <dxl:RelationStatistics Mdid="2.55555.1.1" Name="NATION" Rows="25.000000"/>
     <dxl:Relation Mdid="0.55555.1.1" Name="NATION" IsTemporary="false" StorageType="Heap" DistributionPolicy="Random">
       <dxl:Columns>
         <dxl:Column Name="n_nationkey" Attno="1" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
@@ -1776,7 +1776,7 @@
       <dxl:Triggers/>
       <dxl:CheckConstraints/>
     </dxl:Relation>
-    <dxl:RelationStatistics Mdid="2.66666.1.1" Name="PART" Rows="6000.000000"/>
+    <dxl:RelationStatistics Mdid="2.66666.1.1" Name="PART" Rows="200000.000000"/>
     <dxl:Relation Mdid="0.66666.1.1" Name="PART" IsTemporary="false" StorageType="Heap" DistributionPolicy="Random">
       <dxl:Columns>
         <dxl:Column Name="p_partkey" Attno="1" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
@@ -1811,7 +1811,7 @@
       <dxl:Triggers/>
       <dxl:CheckConstraints/>
     </dxl:Relation>
-    <dxl:RelationStatistics Mdid="2.77777.1.1" Name="SUPPLIER" Rows="7000.000000"/>
+    <dxl:RelationStatistics Mdid="2.77777.1.1" Name="SUPPLIER" Rows="10000.000000"/>
     <dxl:Relation Mdid="0.77777.1.1" Name="SUPPLIER" IsTemporary="false" StorageType="Heap" DistributionPolicy="Random">
       <dxl:Columns>
         <dxl:Column Name="s_suppkey" Attno="1" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
@@ -1840,7 +1840,7 @@
       <dxl:Triggers/>
       <dxl:CheckConstraints/>
     </dxl:Relation>
-    <dxl:RelationStatistics Mdid="2.88888.1.1" Name="PARTSUPP" Rows="8000.000000"/>
+    <dxl:RelationStatistics Mdid="2.88888.1.1" Name="PARTSUPP" Rows="800000.000000"/>
     <dxl:Relation Mdid="0.88888.1.1" Name="PARTSUPP" IsTemporary="false" StorageType="Heap" DistributionPolicy="Random">
       <dxl:Columns>
         <dxl:Column Name="ps_partkey" Attno="1" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
