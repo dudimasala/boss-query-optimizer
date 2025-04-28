@@ -69,6 +69,9 @@
 #include "unittest/base.h"
 #include "unittest/gpopt/CSubqueryTestUtils.h"
 
+#include "gpopt/base/CDistributionSpecAny.h"
+#include "gpopt/operators/COperator.h"
+
 #define GPOPT_SEGMENT_COUNT 2  // number segments for testing
 
 using namespace gpopt;
@@ -2414,8 +2417,7 @@ CTestUtils::PqcGenerate(CMemoryPool *mp, CExpression *pexpr,
 	pcrs->Include(colref_array);
 
 	COrderSpec *pos = GPOS_NEW(mp) COrderSpec(mp);
-	CDistributionSpec *pds = GPOS_NEW(mp)
-		CDistributionSpecSingleton(CDistributionSpecSingleton::EstMaster);
+	CDistributionSpec *pds = GPOS_NEW(mp) CDistributionSpecAny(COperator::EopSentinel);
 
 	CRewindabilitySpec *prs = GPOS_NEW(mp) CRewindabilitySpec(
 		CRewindabilitySpec::ErtNone, CRewindabilitySpec::EmhtNoMotion);
@@ -2490,17 +2492,18 @@ CTestUtils::PqcGenerate(CMemoryPool *mp, CExpression *pexpr)
 	// pos->Append(GPOS_NEW(mp) CMDIdGPDB(GPDB_INT4_LT_OP), pcrsOutput->PcrAny(),
 	// 			COrderSpec::EntFirst);
 
-	CDistributionSpec *pds = GPOS_NEW(mp)
-		CDistributionSpecSingleton(CDistributionSpecSingleton::EstMaster);
+	// Use CDistributionSpecAny instead of CDistributionSpecSingleton
+	// to avoid requiring a specific distribution which would need enforcing
+	CDistributionSpec *pds = GPOS_NEW(mp) CDistributionSpecAny(COperator::EopSentinel);
 
 	CRewindabilitySpec *prs = GPOS_NEW(mp) CRewindabilitySpec(
 		CRewindabilitySpec::ErtNone, CRewindabilitySpec::EmhtNoMotion);
 
 	CEnfdOrder *peo = GPOS_NEW(mp) CEnfdOrder(pos, CEnfdOrder::EomSatisfy);
 
-	// we require exact matching on distribution since final query results must be sent to master
+	// Use satisfy matching instead of exact matching to allow more flexibility
 	CEnfdDistribution *ped =
-		GPOS_NEW(mp) CEnfdDistribution(pds, CEnfdDistribution::EdmExact);
+		GPOS_NEW(mp) CEnfdDistribution(pds, CEnfdDistribution::EdmSatisfy);
 
 	CEnfdRewindability *per =
 		GPOS_NEW(mp) CEnfdRewindability(prs, CEnfdRewindability::ErmSatisfy);

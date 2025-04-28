@@ -1617,7 +1617,7 @@
       <dxl:CheckConstraints/>
     </dxl:Relation>
     <dxl:RelationStatistics Mdid="2.11111.1.1" Name="LINEITEM" Rows="6000000.000000"/>
-    <dxl:Relation Mdid="0.11111.1.1" Name="LINEITEM" IsTemporary="false" StorageType="Heap" DistributionPolicy="Random">
+    <dxl:Relation Mdid="0.11111.1.1" Name="LINEITEM" IsTemporary="false" StorageType="Heap" DistributionPolicy="MasterOnly">
       <dxl:Columns>
         <dxl:Column Name="l_orderkey" Attno="1" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
@@ -1649,7 +1649,7 @@
         <dxl:Column Name="l_linestatus" Attno="10" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="l_shipdate" Attno="11" Mdid="0.1082.1.0" Nullable="false">
+        <dxl:Column Name="l_shipdate" Attno="11" Mdid="0.1082.1.0" Nullable="false" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
         <dxl:Column Name="l_commitdate" Attno="12" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
