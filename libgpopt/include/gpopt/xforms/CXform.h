@@ -121,6 +121,7 @@ public:
 		ExfLeftAntiSemiJoin2HashJoin,
 		ExfLeftAntiSemiJoinNotIn2HashJoinNotIn,
 		ExfGbAgg2HashAgg,
+		ExfGbAgg2MalharAgg,
 		ExfGbAgg2StreamAgg,
 		ExfGbAgg2ScalarAgg,
 		ExfGbAggDedup2HashAggDedup,

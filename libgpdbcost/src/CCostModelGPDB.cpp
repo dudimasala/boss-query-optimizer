@@ -54,7 +54,7 @@ const CCostModelGPDB::SCostMapping CCostModelGPDB::m_rgcm[] = {
 	{COperator::EopPhysicalCTEConsumer, CostCTEConsumer},
 	{COperator::EopPhysicalConstTableGet, CostConstTableGet},
 	{COperator::EopPhysicalDML, CostDML},
-
+	{COperator::EopPhysicalMalharAgg, CostMalharAgg},
 	{COperator::EopPhysicalHashAgg, CostHashAgg},
 	{COperator::EopPhysicalHashAggDeduplicate, CostHashAgg},
 	{COperator::EopPhysicalScalarAgg, CostScalarAgg},
@@ -851,6 +851,14 @@ CCostModelGPDB::CostHashAgg(CMemoryPool *mp, CExpressionHandle &exprhdl,
 		CostChildren(mp, exprhdl, pci, pcmgpdb->GetCostModelParams());
 
 	return costLocal + costChild;
+}
+
+CCost
+CCostModelGPDB::CostMalharAgg(CMemoryPool *mp, CExpressionHandle &exprhdl,
+							  const CCostModelGPDB *pcmgpdb,
+							  const SCostingInfo *pci)
+{
+	return CCost(0);
 }
 
 

@@ -151,6 +151,11 @@ private:
 							 const CCostModelGPDB *pcmgpdb,
 							 const SCostingInfo *pci);
 
+	// cost of malhar agg
+	static CCost CostMalharAgg(CMemoryPool *mp, CExpressionHandle &exprhdl,
+								const CCostModelGPDB *pcmgpdb,
+								const SCostingInfo *pci);
+
 	// cost of scalar agg
 	static CCost CostScalarAgg(CMemoryPool *mp, CExpressionHandle &exprhdl,
 							   const CCostModelGPDB *pcmgpdb,
