@@ -260,7 +260,10 @@ public:
 		EopLogicalDynamicBitmapTableGet,
 		EopPhysicalDynamicBitmapTableScan,
 
-		EopSentinel
+		EopSentinel,
+
+		EopDynamicStart = 10000,
+		EopDynamicEnd = gpos::ulong_max
 	};
 
 	// aggregate type
