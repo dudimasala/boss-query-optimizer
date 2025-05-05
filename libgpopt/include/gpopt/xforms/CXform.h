@@ -121,7 +121,6 @@ public:
 		ExfLeftAntiSemiJoin2HashJoin,
 		ExfLeftAntiSemiJoinNotIn2HashJoinNotIn,
 		ExfGbAgg2HashAgg,
-		ExfGbAgg2MalharAgg,
 		ExfGbAgg2StreamAgg,
 		ExfGbAgg2ScalarAgg,
 		ExfGbAggDedup2HashAggDedup,
@@ -219,7 +218,10 @@ public:
 		ExfLeftOuterJoinWithInnerSelect2DynamicBitmapIndexGetApply,
 		ExfLeftOuterJoinWithInnerSelect2DynamicIndexGetApply,
 		ExfInvalid,
-		ExfSentinel = ExfInvalid
+		ExfSentinel = ExfInvalid,
+
+		ExfDynamicStart = 10000,
+		ExfDynamicEnd = gpos::ulong_max
 	};
 
 	// promise levels;

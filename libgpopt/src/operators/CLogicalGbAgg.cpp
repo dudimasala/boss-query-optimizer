@@ -594,7 +594,8 @@ CLogicalGbAgg::PxfsCandidates(CMemoryPool *mp) const
 	(void) xform_set->ExchangeSet(CXform::ExfSplitDQA);
 	(void) xform_set->ExchangeSet(CXform::ExfGbAgg2Apply);
 	(void) xform_set->ExchangeSet(CXform::ExfGbAgg2HashAgg);
-	(void) xform_set->ExchangeSet(CXform::ExfGbAgg2MalharAgg);
+	// (void) xform_set->ExchangeSet(CXform::ExfGbAgg2MalharAgg);
+	// we will probably need this to access our factory. (i.e. add xform set + Eopid. Can probably do this for xforms too).
 	(void) xform_set->ExchangeSet(CXform::ExfGbAgg2StreamAgg);
 	(void) xform_set->ExchangeSet(CXform::ExfGbAgg2ScalarAgg);
 	(void) xform_set->ExchangeSet(CXform::ExfEagerAgg);

@@ -41,7 +41,6 @@
 #include "gpopt/xforms/CXformFactory.h"
 #include "gpopt/xforms/CXformGbAgg2Apply.h"
 #include "gpopt/xforms/CXformGbAgg2HashAgg.h"
-#include "gpopt/xforms/CXformGbAgg2MalharAgg.h"
 #include "gpopt/xforms/CXformGbAgg2ScalarAgg.h"
 #include "gpopt/xforms/CXformGbAgg2StreamAgg.h"
 #include "gpopt/xforms/CXformGbAggDedup2HashAggDedup.h"

@@ -134,7 +134,6 @@
 #include "gpopt/operators/CPhysicalExternalScan.h"
 #include "gpopt/operators/CPhysicalFilter.h"
 #include "gpopt/operators/CPhysicalHashAgg.h"
-#include "gpopt/operators/CPhysicalMalharAgg.h"
 #include "gpopt/operators/CPhysicalHashAggDeduplicate.h"
 #include "gpopt/operators/CPhysicalHashJoin.h"
 #include "gpopt/operators/CPhysicalIndexScan.h"

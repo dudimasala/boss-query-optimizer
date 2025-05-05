@@ -852,15 +852,6 @@ CCostModelGPDB::CostHashAgg(CMemoryPool *mp, CExpressionHandle &exprhdl,
 	return costLocal + costChild;
 }
 
-CCost
-CCostModelGPDB::CostMalharAgg(CMemoryPool *mp, CExpressionHandle &exprhdl,
-							  const CCostModelGPDB *pcmgpdb,
-							  const SCostingInfo *pci)
-{
-	return CCost(0);
-}
-
-
 //---------------------------------------------------------------------------
 //	@function:
 //		CCostModelGPDB::CostHashJoin
