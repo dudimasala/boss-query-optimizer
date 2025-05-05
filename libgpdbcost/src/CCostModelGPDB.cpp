@@ -54,7 +54,6 @@ const CCostModelGPDB::SCostMapping CCostModelGPDB::m_rgcm[] = {
 	{COperator::EopPhysicalCTEConsumer, CostCTEConsumer},
 	{COperator::EopPhysicalConstTableGet, CostConstTableGet},
 	{COperator::EopPhysicalDML, CostDML},
-	{COperator::EopPhysicalMalharAgg, CostMalharAgg},
 	{COperator::EopPhysicalHashAgg, CostHashAgg},
 	{COperator::EopPhysicalHashAggDeduplicate, CostHashAgg},
 	{COperator::EopPhysicalScalarAgg, CostScalarAgg},

@@ -232,7 +232,6 @@ public:
 		EopPhysicalStreamAgg,
 		EopPhysicalStreamAggDeduplicate,
 		EopPhysicalScalarAgg,
-		EopPhysicalMalharAgg,
 
 		EopPhysicalSerialUnionAll,
 		EopPhysicalParallelUnionAll,

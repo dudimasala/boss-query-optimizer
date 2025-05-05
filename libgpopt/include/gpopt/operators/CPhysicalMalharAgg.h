@@ -57,7 +57,7 @@ public:
 	virtual EOperatorId
 	Eopid() const
 	{
-		return EopPhysicalMalharAgg;
+		return (EOperatorId) (COperator::EopDynamicStart + 1);
 	}
 
 	// return a string for operator name
