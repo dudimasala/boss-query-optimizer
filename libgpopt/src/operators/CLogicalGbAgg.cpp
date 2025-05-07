@@ -21,6 +21,7 @@
 #include "gpopt/operators/CExpression.h"
 #include "gpopt/operators/CExpressionHandle.h"
 #include "naucrates/statistics/CGroupByStatsProcessor.h"
+#include "gpoptextender/IDynamicOperatorRegistry.hpp"
 
 using namespace gpopt;
 
@@ -599,6 +600,16 @@ CLogicalGbAgg::PxfsCandidates(CMemoryPool *mp) const
 	(void) xform_set->ExchangeSet(CXform::ExfGbAgg2StreamAgg);
 	(void) xform_set->ExchangeSet(CXform::ExfGbAgg2ScalarAgg);
 	(void) xform_set->ExchangeSet(CXform::ExfEagerAgg);
+
+  orcaextender::IDynamicOperatorRegistry *registry = orcaextender::CreateDynamicOperatorRegistry();
+	std::vector<CXform::EXformId> xformIds = registry->GetRelevantTransforms("CLogicalGbAgg");
+  for (size_t i = 0; i < xformIds.size(); i++) {
+    (void) xform_set->ExchangeSet(xformIds[i]);
+  }
+
+	delete registry;
+
+	// for (CXform::EXformId xformId : orcaextender::DynamicOperatorRegistry::GetInstance()->GetRelevantTransforms("CLogicalGbAgg")) {
 	return xform_set;
 }
 
