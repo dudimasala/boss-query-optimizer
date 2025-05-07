@@ -10,12 +10,12 @@ public:
         // however you normally set it up; e.g. single-instance
         impl = DynamicOperatorRegistry::GetInstance();
     }
-    ~RegistryAdapter() override {
-        // if you own impl, delete it; else leave it
-    }
     std::vector<CXform::EXformId>
     GetRelevantTransforms(const std::string &from) override {
         return impl->GetRelevantTransforms(from);
+    }
+    std::vector<gpopt::COperator*> GetOperators(const std::string& opName, void* opaqueArgs) override {
+        return impl->GetOperators(opName, opaqueArgs);
     }
 };
 

@@ -14,6 +14,7 @@ struct IDynamicOperatorRegistry {
     virtual ~IDynamicOperatorRegistry() {}
     virtual std::vector<CXform::EXformId>
         GetRelevantTransforms(const std::string &transformFrom) = 0;
+    virtual std::vector<gpopt::COperator*> GetOperators(const std::string& opName, void* opaqueArgs) = 0;
 };
 
 // Factory function – C linkage keeps name-mangling simple.

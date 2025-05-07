@@ -24,10 +24,21 @@ DynamicOperatorRegistry* DynamicOperatorRegistry::Init(CMemoryPool* mp, BOSSCost
 }
 
 
-void DynamicOperatorRegistry::RegisterOperator(const std::string& opName, FnCost costFunc) {
+void DynamicOperatorRegistry::RegisterOperator(const std::string& opName, FnCost costFunc, const std::string& similarOpName, FnOperatorFactory opFactory) {
   currentOperatorId = (COperator::EOperatorId) (currentOperatorId + 1);
   costModel->RegisterCostFunction(currentOperatorId, costFunc);
   opNameToOperatorId[opName] = currentOperatorId;
+  if (similarOpName != "") {
+    opFactories[similarOpName].push_back(opFactory);
+  }
+}
+
+std::vector<COperator*> DynamicOperatorRegistry::GetOperators(const std::string& opName, void* opaqueArgs) {
+  std::vector<COperator*> operators;
+  for (auto& factory : opFactories[opName]) {
+    operators.push_back(factory(opaqueArgs));
+  }
+  return operators;
 }
 
 COperator::EOperatorId DynamicOperatorRegistry::GetOperatorId(const std::string& opName) {
