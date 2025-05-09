@@ -27,6 +27,7 @@ class CDistributionSpec;
 class CExpressionHandle;
 class COrderSpec;
 class CRewindabilitySpec;
+class CEngineSpec;
 class CReqdPropPlan;
 class CPartIndexMap;
 class CCTEMap;
@@ -54,6 +55,9 @@ private:
 
 	// derived rewindability
 	CRewindabilitySpec *m_prs;
+
+	// derived engine
+	CEngineSpec *m_pes;
 
 	// derived partition index map
 	CPartIndexMap *m_ppim;
@@ -111,6 +115,13 @@ public:
 	Prs() const
 	{
 		return m_prs;
+	}
+
+	// engine accessor
+	CEngineSpec *
+	Pes() const
+	{
+		return m_pes;
 	}
 
 	// partition index map

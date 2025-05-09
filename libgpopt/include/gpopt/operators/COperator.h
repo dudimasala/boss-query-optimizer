@@ -259,6 +259,8 @@ public:
 		EopLogicalDynamicBitmapTableGet,
 		EopPhysicalDynamicBitmapTableScan,
 
+		EopPhysicalEngineTransform,
+
 		EopSentinel,
 
 		EopDynamicStart = 10000,

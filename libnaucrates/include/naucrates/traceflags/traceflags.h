@@ -207,6 +207,9 @@ enum EOptTraceFlag
 	// Consider non-equality predicates in Dynamic partition selection
 	EopttraceAllowGeneralPredicatesforDPE = 103037,
 
+	// Disable engine enforcement
+	EopttraceDisableEngineEnforcement = 103038,
+
 	///////////////////////////////////////////////////////
 	///////////////////// statistics flags ////////////////
 	//////////////////////////////////////////////////////

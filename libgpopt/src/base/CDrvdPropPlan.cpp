@@ -153,6 +153,9 @@ CDrvdPropPlan::CopyCTEProducerPlanProps(CMemoryPool *mp, CDrvdPropCtxt *pdpctxt,
 		pdpplan->Ppfm()->AddRef();
 		m_ppfm = pdpplan->Ppfm();
 
+		pdpplan->Pes()->AddRef();
+		m_pes = pdpplan->Pes();
+
 		// no need to copy the part index map. return an empty one. This is to
 		// distinguish between a CTE consumer and the inlined expression
 		m_ppim = GPOS_NEW(mp) CPartIndexMap(mp);

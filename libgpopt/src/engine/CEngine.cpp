@@ -2086,7 +2086,7 @@ CEngine::FCheckEnfdProps(CMemoryPool *mp, CGroupExpression *pgexpr,
 		return false;
 	}
 
-	// Determine if any property enforcement is disable or unnecessary
+	// Determine if any property enforcement is disable or unnecessary 
 	BOOL fOrderReqd = !GPOS_FTRACE(EopttraceDisableSort) &&
 					  !prpp->Peo()->PosRequired()->IsEmpty();
 
@@ -2100,6 +2100,9 @@ CEngine::FCheckEnfdProps(CMemoryPool *mp, CGroupExpression *pgexpr,
 	BOOL fPartPropagationReqd =
 		!GPOS_FTRACE(EopttraceDisablePartPropagation) &&
 		prpp->Pepp()->PppsRequired()->FPartPropagationReqd();
+
+	BOOL fEngineReqd = !GPOS_FTRACE(EopttraceDisableEngineEnforcement) &&
+					   CEngineSpec::EetAny != prpp->Pee()->PesRequired()->Eet();
 
 	// Determine if adding an enforcer to the group is required, optional,
 	// unnecessary or prohibited over the group expression and given the current
@@ -2121,6 +2124,10 @@ CEngine::FCheckEnfdProps(CMemoryPool *mp, CGroupExpression *pgexpr,
 	CEnfdProp::EPropEnforcingType epetPartitionPropagation =
 		prpp->Pepp()->Epet(exprhdl, popPhysical, fPartPropagationReqd);
 
+	// get engine enforcing type
+	CEnfdProp::EPropEnforcingType epetEngine =
+		prpp->Pee()->Epet(exprhdl, popPhysical, fEngineReqd);
+
 	// Skip adding enforcers entirely if any property determines it to be
 	// 'prohibited'. In this way, a property may veto out the creation of an
 	// enforcer for the current group expression and optimization context.
@@ -2130,7 +2137,7 @@ CEngine::FCheckEnfdProps(CMemoryPool *mp, CGroupExpression *pgexpr,
 	// decide to add it. And if E is added, it is possible for E to consider both
 	// G and H as its child.
 	if (FProhibited(epetOrder, epetDistribution, epetRewindability,
-					epetPartitionPropagation))
+					epetPartitionPropagation, epetEngine))
 	{
 		pcc->Release();
 		return false;
@@ -2154,6 +2161,10 @@ CEngine::FCheckEnfdProps(CMemoryPool *mp, CGroupExpression *pgexpr,
 	prpp->Pepp()->AppendEnforcers(mp, prpp, pdrgpexprEnforcers, pexpr,
 								  epetPartitionPropagation, exprhdl);
 
+	// COME BACK TO HERE LATER.
+	prpp->Pee()->AppendEnforcers(mp, prpp, pdrgpexprEnforcers, pexpr,
+								 epetEngine, exprhdl);
+
 	if (0 < pdrgpexprEnforcers->Size())
 	{
 		AddEnforcers(exprhdl.Pgexpr(), pdrgpexprEnforcers);
@@ -2163,7 +2174,7 @@ CEngine::FCheckEnfdProps(CMemoryPool *mp, CGroupExpression *pgexpr,
 	pcc->Release();
 
 	return FOptimize(epetOrder, epetDistribution, epetRewindability,
-					 epetPartitionPropagation);
+					epetPartitionPropagation, epetEngine);
 }
 
 //---------------------------------------------------------------------------
@@ -2232,12 +2243,14 @@ BOOL
 CEngine::FOptimize(CEnfdProp::EPropEnforcingType epetOrder,
 				   CEnfdProp::EPropEnforcingType epetDistribution,
 				   CEnfdProp::EPropEnforcingType epetRewindability,
-				   CEnfdProp::EPropEnforcingType epetPropagation)
+				   CEnfdProp::EPropEnforcingType epetPropagation,
+				   CEnfdProp::EPropEnforcingType epetEngine)
 {
 	return CEnfdProp::FOptimize(epetOrder) &&
 		   CEnfdProp::FOptimize(epetDistribution) &&
 		   CEnfdProp::FOptimize(epetRewindability) &&
-		   CEnfdProp::FOptimize(epetPropagation);
+		   CEnfdProp::FOptimize(epetPropagation) &&
+		   CEnfdProp::FOptimize(epetEngine);
 }
 
 //---------------------------------------------------------------------------
@@ -2252,12 +2265,14 @@ BOOL
 CEngine::FProhibited(CEnfdProp::EPropEnforcingType epetOrder,
 					 CEnfdProp::EPropEnforcingType epetDistribution,
 					 CEnfdProp::EPropEnforcingType epetRewindability,
-					 CEnfdProp::EPropEnforcingType epetPropagation)
+					 CEnfdProp::EPropEnforcingType epetPropagation,
+					 CEnfdProp::EPropEnforcingType epetEngine)
 {
 	return (CEnfdProp::EpetProhibited == epetOrder ||
 			CEnfdProp::EpetProhibited == epetDistribution ||
 			CEnfdProp::EpetProhibited == epetRewindability ||
-			CEnfdProp::EpetProhibited == epetPropagation);
+			CEnfdProp::EpetProhibited == epetPropagation ||
+			CEnfdProp::EpetProhibited == epetEngine);
 }
 
 //---------------------------------------------------------------------------
@@ -2338,6 +2353,13 @@ CEngine::FCheckReqdProps(CExpressionHandle &exprhdl, CReqdPropPlan *prpp,
 	BOOL fDistributionReqd =
 		(CDistributionSpec::EdtAny != prpp->Ped()->PdsRequired()->Edt());
 	if (!fDistributionReqd && CUtils::FPhysicalMotion(popPhysical))
+	{
+		return false;
+	}
+
+	// COME BACK TO HERE LATER
+	BOOL fEngineReqd = CEngineSpec::EetAny != prpp->Pee()->PesRequired()->Eet();
+	if (!fEngineReqd && COperator::EopPhysicalEngineTransform == op_id)
 	{
 		return false;
 	}

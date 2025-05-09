@@ -66,6 +66,10 @@
 #include "naucrates/md/IMDTypeInt8.h"
 #include "naucrates/statistics/CStatsPredUtils.h"
 
+#include "gpoptextender/CEngineSpecAny.hpp"
+#include "gpoptextender/CEnfdEngine.hpp"
+
+
 #include "unittest/base.h"
 #include "unittest/gpopt/CSubqueryTestUtils.h"
 
@@ -2422,6 +2426,8 @@ CTestUtils::PqcGenerate(CMemoryPool *mp, CExpression *pexpr,
 	CRewindabilitySpec *prs = GPOS_NEW(mp) CRewindabilitySpec(
 		CRewindabilitySpec::ErtNone, CRewindabilitySpec::EmhtNoMotion);
 
+	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpecAny();
+
 	CEnfdOrder *peo = GPOS_NEW(mp) CEnfdOrder(pos, CEnfdOrder::EomSatisfy);
 
 	// we require exact matching on distribution since final query results must be sent to master
@@ -2433,8 +2439,10 @@ CTestUtils::PqcGenerate(CMemoryPool *mp, CExpression *pexpr,
 
 	CCTEReq *pcter = COptCtxt::PoctxtFromTLS()->Pcteinfo()->PcterProducers(mp);
 
+	CEnfdEngine *pee = GPOS_NEW(mp) CEnfdEngine(pes, CEnfdEngine::EemSatisfy);
+
 	CReqdPropPlan *prpp =
-		GPOS_NEW(mp) CReqdPropPlan(pcrs, peo, ped, per, pcter);
+		GPOS_NEW(mp) CReqdPropPlan(pcrs, peo, ped, per, pcter, pee);
 
 	colref_array->AddRef();
 	CMDNameArray *pdrgpmdname = GPOS_NEW(mp) CMDNameArray(mp);
@@ -2494,10 +2502,13 @@ CTestUtils::PqcGenerate(CMemoryPool *mp, CExpression *pexpr)
 
 	// Use CDistributionSpecAny instead of CDistributionSpecSingleton
 	// to avoid requiring a specific distribution which would need enforcing
-	CDistributionSpec *pds = GPOS_NEW(mp) CDistributionSpecAny(COperator::EopSentinel);
+	// CDistributionSpec *pds = GPOS_NEW(mp) CDistributionSpecAny(COperator::EopSentinel);
+	CDistributionSpec *pds = GPOS_NEW(mp) CDistributionSpecSingleton();
 
 	CRewindabilitySpec *prs = GPOS_NEW(mp) CRewindabilitySpec(
 		CRewindabilitySpec::ErtNone, CRewindabilitySpec::EmhtNoMotion);
+
+	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpecAny();
 
 	CEnfdOrder *peo = GPOS_NEW(mp) CEnfdOrder(pos, CEnfdOrder::EomSatisfy);
 
@@ -2510,8 +2521,10 @@ CTestUtils::PqcGenerate(CMemoryPool *mp, CExpression *pexpr)
 
 	CCTEReq *pcter = COptCtxt::PoctxtFromTLS()->Pcteinfo()->PcterProducers(mp);
 
+	CEnfdEngine *pee = GPOS_NEW(mp) CEnfdEngine(pes, CEnfdEngine::EemSatisfy);
+
 	CReqdPropPlan *prpp =
-		GPOS_NEW(mp) CReqdPropPlan(pcrsOutput, peo, ped, per, pcter);
+		GPOS_NEW(mp) CReqdPropPlan(pcrsOutput, peo, ped, per, pcter, pee);
 
 	CMDNameArray *pdrgpmdname = GPOS_NEW(mp) CMDNameArray(mp);
 	const ULONG length = colref_array->Size();
