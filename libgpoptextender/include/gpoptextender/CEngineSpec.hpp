@@ -58,11 +58,10 @@ public:
         return EpstEngine;
     }
 
-    // extract columns used by the property
-	virtual CColRefSet *PcrsUsed(CMemoryPool *mp) const;
-
-    
-
+    virtual CColRefSet *PcrsUsed(CMemoryPool *mp) const
+    {
+        return GPOS_NEW(mp) CColRefSet(mp);
+    }
 
 };
 

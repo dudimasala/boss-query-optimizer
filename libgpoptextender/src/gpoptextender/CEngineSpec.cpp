@@ -19,10 +19,4 @@ void CEngineSpec::AppendEnforcers(CMemoryPool *mp, CExpressionHandle &exprhdl,
     // TODO: Implement
 } 
 
-CColRefSet *CEngineSpec::PcrsUsed(CMemoryPool *mp) const
-{
-  // we use all columns. Will implement this later
-  return NULL;
-}
-
 } // namespace gpopt

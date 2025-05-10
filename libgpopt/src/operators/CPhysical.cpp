@@ -28,6 +28,8 @@
 #include "gpopt/operators/CExpressionHandle.h"
 #include "gpopt/operators/CScalarIdent.h"
 
+#include "gpoptextender/CEngineSpecAny.hpp"
+
 using namespace gpopt;
 
 //---------------------------------------------------------------------------
@@ -1072,6 +1074,41 @@ CPhysical::EpetDistribution(CExpressionHandle &exprhdl,
 }
 
 
+CEnfdProp::EPropEnforcingType
+CPhysical::EpetEngine(CExpressionHandle &exprhdl,
+					 const CEnfdEngine *pee) const
+{
+	GPOS_ASSERT(NULL != pee);
+
+	CEngineSpec *pes = CDrvdPropPlan::Pdpplan(exprhdl.Pdp())->Pes();
+	if (pee->FCompatible(pes))
+	{
+		return CEnfdProp::EpetUnnecessary;
+	}
+
+	return CEnfdProp::EpetRequired;
+}
+
+CEngineSpec *
+CPhysical::PesDerive(CMemoryPool *mp, CExpressionHandle &exprhdl) const
+{
+	CEngineSpec *pes = CDrvdPropPlan::Pdpplan(exprhdl.Pdp())->Pes();
+	pes->AddRef();
+	return pes;
+}
+
+CEngineSpec *
+CPhysical::PesRequired(CMemoryPool *mp,
+					   CExpressionHandle &exprhdl,
+					   CEngineSpec *pesRequired,
+					   ULONG child_index,
+					   CDrvdPropArray *pdrgpdpCtxt,
+					   ULONG ulOptReq) const
+{
+	return GPOS_NEW(mp) CEngineSpecAny();
+}
+
+
 //---------------------------------------------------------------------------
 //	@function:
 //		CPhysical::EpetPartitionPropagation
@@ -1269,6 +1306,7 @@ CPhysical::Eem(CReqdPropPlan *, ULONG, CDrvdPropArray *, ULONG)
 	// request satisfaction by default
 	return CEnfdEngine::EemSatisfy;
 }
+
 
 
 

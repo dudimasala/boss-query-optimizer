@@ -59,14 +59,14 @@ private:
 	// required rewindability
 	CEnfdRewindability *m_per;
 
-	// required engine
-	CEnfdEngine *m_pee;
-
 	// required partition propagation
 	CEnfdPartitionPropagation *m_pepp;
 
 	// required ctes
 	CCTEReq *m_pcter;
+
+	// required engine
+	CEnfdEngine *m_pee;
 
 	// private copy ctor
 	CReqdPropPlan(const CReqdPropPlan &);

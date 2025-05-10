@@ -24,11 +24,11 @@ public:
 private:
     // Required engine
     CEngineSpec *m_pes;
-    EEngineMatching m_erm;
+    EEngineMatching m_eem;
 
 public:
     // Ctor
-    CEnfdEngine(CEngineSpec *pes, EEngineMatching erm);
+    CEnfdEngine(CEngineSpec *pes, EEngineMatching eem);
 
     // Dtor
     virtual ~CEnfdEngine()

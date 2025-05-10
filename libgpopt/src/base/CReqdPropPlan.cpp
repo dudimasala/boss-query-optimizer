@@ -54,6 +54,7 @@ CReqdPropPlan::CReqdPropPlan(CColRefSet *pcrs, CEnfdOrder *peo,
 	  m_peo(peo),
 	  m_ped(ped),
 	  m_per(per),
+		m_pepp(NULL),
 	  m_pcter(pcter),
 	  m_pee(pee)
 {
@@ -200,6 +201,7 @@ CReqdPropPlan::Compute(CMemoryPool *mp, CExpressionHandle &exprhdl,
 								 child_index, pdrgpdpCtxt, ulDistrReq),
 		popPhysical->Edm(prppInput, child_index, pdrgpdpCtxt, ulDistrReq));
 
+
 	GPOS_ASSERT(
 		CDistributionSpec::EdtUniversal != m_ped->PdsRequired()->Edt() &&
 		"CDistributionSpecUniversal is a derive-only, cannot be required");
@@ -213,6 +215,7 @@ CReqdPropPlan::Compute(CMemoryPool *mp, CExpressionHandle &exprhdl,
 		popPhysical->PesRequired(mp, exprhdl, prppInput->Pee()->PesRequired(),
 								 child_index, pdrgpdpCtxt, ulEngineReq),
 		popPhysical->Eem(prppInput, child_index, pdrgpdpCtxt, ulEngineReq));
+
 
 	m_pepp = GPOS_NEW(mp) CEnfdPartitionPropagation(
 		popPhysical->PppsRequired(mp, exprhdl,
@@ -471,13 +474,13 @@ CReqdPropPlan::HashValue() const
 	GPOS_ASSERT(NULL != m_ped);
 	GPOS_ASSERT(NULL != m_per);
 	GPOS_ASSERT(NULL != m_pcter);
-
+	GPOS_ASSERT(NULL != m_pee);
 	ULONG ulHash = m_pcrs->HashValue();
 	ulHash = gpos::CombineHashes(ulHash, m_peo->HashValue());
 	ulHash = gpos::CombineHashes(ulHash, m_ped->HashValue());
 	ulHash = gpos::CombineHashes(ulHash, m_per->HashValue());
 	ulHash = gpos::CombineHashes(ulHash, m_pcter->HashValue());
-
+	ulHash = gpos::CombineHashes(ulHash, m_pee->HashValue());
 	return ulHash;
 }
 
@@ -548,6 +551,7 @@ CReqdPropPlan::FCompatible(CExpressionHandle &exprhdl, CPhysical *popPhysical,
 		   m_ped->FCompatible(pdpplan->Pds()) &&
 		   m_per->FCompatible(pdpplan->Prs()) &&
 		   pdpplan->Ppim()->FSatisfies(m_pepp->PppsRequired()) &&
+		   m_pee->FCompatible(pdpplan->Pes()) &&
 		   popPhysical->FProvidesReqdCTEs(exprhdl, m_pcter);
 }
 

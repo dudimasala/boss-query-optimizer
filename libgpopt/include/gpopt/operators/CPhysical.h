@@ -386,7 +386,7 @@ public:
 									  CEngineSpec *pesRequired,
 									  ULONG child_index,
 									  CDrvdPropArray *pdrgpdpCtxt,
-									  ULONG ulOptReq) const = 0;
+									  ULONG ulOptReq) const;
 
 	// compute required rewindability of the n-th child
 	virtual CRewindabilitySpec *PrsRequired(CMemoryPool *mp,
@@ -429,7 +429,7 @@ public:
 
 	// derived properties: derive engine
 	virtual CEngineSpec *PesDerive(CMemoryPool *mp,
-								   CExpressionHandle &exprhdl) const = 0;
+								   CExpressionHandle &exprhdl) const;
 
 	// derive partition index map
 	virtual CPartIndexMap *PpimDerive(CMemoryPool *mp,
@@ -463,7 +463,7 @@ public:
 
 	// return engine property enforcing type for this operator
 	virtual CEnfdProp::EPropEnforcingType EpetEngine(
-		CExpressionHandle &exprhdl, const CEnfdEngine *pee) const = 0;
+		CExpressionHandle &exprhdl, const CEnfdEngine *pee) const;
 
 	// return partition propagation property enforcing type for this operator
 	virtual CEnfdProp::EPropEnforcingType EpetPartitionPropagation(
