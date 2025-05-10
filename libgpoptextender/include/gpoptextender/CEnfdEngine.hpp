@@ -51,7 +51,7 @@ public:
     }
 
     // hash function
-	  virtual ULONG HashValue() const;
+	virtual ULONG HashValue() const;
 
     // Check compatibility
     BOOL FCompatible(CEngineSpec *pes) const

@@ -1,5 +1,6 @@
 #include "gpoptextender/CEnfdEngine.hpp"
 // #include "gpopt/operators/CExpressionHandle.h"
+#include "gpopt/operators/CPhysical.h"
 
 
 
@@ -20,8 +21,7 @@ CEnfdEngine::EPropEnforcingType CEnfdEngine::Epet(CExpressionHandle &exprhdl, CP
 {
     if (fEngineReqd)
     {
-        
-        return CEnfdProp::EpetRequired;
+		return popPhysical->EpetEngine(exprhdl, this);
     }
 
     return CEnfdProp::EpetUnnecessary;
