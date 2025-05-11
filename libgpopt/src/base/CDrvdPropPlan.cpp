@@ -39,7 +39,8 @@ CDrvdPropPlan::CDrvdPropPlan()
 	  m_prs(NULL),
 	  m_ppim(NULL),
 	  m_ppfm(NULL),
-	  m_pcm(NULL)
+	  m_pcm(NULL),
+	  m_pes(NULL)
 {
 }
 
@@ -60,6 +61,7 @@ CDrvdPropPlan::~CDrvdPropPlan()
 	CRefCount::SafeRelease(m_ppim);
 	CRefCount::SafeRelease(m_ppfm);
 	CRefCount::SafeRelease(m_pcm);
+	CRefCount::SafeRelease(m_pes);
 }
 
 
@@ -108,6 +110,7 @@ CDrvdPropPlan::Derive(CMemoryPool *mp, CExpressionHandle &exprhdl,
 		m_prs = popPhysical->PrsDerive(mp, exprhdl);
 		m_ppim = popPhysical->PpimDerive(mp, exprhdl, pdpctxt);
 		m_ppfm = popPhysical->PpfmDerive(mp, exprhdl);
+		m_pes = popPhysical->PesDerive(mp, exprhdl);
 
 		GPOS_ASSERT(NULL != m_ppim);
 		GPOS_ASSERT(CDistributionSpec::EdtAny != m_pds->Edt() &&
@@ -183,12 +186,14 @@ CDrvdPropPlan::FSatisfies(const CReqdPropPlan *prpp) const
 	GPOS_ASSERT(NULL != prpp->Per());
 	GPOS_ASSERT(NULL != prpp->Pepp());
 	GPOS_ASSERT(NULL != prpp->Pcter());
+	GPOS_ASSERT(NULL != prpp->Pee());
 
 	return m_pos->FSatisfies(prpp->Peo()->PosRequired()) &&
 		   m_pds->FSatisfies(prpp->Ped()->PdsRequired()) &&
 		   m_prs->FSatisfies(prpp->Per()->PrsRequired()) &&
 		   m_ppim->FSatisfies(prpp->Pepp()->PppsRequired()) &&
-		   m_pcm->FSatisfies(prpp->Pcter());
+		   m_pcm->FSatisfies(prpp->Pcter()) &&
+		   m_pes->FSatisfies(prpp->Pee()->PesRequired());
 }
 
 
@@ -207,7 +212,7 @@ CDrvdPropPlan::HashValue() const
 	ulHash = gpos::CombineHashes(ulHash, m_prs->HashValue());
 	ulHash = gpos::CombineHashes(ulHash, m_ppim->HashValue());
 	ulHash = gpos::CombineHashes(ulHash, m_pcm->HashValue());
-
+	ulHash = gpos::CombineHashes(ulHash, m_pes->HashValue());
 	return ulHash;
 }
 
@@ -224,7 +229,8 @@ CDrvdPropPlan::Equals(const CDrvdPropPlan *pdpplan) const
 {
 	return m_pos->Matches(pdpplan->Pos()) && m_pds->Equals(pdpplan->Pds()) &&
 		   m_prs->Matches(pdpplan->Prs()) && m_ppim->Equals(pdpplan->Ppim()) &&
-		   m_pcm->Equals(pdpplan->GetCostModel());
+		   m_pcm->Equals(pdpplan->GetCostModel()) &&
+		   m_pes->Equals(pdpplan->Pes());
 }
 
 //---------------------------------------------------------------------------

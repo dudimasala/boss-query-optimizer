@@ -14,7 +14,8 @@
 #include "gpos/base.h"
 
 #include "gpopt/operators/CPhysicalAgg.h"
-
+#include "gpoptextender/CEngineSpecGP.hpp"
+#include "gpoptextender/CEngineSpecAny.hpp"
 namespace gpopt
 {
 // fwd declaration
@@ -92,6 +93,20 @@ public:
 	// return order property enforcing type for this operator
 	virtual CEnfdProp::EPropEnforcingType EpetOrder(
 		CExpressionHandle &exprhdl, const CEnfdOrder *peo) const;
+	
+	virtual CEngineSpec *PesRequired(CMemoryPool *mp,
+									  CExpressionHandle &exprhdl,
+									  CEngineSpec *pesRequired,
+									  ULONG child_index,
+									  CDrvdPropArray *pdrgpdpCtxt,
+									  ULONG ulOptReq) const {
+		return GPOS_NEW(mp) CEngineSpecAny();
+	};
+
+	virtual CEngineSpec *PesDerive(CMemoryPool *mp,
+								   CExpressionHandle &exprhdl) const {
+		return GPOS_NEW(mp) CEngineSpecGP();
+	}
 
 	//-------------------------------------------------------------------------------------
 	//-------------------------------------------------------------------------------------

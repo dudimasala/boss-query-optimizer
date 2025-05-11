@@ -56,9 +56,6 @@ private:
 	// derived rewindability
 	CRewindabilitySpec *m_prs;
 
-	// derived engine
-	CEngineSpec *m_pes;
-
 	// derived partition index map
 	CPartIndexMap *m_ppim;
 
@@ -67,6 +64,9 @@ private:
 
 	// derived cte map
 	CCTEMap *m_pcm;
+
+	// derived engine
+	CEngineSpec *m_pes;
 
 	// copy CTE producer plan properties from given context to current object
 	void CopyCTEProducerPlanProps(CMemoryPool *mp, CDrvdPropCtxt *pdpctxt,

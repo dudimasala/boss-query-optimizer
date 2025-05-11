@@ -1081,6 +1081,7 @@ CPhysical::EpetEngine(CExpressionHandle &exprhdl,
 	GPOS_ASSERT(NULL != pee);
 
 	CEngineSpec *pes = CDrvdPropPlan::Pdpplan(exprhdl.Pdp())->Pes();
+	std::cout << pes << std::endl;
 	if (pee->FCompatible(pes))
 	{
 		return CEnfdProp::EpetUnnecessary;
@@ -1092,9 +1093,7 @@ CPhysical::EpetEngine(CExpressionHandle &exprhdl,
 CEngineSpec *
 CPhysical::PesDerive(CMemoryPool *mp, CExpressionHandle &exprhdl) const
 {
-	CEngineSpec *pes = CDrvdPropPlan::Pdpplan(exprhdl.Pdp())->Pes();
-	pes->AddRef();
-	return pes;
+	return GPOS_NEW(mp) CEngineSpecAny();
 }
 
 CEngineSpec *

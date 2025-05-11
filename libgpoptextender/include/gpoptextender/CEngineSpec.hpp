@@ -63,6 +63,22 @@ public:
         return GPOS_NEW(mp) CColRefSet(mp);
     }
 
+	// default match function for distribution specs
+	virtual BOOL
+	Matches(const CEngineSpec *pes) const
+	{
+		return Eet() == pes->Eet();
+	}
+
+	// default implementation for all the classes inheriting from
+	// CEngineSpec, if any class requires special Equals
+	// handling, they should override it.
+	virtual BOOL
+	Equals(const CEngineSpec *pes) const
+	{
+		return Matches(pes);
+	}
+
 };
 
 }
