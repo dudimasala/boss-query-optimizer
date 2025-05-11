@@ -9,6 +9,7 @@ namespace gpopt {
 CEnfdEngine::CEnfdEngine(CEngineSpec *pes, EEngineMatching eem)
     : m_pes(pes), m_eem(eem)
 {
+    
     GPOS_ASSERT(NULL != pes);
 }
 
@@ -26,4 +27,5 @@ CEnfdEngine::EPropEnforcingType CEnfdEngine::Epet(CExpressionHandle &exprhdl, CP
 
     return CEnfdProp::EpetUnnecessary;
 }
+
 }

@@ -95,6 +95,8 @@ std::unordered_map<COperator::EOperatorId, BOSSCostModel::FnCost> BOSSCostModel:
   {COperator::EopPhysicalRowTrigger, GetCostFuncForEngine(CostUnary, "gpdb")},
   {COperator::EopPhysicalSplit, GetCostFuncForEngine(CostUnary, "gpdb")},
   {COperator::EopPhysicalSpool, GetCostFuncForEngine(CostUnary, "gpdb")},
+
+	{COperator::EopPhysicalEngineTransform, GetCostFuncForEngine(CostEngineTransform, "gpdb")}
 };
 
 //---------------------------------------------------------------------------
@@ -1985,6 +1987,13 @@ BOSSCostModel::GetCostFuncForEngine(
 void BOSSCostModel::RegisterCostModelParams(const std::string& engine, ICostModelParams* pcp)
 {
   m_cost_model_params_map[engine] = pcp;
+}
+
+CCost BOSSCostModel::CostEngineTransform(CMemoryPool *mp, CExpressionHandle &exprhdl,
+									 const BOSSCostModel *pcmgpdb,
+									 const SCostingInfo *pci, const std::string& engine)
+{
+	return CCost(0);
 }
 
 // EOF

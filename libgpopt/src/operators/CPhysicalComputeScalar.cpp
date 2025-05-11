@@ -128,6 +128,7 @@ CPhysicalComputeScalar::PosRequired(CMemoryPool *mp, CExpressionHandle &exprhdl,
 {
 	GPOS_ASSERT(0 == child_index);
 
+
 	CColRefSet *pcrsSort = posRequired->PcrsUsed(m_mp);
 	BOOL fUsesDefinedCols = FUnaryUsesDefinedColumns(pcrsSort, exprhdl);
 	pcrsSort->Release();
@@ -163,6 +164,7 @@ CPhysicalComputeScalar::PdsRequired(CMemoryPool *mp, CExpressionHandle &exprhdl,
 {
 	GPOS_ASSERT(0 == child_index);
 	GPOS_ASSERT(2 > ulOptReq);
+
 
 	// check if singleton/replicated distribution needs to be requested
 	CDistributionSpec *pds = PdsRequireSingletonOrReplicated(

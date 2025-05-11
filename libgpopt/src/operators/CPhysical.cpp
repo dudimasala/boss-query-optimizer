@@ -28,7 +28,7 @@
 #include "gpopt/operators/CExpressionHandle.h"
 #include "gpopt/operators/CScalarIdent.h"
 
-#include "gpoptextender/CEngineSpecAny.hpp"
+#include "gpoptextender/CEngineSpec.hpp"
 
 using namespace gpopt;
 
@@ -1081,19 +1081,17 @@ CPhysical::EpetEngine(CExpressionHandle &exprhdl,
 	GPOS_ASSERT(NULL != pee);
 
 	CEngineSpec *pes = CDrvdPropPlan::Pdpplan(exprhdl.Pdp())->Pes();
-	std::cout << pes << std::endl;
 	if (pee->FCompatible(pes))
 	{
 		return CEnfdProp::EpetUnnecessary;
 	}
-
 	return CEnfdProp::EpetRequired;
 }
 
 CEngineSpec *
 CPhysical::PesDerive(CMemoryPool *mp, CExpressionHandle &exprhdl) const
 {
-	return GPOS_NEW(mp) CEngineSpecAny();
+	return GPOS_NEW(mp) CEngineSpec();
 }
 
 CEngineSpec *
@@ -1104,7 +1102,7 @@ CPhysical::PesRequired(CMemoryPool *mp,
 					   CDrvdPropArray *pdrgpdpCtxt,
 					   ULONG ulOptReq) const
 {
-	return GPOS_NEW(mp) CEngineSpecAny();
+	return GPOS_NEW(mp) CEngineSpec();
 }
 
 

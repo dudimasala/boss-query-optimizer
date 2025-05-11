@@ -26,7 +26,7 @@
 #include "naucrates/md/IMDScalarOp.h"
 
 #include "gpoptextender/CEnfdEngine.hpp"
-#include "gpoptextender/CEngineSpecAny.hpp"
+#include "gpoptextender/CEngineSpec.hpp"
 
 #include "unittest/base.h"
 #include "unittest/gpopt/CTestUtils.h"
@@ -50,7 +50,7 @@ CExpressionTest::PrppCreateRequiredProperties(CMemoryPool *mp, CColRefSet *pcrs)
 		CDistributionSpecSingleton(CDistributionSpecSingleton::EstMaster);
 	CRewindabilitySpec *prs = GPOS_NEW(mp) CRewindabilitySpec(
 		CRewindabilitySpec::ErtNone, CRewindabilitySpec::EmhtNoMotion);
-	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpecAny();
+	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpec();
 	CEnfdOrder *peo = GPOS_NEW(mp) CEnfdOrder(pos, CEnfdOrder::EomSatisfy);
 	CEnfdDistribution *ped =
 		GPOS_NEW(mp) CEnfdDistribution(pds, CEnfdDistribution::EdmSatisfy);
@@ -774,7 +774,7 @@ CExpressionTest::EresUnittest_FValidPlan_InvalidOrder()
 		CDistributionSpecSingleton(CDistributionSpecSingleton::EstMaster);
 	CRewindabilitySpec *prs = GPOS_NEW(mp) CRewindabilitySpec(
 		CRewindabilitySpec::ErtNone, CRewindabilitySpec::EmhtNoMotion);
-	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpecAny();
+	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpec();
 	CEnfdDistribution *ped =
 		GPOS_NEW(mp) CEnfdDistribution(pds, CEnfdDistribution::EdmExact);
 	CEnfdRewindability *per =
@@ -835,7 +835,7 @@ CExpressionTest::EresUnittest_FValidPlan_InvalidDistribution()
 	CDistributionSpec *pds = GPOS_NEW(mp) CDistributionSpecRandom();
 	CRewindabilitySpec *prs = GPOS_NEW(mp) CRewindabilitySpec(
 		CRewindabilitySpec::ErtNone, CRewindabilitySpec::EmhtNoMotion);
-	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpecAny();
+	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpec();
 	CEnfdOrder *peo = GPOS_NEW(mp) CEnfdOrder(pos, CEnfdOrder::EomSatisfy);
 	CEnfdDistribution *ped =
 		GPOS_NEW(mp) CEnfdDistribution(pds, CEnfdDistribution::EdmExact);
@@ -898,7 +898,7 @@ CExpressionTest::EresUnittest_FValidPlan_InvalidRewindability()
 		CDistributionSpecSingleton(CDistributionSpecSingleton::EstMaster);
 	CRewindabilitySpec *prs = GPOS_NEW(mp) CRewindabilitySpec(
 		CRewindabilitySpec::ErtRewindable, CRewindabilitySpec::EmhtNoMotion);
-	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpecAny();
+	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpec();
 	CEnfdOrder *peo = GPOS_NEW(mp) CEnfdOrder(pos, CEnfdOrder::EomSatisfy);
 	CEnfdDistribution *ped =
 		GPOS_NEW(mp) CEnfdDistribution(pds, CEnfdDistribution::EdmExact);
@@ -961,7 +961,7 @@ CExpressionTest::EresUnittest_FValidPlan_InvalidCTEs()
 		CDistributionSpecSingleton(CDistributionSpecSingleton::EstMaster);
 	CRewindabilitySpec *prs = GPOS_NEW(mp) CRewindabilitySpec(
 		CRewindabilitySpec::ErtNone, CRewindabilitySpec::EmhtNoMotion);
-	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpecAny();
+	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpec();
 	CEnfdOrder *peo = GPOS_NEW(mp) CEnfdOrder(pos, CEnfdOrder::EomSatisfy);
 	CEnfdDistribution *ped =
 		GPOS_NEW(mp) CEnfdDistribution(pds, CEnfdDistribution::EdmExact);

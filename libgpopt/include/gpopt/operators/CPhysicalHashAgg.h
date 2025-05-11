@@ -14,8 +14,7 @@
 #include "gpos/base.h"
 
 #include "gpopt/operators/CPhysicalAgg.h"
-#include "gpoptextender/CEngineSpecGP.hpp"
-#include "gpoptextender/CEngineSpecAny.hpp"
+#include "gpoptextender/CEngineSpec.hpp"
 namespace gpopt
 {
 // fwd declaration
@@ -100,12 +99,12 @@ public:
 									  ULONG child_index,
 									  CDrvdPropArray *pdrgpdpCtxt,
 									  ULONG ulOptReq) const {
-		return GPOS_NEW(mp) CEngineSpecAny();
-	};
+		return GPOS_NEW(mp) CEngineSpec(CEngineSpec::EetCPU);
+	}
 
 	virtual CEngineSpec *PesDerive(CMemoryPool *mp,
 								   CExpressionHandle &exprhdl) const {
-		return GPOS_NEW(mp) CEngineSpecGP();
+		return GPOS_NEW(mp) CEngineSpec();
 	}
 
 	//-------------------------------------------------------------------------------------

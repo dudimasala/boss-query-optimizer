@@ -246,6 +246,11 @@ public:
 	static CCost CostBitmapLargeNDV(const BOSSCostModel *pcmgpdb,
 									const SCostingInfo *pci, CDouble dNDV, const std::string& engine);
 
+	// cost of engine transform
+	static CCost CostEngineTransform(CMemoryPool *mp, CExpressionHandle &exprhdl,
+									 const BOSSCostModel *pcmgpdb,
+									 const SCostingInfo *pci, const std::string& engine);
+
 
 };	// class BOSSCostModel
 

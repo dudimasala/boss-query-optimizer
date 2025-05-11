@@ -10,10 +10,6 @@ using namespace gpmd;
 // Engine specification base class
 class CEngineSpec : public CPropSpec
 {
-private:
-    // Private copy ctor
-    CEngineSpec(const CEngineSpec &);
-
 public:
     // Engine types
     enum EEngineType
@@ -23,18 +19,29 @@ public:
         EetSentinel
     };
 
+private:
+    // Private copy ctor
+    CEngineSpec(const CEngineSpec &);
+    EEngineType m_eet;
+
+public:
     // Ctor
-    CEngineSpec()
+    CEngineSpec() : m_eet(EetAny)
     {
     }
+
+    CEngineSpec(EEngineType eet) : m_eet(eet) {}
 
     // Dtor
     virtual ~CEngineSpec()
     {
     }
 
-
-    virtual EEngineType Eet() const = 0;
+    // Engine type accessor
+    virtual EEngineType Eet() const
+    {
+        return m_eet;
+    }
 
     // append enforcers to dynamic array for the given plan properties
     virtual void AppendEnforcers(CMemoryPool *mp, CExpressionHandle &exprhdl,
@@ -78,6 +85,8 @@ public:
 	{
 		return Matches(pes);
 	}
+
+    virtual IOstream &OsPrint(IOstream &os) const;
 
 };
 

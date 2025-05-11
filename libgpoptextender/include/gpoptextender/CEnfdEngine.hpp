@@ -61,6 +61,22 @@ public:
 
     // Get engine enforcing type for the given operator
     EPropEnforcingType Epet(CExpressionHandle &exprhdl, CPhysical *popPhysical, BOOL fEngineReqd) const;
+
+	// matching type accessor
+	EEngineMatching
+	Eem() const
+	{
+		return m_eem;
+	}
+
+	// matching function
+	BOOL
+	Matches(CEnfdEngine *pee)
+	{
+		GPOS_ASSERT(NULL != pee);
+
+		return m_eem == pee->Eem() && m_pes->Equals(pee->PesRequired());
+	}
 };
 
 }

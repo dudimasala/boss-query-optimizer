@@ -24,7 +24,7 @@
 #include "gpopt/base/CEnfdPartitionPropagation.h"
 #include "gpopt/base/CEnfdRewindability.h"
 #include "gpoptextender/CEnfdEngine.hpp"
-#include "gpoptextender/CEngineSpecAny.hpp"
+#include "gpoptextender/CEngineSpec.hpp"
 #include "gpopt/base/CPartFilterMap.h"
 #include "gpopt/base/CPartIndexMap.h"
 #include "gpopt/base/CPartInfo.h"
@@ -440,7 +440,7 @@ CReqdPropPlan::Equals(const CReqdPropPlan *prpp) const
 	BOOL result = PcrsRequired()->Equals(prpp->PcrsRequired()) &&
 				  Pcter()->Equals(prpp->Pcter()) &&
 				  Peo()->Matches(prpp->Peo()) && Ped()->Matches(prpp->Ped()) &&
-				  Per()->Matches(prpp->Per());
+				  Per()->Matches(prpp->Per()) && Pee()->Matches(prpp->Pee());
 
 	if (result)
 	{
@@ -572,7 +572,7 @@ CReqdPropPlan::PrppEmpty(CMemoryPool *mp)
 		GPOS_NEW(mp) CDistributionSpecAny(COperator::EopSentinel);
 	CRewindabilitySpec *prs = GPOS_NEW(mp) CRewindabilitySpec(
 		CRewindabilitySpec::ErtNone, CRewindabilitySpec::EmhtNoMotion);
-	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpecAny();
+	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpec();
 	CEnfdOrder *peo = GPOS_NEW(mp) CEnfdOrder(pos, CEnfdOrder::EomSatisfy);
 	CEnfdDistribution *ped =
 		GPOS_NEW(mp) CEnfdDistribution(pds, CEnfdDistribution::EdmExact);

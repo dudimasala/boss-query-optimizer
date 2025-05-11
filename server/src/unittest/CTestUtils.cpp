@@ -66,7 +66,7 @@
 #include "naucrates/md/IMDTypeInt8.h"
 #include "naucrates/statistics/CStatsPredUtils.h"
 
-#include "gpoptextender/CEngineSpecAny.hpp"
+#include "gpoptextender/CEngineSpec.hpp"
 #include "gpoptextender/CEnfdEngine.hpp"
 
 
@@ -2426,7 +2426,7 @@ CTestUtils::PqcGenerate(CMemoryPool *mp, CExpression *pexpr,
 	CRewindabilitySpec *prs = GPOS_NEW(mp) CRewindabilitySpec(
 		CRewindabilitySpec::ErtNone, CRewindabilitySpec::EmhtNoMotion);
 
-	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpecAny();
+	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpec();
 
 	CEnfdOrder *peo = GPOS_NEW(mp) CEnfdOrder(pos, CEnfdOrder::EomSatisfy);
 
@@ -2508,7 +2508,7 @@ CTestUtils::PqcGenerate(CMemoryPool *mp, CExpression *pexpr)
 	CRewindabilitySpec *prs = GPOS_NEW(mp) CRewindabilitySpec(
 		CRewindabilitySpec::ErtNone, CRewindabilitySpec::EmhtNoMotion);
 
-	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpecAny();
+	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpec();
 
 	CEnfdOrder *peo = GPOS_NEW(mp) CEnfdOrder(pos, CEnfdOrder::EomSatisfy);
 

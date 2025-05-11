@@ -462,7 +462,6 @@ void
 CJobGroupExpressionOptimization::ScheduleChildGroupsJobs(CSchedulerContext *psc)
 {
 	GPOS_ASSERT(!FChildrenScheduled());
-
 	CGroup *pgroupChild = (*m_pgexpr)[m_ulChildIndex];
 	if (pgroupChild->FScalar())
 	{
@@ -502,13 +501,11 @@ CJobGroupExpressionOptimization::ScheduleChildGroupsJobs(CSchedulerContext *psc)
 	}
 	GPOS_ASSERT(NULL != prprel);
 	prprel->AddRef();
-
 	// schedule optimization job for current child group
 	COptimizationContext *pocChild = GPOS_NEW(psc->GetGlobalMemoryPool())
 		COptimizationContext(psc->GetGlobalMemoryPool(), pgroupChild,
 							 m_pexprhdlPlan->Prpp(m_ulChildIndex), prprel,
 							 stats_ctxt, psc->Peng()->UlCurrSearchStage());
-
 	if (pgroupChild == m_pgexpr->Pgroup() && pocChild->Matches(m_poc))
 	{
 		// this is to prevent deadlocks, child context cannot be the same as parent context

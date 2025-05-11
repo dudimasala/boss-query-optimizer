@@ -217,7 +217,6 @@ CEngine::AddEnforcers(
 {
 	GPOS_ASSERT(NULL != pdrgpexprEnforcers);
 	GPOS_ASSERT(NULL != pgexpr);
-
 	for (ULONG ul = 0; ul < pdrgpexprEnforcers->Size(); ul++)
 	{
 		// assemble an expression rooted by the enforcer operator
@@ -1131,7 +1130,6 @@ CEngine::OptimizeGroupExpression(CGroupExpression *pgexpr,
 										  true /*fPruned*/, costLowerBound);
 			continue;
 		}
-
 		if (FCheckReqdProps(exprhdl, poc->Prpp(), ul))
 		{
 			// load required properties on the handle
@@ -1140,7 +1138,6 @@ CEngine::OptimizeGroupExpression(CGroupExpression *pgexpr,
 			// optimize child groups
 			COptimizationContextArray *pdrgpoc =
 				PdrgpocOptimizeChildren(exprhdl, poc, ul);
-
 			if (NULL != pdrgpoc &&
 				FCheckEnfdProps(m_mp, pgexpr, poc, ul, pdrgpoc))
 			{
@@ -2047,6 +2044,7 @@ CEngine::FCheckEnfdProps(CMemoryPool *mp, CGroupExpression *pgexpr,
 						 COptimizationContext *poc, ULONG ulOptReq,
 						 COptimizationContextArray *pdrgpoc)
 {
+
 	GPOS_CHECK_ABORT;
 
 	if (GPOS_FTRACE(EopttracePrintMemoEnforcement))
@@ -2152,6 +2150,9 @@ CEngine::FCheckEnfdProps(CMemoryPool *mp, CGroupExpression *pgexpr,
 	GPOS_ASSERT(NULL != pexpr);
 	GPOS_ASSERT(pexpr->Pgexpr()->Pgroup() == pgexpr->Pgroup());
 
+	// COME BACK TO HERE LATER.
+	prpp->Pee()->AppendEnforcers(mp, prpp, pdrgpexprEnforcers, pexpr,
+								 epetEngine, exprhdl);
 	prpp->Peo()->AppendEnforcers(mp, prpp, pdrgpexprEnforcers, pexpr, epetOrder,
 								 exprhdl);
 	prpp->Ped()->AppendEnforcers(mp, prpp, pdrgpexprEnforcers, pexpr,
@@ -2160,10 +2161,6 @@ CEngine::FCheckEnfdProps(CMemoryPool *mp, CGroupExpression *pgexpr,
 								 epetRewindability, exprhdl);
 	prpp->Pepp()->AppendEnforcers(mp, prpp, pdrgpexprEnforcers, pexpr,
 								  epetPartitionPropagation, exprhdl);
-
-	// COME BACK TO HERE LATER.
-	prpp->Pee()->AppendEnforcers(mp, prpp, pdrgpexprEnforcers, pexpr,
-								 epetEngine, exprhdl);
 
 	if (0 < pdrgpexprEnforcers->Size())
 	{

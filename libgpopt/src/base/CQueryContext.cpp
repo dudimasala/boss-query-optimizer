@@ -16,7 +16,7 @@
 #include "gpopt/base/CColRefSetIter.h"
 #include "gpopt/base/CColumnFactory.h"
 #include "gpopt/base/CDistributionSpecAny.h"
-#include "gpoptextender/CEngineSpecAny.hpp"
+#include "gpoptextender/CEngineSpec.hpp"
 #include "gpopt/base/COptCtxt.h"
 #include "gpopt/operators/CLogicalLimit.h"
 
@@ -230,7 +230,7 @@ CQueryContext::PqcGenerate(CMemoryPool *mp, CExpression *pexpr,
 	CRewindabilitySpec *prs = GPOS_NEW(mp) CRewindabilitySpec(
 		CRewindabilitySpec::ErtNone, CRewindabilitySpec::EmhtNoMotion);
 	
-	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpecAny();
+	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpec();
 	// Ensure order, distribution and rewindability meet 'satisfy' matching at the top level
 	CEnfdOrder *peo = GPOS_NEW(mp) CEnfdOrder(pos, CEnfdOrder::EomSatisfy);
 	CEnfdDistribution *ped =
