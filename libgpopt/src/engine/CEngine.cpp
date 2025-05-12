@@ -2150,7 +2150,6 @@ CEngine::FCheckEnfdProps(CMemoryPool *mp, CGroupExpression *pgexpr,
 	GPOS_ASSERT(NULL != pexpr);
 	GPOS_ASSERT(pexpr->Pgexpr()->Pgroup() == pgexpr->Pgroup());
 
-	// COME BACK TO HERE LATER.
 	prpp->Pee()->AppendEnforcers(mp, prpp, pdrgpexprEnforcers, pexpr,
 								 epetEngine, exprhdl);
 	prpp->Peo()->AppendEnforcers(mp, prpp, pdrgpexprEnforcers, pexpr, epetOrder,

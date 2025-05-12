@@ -7,6 +7,7 @@
 #include "gpopt/cost/CCost.h"
 #include "gpopt/cost/ICostModel.h"
 #include "gpopt/cost/ICostModelParams.h"
+#include "gpoptextender/CEngineSpec.hpp"
 
 #include <unordered_map>
 #include <functional>
@@ -38,16 +39,32 @@ private:
 	ULONG m_num_of_segments;
 
 	// Maps engines to cost model params (so can change params at runtime).
-	std::unordered_map<std::string, ICostModelParams*> m_cost_model_params_map;
+	std::unordered_map<CEngineSpec::EEngineType, ICostModelParams*> m_cost_model_params_map;
 
 	// array of mappings
 	static std::unordered_map<COperator::EOperatorId, FnCost> m_cost_map;
 
+	// First, create a hash struct for the pair
+	struct EngineTransformPairHash {
+			std::size_t operator()(const std::pair<CEngineSpec::EEngineType, CEngineSpec::EEngineType>& p) const {
+					// Combine the hashes of both enum values
+					// This is a simple but effective way to hash a pair
+					std::size_t h1 = std::hash<int>{}(static_cast<int>(p.first));
+					std::size_t h2 = std::hash<int>{}(static_cast<int>(p.second));
+					
+					// Combine the hashes - a common technique is to shift one and XOR
+					return h1 ^ (h2 << 1);
+			}
+	};
+	
+	// array of engine transform mappings
+	static std::unordered_map<std::pair<CEngineSpec::EEngineType, CEngineSpec::EEngineType>, FnCost, EngineTransformPairHash> m_engine_transform_map;
+
 	// Helper methods for common engines (optional)
   static FnCost GetCostFuncForEngine(
     CCost (*base_func)(CMemoryPool*, CExpressionHandle&, 
-    const BOSSCostModel*, const SCostingInfo*, const std::string&),
-    const std::string& engine);
+    const BOSSCostModel*, const SCostingInfo*, CEngineSpec::EEngineType),
+    CEngineSpec::EEngineType engine);
 
 public:
 	// ctor
@@ -61,10 +78,10 @@ public:
   void RegisterCostFunctionForEngine(COperator::EOperatorId eopid, 
                                       CCost (*base_func)(CMemoryPool*, CExpressionHandle&, 
                                                        const BOSSCostModel*, const SCostingInfo*, 
-                                                       const std::string&),
-                                      const std::string& engine);
+                                                       CEngineSpec::EEngineType),
+                                      CEngineSpec::EEngineType engine);
 
-	void RegisterCostModelParams(const std::string& engine, ICostModelParams* pcp);
+	void RegisterCostModelParams(CEngineSpec::EEngineType engine, ICostModelParams* pcp);
 
 	// number of segments
 	ULONG
@@ -80,11 +97,11 @@ public:
 	virtual ICostModelParams *
 	GetCostModelParams() const
 	{
-		return m_cost_model_params_map.at("gpdb");
+		return m_cost_model_params_map.at(CEngineSpec::EEngineType::EetAny);
 	}
 
 	// in use - real implementation
-	ICostModelParams *GetCostModelParams(const std::string& engine) const
+	ICostModelParams *GetCostModelParams(const CEngineSpec::EEngineType& engine) const
 	{
 		return m_cost_model_params_map.at(engine);
 	}
@@ -113,7 +130,7 @@ public:
 	// helper function to return cost of a plan rooted by unary operator
 	static CCost CostUnary(CMemoryPool *mp, CExpressionHandle &exprhdl,
 						   const BOSSCostModel *pcmgpdb,
-						   const SCostingInfo *pci, const std::string& engine);
+						   const SCostingInfo *pci, CEngineSpec::EEngineType engine);
 
 	// cost of spooling
 	static CCost CostSpooling(CMemoryPool *mp, CExpressionHandle &exprhdl,
@@ -133,123 +150,125 @@ public:
 	// cost of scan
 	static CCost CostScan(CMemoryPool *mp, CExpressionHandle &exprhdl,
 						  const BOSSCostModel *pcmgpdb,
-						  const SCostingInfo *pci, const std::string& engine);
+						  const SCostingInfo *pci, CEngineSpec::EEngineType engine);
 
 	// cost of filter
 	static CCost CostFilter(CMemoryPool *mp, CExpressionHandle &exprhdl,
 							const BOSSCostModel *pcmgpdb,
-							const SCostingInfo *pci, const std::string& engine);
+							const SCostingInfo *pci, CEngineSpec::EEngineType engine);
 
 	// cost of index scan
 	static CCost CostIndexScan(CMemoryPool *mp, CExpressionHandle &exprhdl,
 							   const BOSSCostModel *pcmgpdb,
-							   const SCostingInfo *pci, const std::string& engine);
+							   const SCostingInfo *pci, CEngineSpec::EEngineType engine);
 
 	// cost of bitmap table scan
 	static CCost CostBitmapTableScan(CMemoryPool *mp,
 									 CExpressionHandle &exprhdl,
 									 const BOSSCostModel *pcmgpdb,
-									 const SCostingInfo *pci, const std::string& engine);
+									 const SCostingInfo *pci, CEngineSpec::EEngineType engine);
 
 	// cost of sequence project
 	static CCost CostSequenceProject(CMemoryPool *mp,
 									 CExpressionHandle &exprhdl,
 									 const BOSSCostModel *pcmgpdb,
-									 const SCostingInfo *pci, const std::string& engine);
+									 const SCostingInfo *pci, CEngineSpec::EEngineType engine);
 
 	// cost of CTE producer
 	static CCost CostCTEProducer(CMemoryPool *mp, CExpressionHandle &exprhdl,
 								 const BOSSCostModel *pcmgpdb,
-								 const SCostingInfo *pci, const std::string& engine);
+								 const SCostingInfo *pci, CEngineSpec::EEngineType engine);
 
 	// cost of CTE consumer
 	static CCost CostCTEConsumer(CMemoryPool *mp, CExpressionHandle &exprhdl,
 								 const BOSSCostModel *pcmgpdb,
-								 const SCostingInfo *pci, const std::string& engine);
+								 const SCostingInfo *pci, CEngineSpec::EEngineType engine);
 
 	// cost of const table get
 	static CCost CostConstTableGet(CMemoryPool *mp, CExpressionHandle &exprhdl,
 								   const BOSSCostModel *pcmgpdb,
-								   const SCostingInfo *pci, const std::string& engine);
+								   const SCostingInfo *pci, CEngineSpec::EEngineType engine);
 
 	// cost of DML
 	static CCost CostDML(CMemoryPool *mp, CExpressionHandle &exprhdl,
 						 const BOSSCostModel *pcmgpdb,
-						 const SCostingInfo *pci, const std::string& engine);
+						 const SCostingInfo *pci, CEngineSpec::EEngineType engine);
 
 	// cost of hash agg
 	static CCost CostHashAgg(CMemoryPool *mp, CExpressionHandle &exprhdl,
 							 const BOSSCostModel *pcmgpdb,
-							 const SCostingInfo *pci, const std::string& engine);
+							 const SCostingInfo *pci, CEngineSpec::EEngineType engine);
 
 
 	// cost of scalar agg
 	static CCost CostScalarAgg(CMemoryPool *mp, CExpressionHandle &exprhdl,
 							   const BOSSCostModel *pcmgpdb,
-							   const SCostingInfo *pci, const std::string& engine);
+							   const SCostingInfo *pci, CEngineSpec::EEngineType engine);
 
 	// cost of stream agg
 	static CCost CostStreamAgg(CMemoryPool *mp, CExpressionHandle &exprhdl,
 							   const BOSSCostModel *pcmgpdb,
-							   const SCostingInfo *pci, const std::string& engine);
+							   const SCostingInfo *pci, CEngineSpec::EEngineType engine);
 
 	// cost of sequence
 	static CCost CostSequence(CMemoryPool *mp, CExpressionHandle &exprhdl,
 							  const BOSSCostModel *pcmgpdb,
-							  const SCostingInfo *pci, const std::string& engine);
+							  const SCostingInfo *pci, CEngineSpec::EEngineType engine);
 
 	// cost of sort
 	static CCost CostSort(CMemoryPool *mp, CExpressionHandle &exprhdl,
 						  const BOSSCostModel *pcmgpdb,
-						  const SCostingInfo *pci, const std::string& engine);
+						  const SCostingInfo *pci, CEngineSpec::EEngineType engine);
 
 	// cost of TVF
 	static CCost CostTVF(CMemoryPool *mp, CExpressionHandle &exprhdl,
 						 const BOSSCostModel *pcmgpdb,
-						 const SCostingInfo *pci, const std::string& engine);
+						 const SCostingInfo *pci, CEngineSpec::EEngineType engine);
 
 	// cost of UnionAll
 	static CCost CostUnionAll(CMemoryPool *mp, CExpressionHandle &exprhdl,
 							  const BOSSCostModel *pcmgpdb,
-							  const SCostingInfo *pci, const std::string& engine);
+							  const SCostingInfo *pci, CEngineSpec::EEngineType engine);
 
 	// cost of hash join
 	static CCost CostHashJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 							  const BOSSCostModel *pcmgpdb,
-							  const SCostingInfo *pci, const std::string& engine);
+							  const SCostingInfo *pci, CEngineSpec::EEngineType engine);
 
 	// cost of merge join
 	static CCost CostMergeJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 							   const BOSSCostModel *pcmgpdb,
-							   const SCostingInfo *pci, const std::string& engine);
+							   const SCostingInfo *pci, CEngineSpec::EEngineType engine);
 
 	// cost of nljoin
 	static CCost CostNLJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 							const BOSSCostModel *pcmgpdb,
-							const SCostingInfo *pci, const std::string& engine);
+							const SCostingInfo *pci, CEngineSpec::EEngineType engine);
 
 	// cost of inner or outer index-nljoin
 	static CCost CostIndexNLJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 								 const BOSSCostModel *pcmgpdb,
-								 const SCostingInfo *pci, const std::string& engine);
+								 const SCostingInfo *pci, CEngineSpec::EEngineType engine);
 
 	// cost of motion
 	static CCost CostMotion(CMemoryPool *mp, CExpressionHandle &exprhdl,
 							const BOSSCostModel *pcmgpdb,
-							const SCostingInfo *pci, const std::string& engine);
+							const SCostingInfo *pci, CEngineSpec::EEngineType engine);
 
 	// cost of bitmap scan when the NDV is small
 	static CCost CostBitmapSmallNDV(const BOSSCostModel *pcmgpdb,
-									const SCostingInfo *pci, CDouble dNDV, const std::string& engine);
+									const SCostingInfo *pci, CDouble dNDV, CEngineSpec::EEngineType engine);
 
 	// cost of bitmap scan when the NDV is large
 	static CCost CostBitmapLargeNDV(const BOSSCostModel *pcmgpdb,
-									const SCostingInfo *pci, CDouble dNDV, const std::string& engine);
+									const SCostingInfo *pci, CDouble dNDV, CEngineSpec::EEngineType engine);
 
 	// cost of engine transform
 	static CCost CostEngineTransform(CMemoryPool *mp, CExpressionHandle &exprhdl,
 									 const BOSSCostModel *pcmgpdb,
-									 const SCostingInfo *pci, const std::string& engine);
+									 const SCostingInfo *pci);
+	
+	static CEngineSpec::EEngineType GetEngineType(CMemoryPool *mp,CExpressionHandle &exprhdl);
 
 
 };	// class BOSSCostModel
