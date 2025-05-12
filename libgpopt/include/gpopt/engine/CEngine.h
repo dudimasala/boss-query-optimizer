@@ -180,7 +180,8 @@ private:
 	static BOOL FProhibited(CEnfdProp::EPropEnforcingType epetOrder,
 							CEnfdProp::EPropEnforcingType epetDistribution,
 							CEnfdProp::EPropEnforcingType epetRewindability,
-							CEnfdProp::EPropEnforcingType epetPropagation);
+							CEnfdProp::EPropEnforcingType epetPropagation,
+							CEnfdProp::EPropEnforcingType epetEngine);
 
 	// check whether the given memo groups can be marked as duplicates. This is
 	// true only if they have the same logical properties
@@ -190,7 +191,8 @@ private:
 	static BOOL FOptimize(CEnfdProp::EPropEnforcingType epetOrder,
 						  CEnfdProp::EPropEnforcingType epetDistribution,
 						  CEnfdProp::EPropEnforcingType epetRewindability,
-						  CEnfdProp::EPropEnforcingType epetPropagation);
+						  CEnfdProp::EPropEnforcingType epetPropagation,
+						  CEnfdProp::EPropEnforcingType epetEngine);
 
 	// check if partition propagation resolver is passed an empty part
 	// propagation spec

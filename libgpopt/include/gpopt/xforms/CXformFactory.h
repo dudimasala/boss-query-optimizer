@@ -59,11 +59,10 @@ private:
 	// private copy ctor
 	CXformFactory(const CXformFactory &);
 
-	// actual adding of xform
-	void Add(CXform *pxform);
-
 
 public:
+	// actual adding of xform
+	void Add(CXform *pxform);
 	// dtor
 	~CXformFactory();
 

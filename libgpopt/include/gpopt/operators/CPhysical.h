@@ -20,14 +20,16 @@
 #include "gpopt/base/CEnfdOrder.h"
 #include "gpopt/base/CEnfdPartitionPropagation.h"
 #include "gpopt/base/CEnfdRewindability.h"
+#include "gpoptextender/CEnfdEngine.hpp"
+#include "gpoptextender/CEngineSpec.hpp"
 #include "gpopt/base/COrderSpec.h"
 #include "gpopt/base/CRewindabilitySpec.h"
 #include "gpopt/cost/CCost.h"
 #include "gpopt/operators/COperator.h"
 
 // number of plan properties requested during optimization, currently, there are 4 properties:
-// order, distribution, rewindability and partition propagation
-#define GPOPT_PLAN_PROPS 4
+// order, distribution, rewindability, partition propagation, and engine
+#define GPOPT_PLAN_PROPS 5
 
 namespace gpopt
 {
@@ -152,7 +154,7 @@ private:
 
 	// given an optimization context, the elements in this array represent is the
 	// number of requests that operator will create for its child,
-	// array entries correspond to order, distribution, rewindability and partition
+	// array entries correspond to order, distribution, rewindability,  and partition and engine
 	// propagation, respectively
 	ULONG m_rgulOptReqs[GPOPT_PLAN_PROPS];
 
@@ -200,6 +202,13 @@ protected:
 	SetPartPropagateRequests(ULONG ulPartPropagationReqs)
 	{
 		UpdateOptRequests(3 /*ulPropIndex*/, ulPartPropagationReqs);
+	}
+
+	// set number of engine requests that operator creates for its child
+	void
+	SetEngineRequests(ULONG ulEngineReqs)
+	{
+		UpdateOptRequests(4 /*ulPropIndex*/, ulEngineReqs);
 	}
 
 	// pass cte requirement to the n-th child
@@ -371,6 +380,14 @@ public:
 										   CDrvdPropArray *pdrgpdpCtxt,
 										   ULONG ulOptReq) const = 0;
 
+	// compute required engine of the n-th child
+	virtual CEngineSpec *PesRequired(CMemoryPool *mp,
+									  CExpressionHandle &exprhdl,
+									  CEngineSpec *pesRequired,
+									  ULONG child_index,
+									  CDrvdPropArray *pdrgpdpCtxt,
+									  ULONG ulOptReq) const;
+
 	// compute required rewindability of the n-th child
 	virtual CRewindabilitySpec *PrsRequired(CMemoryPool *mp,
 											CExpressionHandle &exprhdl,
@@ -410,6 +427,10 @@ public:
 	virtual CRewindabilitySpec *PrsDerive(CMemoryPool *mp,
 										  CExpressionHandle &exprhdl) const = 0;
 
+	// derived properties: derive engine
+	virtual CEngineSpec *PesDerive(CMemoryPool *mp,
+								   CExpressionHandle &exprhdl) const;
+
 	// derive partition index map
 	virtual CPartIndexMap *PpimDerive(CMemoryPool *mp,
 									  CExpressionHandle &exprhdl,
@@ -440,6 +461,10 @@ public:
 	virtual CEnfdProp::EPropEnforcingType EpetRewindability(
 		CExpressionHandle &exprhdl, const CEnfdRewindability *per) const = 0;
 
+	// return engine property enforcing type for this operator
+	virtual CEnfdProp::EPropEnforcingType EpetEngine(
+		CExpressionHandle &exprhdl, const CEnfdEngine *pee) const;
+
 	// return partition propagation property enforcing type for this operator
 	virtual CEnfdProp::EPropEnforcingType EpetPartitionPropagation(
 		CExpressionHandle &exprhdl,
@@ -458,6 +483,11 @@ public:
 
 	// rewindability matching type
 	virtual CEnfdRewindability::ERewindabilityMatching Erm(
+		CReqdPropPlan *prppInput, ULONG child_index,
+		CDrvdPropArray *pdrgpdpCtxt, ULONG ulOptReq);
+
+	// engine matching type
+	virtual CEnfdEngine::EEngineMatching Eem(
 		CReqdPropPlan *prppInput, ULONG child_index,
 		CDrvdPropArray *pdrgpdpCtxt, ULONG ulOptReq);
 
@@ -511,6 +541,13 @@ public:
 		return m_rgulOptReqs[3];
 	}
 
+	// number of engine requests that operator creates for its child
+	ULONG
+	UlEngineRequests() const
+	{
+		return m_rgulOptReqs[4];
+	}
+
 	// return total number of optimization requests
 	ULONG
 	UlOptRequests() const
@@ -524,8 +561,8 @@ public:
 		ULONG *pulOrderReq,	  // output: order request number
 		ULONG *pulDistrReq,	  // output: distribution request number
 		ULONG *pulRewindReq,  // output: rewindability request number
-		ULONG *
-			pulPartPropagateReq	 // output: partition propagation request number
+		ULONG *pulPartPropagateReq,	 // output: partition propagation request number
+		ULONG *pulEngineReq  // output: engine request number
 	);
 
 	// return true if operator passes through stats obtained from children,

@@ -3,6 +3,7 @@
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../libgpcost/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../libnaucrates/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../libgpoptextender/include)
 
 # Generate version-number header.
 configure_file(version.h.in
@@ -20,6 +21,7 @@ list(APPEND srcs ${hdrs})
 add_library(gpopt ${srcs})
 
 target_link_libraries(gpopt
+                      gpoptextender
                       gpdbcost
                       naucrates
                       ${CMAKE_THREAD_LIBS_INIT} ${CMAKE_DL_LIBS}

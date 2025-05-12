@@ -17,6 +17,9 @@
 #include "gpopt/xforms/CXformUtils.h"
 #include "naucrates/md/IMDAggregate.h"
 
+#include "gpoptextender/IDynamicOperatorRegistry.hpp"
+#include "gpoptextender/DynamicOperatorArgs.hpp"
+
 using namespace gpopt;
 
 
@@ -137,6 +140,37 @@ CXformGbAgg2HashAgg::Transform(CXformContext *pxfctxt, CXformResult *pxfres,
 
 	// add alternative to transformation result
 	pxfres->Add(pexprAlt);
+
+	orcaextender::IDynamicOperatorRegistry *registry = orcaextender::CreateDynamicOperatorRegistry();
+	orcaextender::DynamicOperatorArgs args;
+	args.set("mp", mp);
+	args.set("colref_array", colref_array);
+	args.set("pdrgpcrMinimal", popAgg->PdrgpcrMinimal());
+	COperator::EGbAggType egbaggtype = popAgg->Egbaggtype();
+	args.set("egbaggtype", &egbaggtype);
+	BOOL fGeneratesDuplicates = popAgg->FGeneratesDuplicates();
+	args.set("fGeneratesDuplicates", &fGeneratesDuplicates);
+	args.set("pdrgpcrArgDQA", pdrgpcrArgDQA);
+	BOOL fMultiStage = CXformUtils::FMultiStageAgg(pexpr);
+	args.set("fMultiStage", &fMultiStage);
+	BOOL isAggFromSplitDQA = CXformUtils::FAggGenBySplitDQAXform(pexpr);
+	args.set("isAggFromSplitDQA", &isAggFromSplitDQA);
+	CLogicalGbAgg::EAggStage aggStage = popAgg->AggStage();
+	args.set("aggStage", &aggStage);
+	BOOL should_enforce_distribution = !CXformUtils::FLocalAggCreatedByEagerAggXform(pexpr);
+	args.set("should_enforce_distribution", &should_enforce_distribution);
+
+	std::vector<COperator*> dynOperators = registry->GetOperators("CPhysicalHashAgg", &args);
+
+	for (size_t i = 0; i < dynOperators.size(); i++) {
+		CExpression *pexprAnotherAlt = GPOS_NEW(mp) CExpression(
+			mp,
+			dynOperators[i],
+			pexprRel, pexprScalar);
+
+		// add alternative to transformation result
+		pxfres->Add(pexprAnotherAlt);
+	}
 }
 
 //---------------------------------------------------------------------------

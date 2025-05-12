@@ -418,7 +418,6 @@ COptimizer::PexprOptimize(CMemoryPool *mp, CQueryContext *pqc,
 	CEngine eng(mp);
 	eng.Init(pqc, search_stage_array);
 	eng.Optimize();
-
 	GPOS_CHECK_ABORT;
 
 	CExpression *pexprPlan = eng.PexprExtractPlan();

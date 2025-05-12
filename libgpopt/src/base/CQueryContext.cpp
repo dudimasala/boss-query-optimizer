@@ -16,6 +16,7 @@
 #include "gpopt/base/CColRefSetIter.h"
 #include "gpopt/base/CColumnFactory.h"
 #include "gpopt/base/CDistributionSpecAny.h"
+#include "gpoptextender/CEngineSpec.hpp"
 #include "gpopt/base/COptCtxt.h"
 #include "gpopt/operators/CLogicalLimit.h"
 
@@ -228,13 +229,16 @@ CQueryContext::PqcGenerate(CMemoryPool *mp, CExpression *pexpr,
 	// By default, no rewindability requirement needs to be satisfied at the top level
 	CRewindabilitySpec *prs = GPOS_NEW(mp) CRewindabilitySpec(
 		CRewindabilitySpec::ErtNone, CRewindabilitySpec::EmhtNoMotion);
-
+	
+	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpec();
 	// Ensure order, distribution and rewindability meet 'satisfy' matching at the top level
 	CEnfdOrder *peo = GPOS_NEW(mp) CEnfdOrder(pos, CEnfdOrder::EomSatisfy);
 	CEnfdDistribution *ped =
 		GPOS_NEW(mp) CEnfdDistribution(pds, CEnfdDistribution::EdmSatisfy);
 	CEnfdRewindability *per =
 		GPOS_NEW(mp) CEnfdRewindability(prs, CEnfdRewindability::ErmSatisfy);
+
+	CEnfdEngine *pee = GPOS_NEW(mp) CEnfdEngine(pes, CEnfdEngine::EemSatisfy);
 
 	// Required CTEs are obtained from the CTEInfo global information in the optimizer context
 	CCTEReq *pcter = poptctxt->Pcteinfo()->PcterProducers(mp);
@@ -244,7 +248,7 @@ CQueryContext::PqcGenerate(CMemoryPool *mp, CExpression *pexpr,
 	// CReqdPropPlan::InitReqdPartitionPropagation().
 
 	CReqdPropPlan *prpp =
-		GPOS_NEW(mp) CReqdPropPlan(pcrs, peo, ped, per, pcter);
+		GPOS_NEW(mp) CReqdPropPlan(pcrs, peo, ped, per, pcter, pee);
 
 	// Finally, create the CQueryContext
 	pdrgpmdname->AddRef();

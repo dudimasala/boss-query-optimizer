@@ -150,6 +150,6 @@ add_subdirectory(libgpos)
 add_subdirectory(libnaucrates)
 add_subdirectory(libgpdbcost)
 add_subdirectory(libgpopt)
-
+add_subdirectory(libgpoptextender)
 # Tests.
 add_subdirectory(server)

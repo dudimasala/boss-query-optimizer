@@ -14,6 +14,7 @@
 #include "gpos/base.h"
 
 #include "gpopt/operators/CPhysical.h"
+#include "gpoptextender/CEngineSpec.hpp"
 
 namespace gpopt
 {
@@ -178,7 +179,6 @@ public:
 
 		return dynamic_cast<CPhysicalComputeScalar *>(pop);
 	}
-
 };	// class CPhysicalComputeScalar
 
 }  // namespace gpopt

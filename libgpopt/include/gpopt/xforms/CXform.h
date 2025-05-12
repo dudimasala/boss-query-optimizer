@@ -218,7 +218,10 @@ public:
 		ExfLeftOuterJoinWithInnerSelect2DynamicBitmapIndexGetApply,
 		ExfLeftOuterJoinWithInnerSelect2DynamicIndexGetApply,
 		ExfInvalid,
-		ExfSentinel = ExfInvalid
+		ExfSentinel = ExfInvalid,
+
+		ExfDynamicStart = 10000,
+		ExfDynamicEnd = gpos::ulong_max
 	};
 
 	// promise levels;

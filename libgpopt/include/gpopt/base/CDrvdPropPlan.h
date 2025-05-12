@@ -27,6 +27,7 @@ class CDistributionSpec;
 class CExpressionHandle;
 class COrderSpec;
 class CRewindabilitySpec;
+class CEngineSpec;
 class CReqdPropPlan;
 class CPartIndexMap;
 class CCTEMap;
@@ -63,6 +64,9 @@ private:
 
 	// derived cte map
 	CCTEMap *m_pcm;
+
+	// derived engine
+	CEngineSpec *m_pes;
 
 	// copy CTE producer plan properties from given context to current object
 	void CopyCTEProducerPlanProps(CMemoryPool *mp, CDrvdPropCtxt *pdpctxt,
@@ -111,6 +115,13 @@ public:
 	Prs() const
 	{
 		return m_prs;
+	}
+
+	// engine accessor
+	CEngineSpec *
+	Pes() const
+	{
+		return m_pes;
 	}
 
 	// partition index map

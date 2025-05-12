@@ -3,6 +3,8 @@
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../libgpopt/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../libgpdbcost/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../libgpoptextender/include)
+
 # for the generated config.h file.
 include_directories(${PROJECT_BINARY_DIR}/libgpos/include/)
 
@@ -15,6 +17,7 @@ list(APPEND srcs ${hdrs})
 add_library(naucrates ${srcs})
 
 target_link_libraries(naucrates
+                      gpoptextender
                       ${CMAKE_THREAD_LIBS_INIT} ${CMAKE_DL_LIBS}
                       gpos
                       ${XERCES_LIBRARIES}

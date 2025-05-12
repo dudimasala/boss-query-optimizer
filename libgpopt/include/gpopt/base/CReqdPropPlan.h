@@ -27,6 +27,7 @@ class CDrvdPropPlan;
 class CEnfdOrder;
 class CEnfdDistribution;
 class CEnfdRewindability;
+class CEnfdEngine;
 class CEnfdPartitionPropagation;
 class CExpressionHandle;
 class CCTEReq;
@@ -64,6 +65,9 @@ private:
 	// required ctes
 	CCTEReq *m_pcter;
 
+	// required engine
+	CEnfdEngine *m_pee;
+
 	// private copy ctor
 	CReqdPropPlan(const CReqdPropPlan &);
 
@@ -82,6 +86,7 @@ public:
 		  m_peo(NULL),
 		  m_ped(NULL),
 		  m_per(NULL),
+		  m_pee(NULL),
 		  m_pepp(NULL),
 		  m_pcter(NULL)
 	{
@@ -89,12 +94,12 @@ public:
 
 	// ctor
 	CReqdPropPlan(CColRefSet *pcrs, CEnfdOrder *peo, CEnfdDistribution *ped,
-				  CEnfdRewindability *per, CCTEReq *pcter);
+				  CEnfdRewindability *per, CCTEReq *pcter, CEnfdEngine *pee);
 
 	// ctor
 	CReqdPropPlan(CColRefSet *pcrs, CEnfdOrder *peo, CEnfdDistribution *ped,
 				  CEnfdRewindability *per, CEnfdPartitionPropagation *pepp,
-				  CCTEReq *pcter);
+				  CCTEReq *pcter, CEnfdEngine *pee);
 
 	// dtor
 	virtual ~CReqdPropPlan();
@@ -148,6 +153,13 @@ public:
 	Per() const
 	{
 		return m_per;
+	}
+
+	// required engine accessor
+	CEnfdEngine *
+	Pee() const
+	{
+		return m_pee;
 	}
 
 	// required partition propagation accessor

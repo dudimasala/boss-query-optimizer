@@ -28,6 +28,8 @@
 #include "gpopt/operators/CExpressionHandle.h"
 #include "gpopt/operators/CScalarIdent.h"
 
+#include "gpoptextender/CEngineSpec.hpp"
+
 using namespace gpopt;
 
 //---------------------------------------------------------------------------
@@ -90,6 +92,7 @@ CPhysical::UpdateOptRequests(ULONG ulPropIndex, ULONG ulRequests)
 	const ULONG ulOrderRequests = UlOrderRequests();
 	const ULONG ulDistrRequests = UlDistrRequests();
 	const ULONG ulRewindRequests = UlRewindRequests();
+	const ULONG ulEngineRequests = UlEngineRequests();
 	const ULONG ulPartPropagateRequests = UlPartPropagateRequests();
 
 	CRefCount::SafeRelease(m_pdrgpulpOptReqsExpanded);
@@ -105,15 +108,19 @@ CPhysical::UpdateOptRequests(ULONG ulPropIndex, ULONG ulRequests)
 					 ulPartPropagate < ulPartPropagateRequests;
 					 ulPartPropagate++)
 				{
-					ULONG_PTR *pulpRequest =
-						GPOS_NEW_ARRAY(m_mp, ULONG_PTR, GPOPT_PLAN_PROPS);
+					for (ULONG ulEngine = 0; ulEngine < ulEngineRequests; ulEngine++)
+					{
+						ULONG_PTR *pulpRequest =
+							GPOS_NEW_ARRAY(m_mp, ULONG_PTR, GPOPT_PLAN_PROPS);
 
-					pulpRequest[0] = ulOrder;
-					pulpRequest[1] = ulDistr;
-					pulpRequest[2] = ulRewind;
-					pulpRequest[3] = ulPartPropagate;
+						pulpRequest[0] = ulOrder;
+						pulpRequest[1] = ulDistr;
+						pulpRequest[2] = ulRewind;
+						pulpRequest[3] = ulPartPropagate;
+						pulpRequest[4] = ulEngine;
 
-					m_pdrgpulpOptReqsExpanded->Append(pulpRequest);
+						m_pdrgpulpOptReqsExpanded->Append(pulpRequest);
+					}
 				}
 			}
 		}
@@ -136,7 +143,8 @@ CPhysical::LookupRequest(
 	ULONG *pulOrderReq,			// output: order request number
 	ULONG *pulDistrReq,			// output: distribution request number
 	ULONG *pulRewindReq,		// output: rewindability request number
-	ULONG *pulPartPropagateReq	// output: partition propagation request number
+	ULONG *pulPartPropagateReq,	// output: partition propagation request number
+	ULONG *pulEngineReq
 )
 {
 	GPOS_ASSERT(NULL != m_pdrgpulpOptReqsExpanded);
@@ -145,12 +153,13 @@ CPhysical::LookupRequest(
 	GPOS_ASSERT(NULL != pulDistrReq);
 	GPOS_ASSERT(NULL != pulRewindReq);
 	GPOS_ASSERT(NULL != pulPartPropagateReq);
-
+	GPOS_ASSERT(NULL != pulEngineReq);
 	ULONG_PTR *pulpRequest = (*m_pdrgpulpOptReqsExpanded)[ulReqNo];
 	*pulOrderReq = (ULONG) pulpRequest[0];
 	*pulDistrReq = (ULONG) pulpRequest[1];
 	*pulRewindReq = (ULONG) pulpRequest[2];
 	*pulPartPropagateReq = (ULONG) pulpRequest[3];
+	*pulEngineReq = (ULONG) pulpRequest[4];
 }
 
 
@@ -1065,6 +1074,38 @@ CPhysical::EpetDistribution(CExpressionHandle &exprhdl,
 }
 
 
+CEnfdProp::EPropEnforcingType
+CPhysical::EpetEngine(CExpressionHandle &exprhdl,
+					 const CEnfdEngine *pee) const
+{
+	GPOS_ASSERT(NULL != pee);
+
+	CEngineSpec *pes = CDrvdPropPlan::Pdpplan(exprhdl.Pdp())->Pes();
+	if (pee->FCompatible(pes))
+	{
+		return CEnfdProp::EpetUnnecessary;
+	}
+	return CEnfdProp::EpetRequired;
+}
+
+CEngineSpec *
+CPhysical::PesDerive(CMemoryPool *mp, CExpressionHandle &exprhdl) const
+{
+	return GPOS_NEW(mp) CEngineSpec();
+}
+
+CEngineSpec *
+CPhysical::PesRequired(CMemoryPool *mp,
+					   CExpressionHandle &exprhdl,
+					   CEngineSpec *pesRequired,
+					   ULONG child_index,
+					   CDrvdPropArray *pdrgpdpCtxt,
+					   ULONG ulOptReq) const
+{
+	return GPOS_NEW(mp) CEngineSpec();
+}
+
+
 //---------------------------------------------------------------------------
 //	@function:
 //		CPhysical::EpetPartitionPropagation
@@ -1255,6 +1296,15 @@ CPhysical::Erm(CReqdPropPlan *, ULONG, CDrvdPropArray *, ULONG)
 	// request satisfaction by default
 	return CEnfdRewindability::ErmSatisfy;
 }
+
+CEnfdEngine::EEngineMatching
+CPhysical::Eem(CReqdPropPlan *, ULONG, CDrvdPropArray *, ULONG)
+{
+	// request satisfaction by default
+	return CEnfdEngine::EemSatisfy;
+}
+
+
 
 
 // EOF
