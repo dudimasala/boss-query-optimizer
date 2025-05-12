@@ -93,19 +93,6 @@ public:
 	virtual CEnfdProp::EPropEnforcingType EpetOrder(
 		CExpressionHandle &exprhdl, const CEnfdOrder *peo) const;
 	
-	virtual CEngineSpec *PesRequired(CMemoryPool *mp,
-									  CExpressionHandle &exprhdl,
-									  CEngineSpec *pesRequired,
-									  ULONG child_index,
-									  CDrvdPropArray *pdrgpdpCtxt,
-									  ULONG ulOptReq) const {
-		return GPOS_NEW(mp) CEngineSpec(CEngineSpec::EetCPU);
-	}
-
-	virtual CEngineSpec *PesDerive(CMemoryPool *mp,
-								   CExpressionHandle &exprhdl) const {
-		return GPOS_NEW(mp) CEngineSpec();
-	}
 
 	//-------------------------------------------------------------------------------------
 	//-------------------------------------------------------------------------------------

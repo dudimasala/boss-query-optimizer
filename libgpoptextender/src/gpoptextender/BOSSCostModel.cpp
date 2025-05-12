@@ -28,84 +28,80 @@ using namespace orcaextender;
 
 // initialization of cost functions
 std::unordered_map<COperator::EOperatorId, BOSSCostModel::FnCost> BOSSCostModel::m_cost_map = {
-	{COperator::EopPhysicalTableScan, GetCostFuncForEngine(CostScan, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalDynamicTableScan, GetCostFuncForEngine(CostScan, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalExternalScan, GetCostFuncForEngine(CostScan, CEngineSpec::EEngineType::EetAny)},
+	{COperator::EopPhysicalTableScan, CostScan},
+	{COperator::EopPhysicalDynamicTableScan, CostScan},
+	{COperator::EopPhysicalExternalScan, CostScan},
 
-	{COperator::EopPhysicalFilter, GetCostFuncForEngine(CostFilter, CEngineSpec::EEngineType::EetAny)},
+	{COperator::EopPhysicalFilter, CostFilter},
 
-	{COperator::EopPhysicalIndexScan, GetCostFuncForEngine(CostIndexScan, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalDynamicIndexScan, GetCostFuncForEngine(CostIndexScan, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalBitmapTableScan, GetCostFuncForEngine(CostBitmapTableScan, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalDynamicBitmapTableScan, GetCostFuncForEngine(CostBitmapTableScan, CEngineSpec::EEngineType::EetAny)},
+	{COperator::EopPhysicalIndexScan, CostIndexScan},
+	{COperator::EopPhysicalDynamicIndexScan, CostIndexScan},
+	{COperator::EopPhysicalBitmapTableScan, CostBitmapTableScan},
+	{COperator::EopPhysicalDynamicBitmapTableScan, CostBitmapTableScan},
 
-	{COperator::EopPhysicalSequenceProject, GetCostFuncForEngine(CostSequenceProject, CEngineSpec::EEngineType::EetAny)},
+	{COperator::EopPhysicalSequenceProject, CostSequenceProject},
 
-	{COperator::EopPhysicalCTEProducer, GetCostFuncForEngine(CostCTEProducer, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalCTEConsumer, GetCostFuncForEngine(CostCTEConsumer, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalConstTableGet, GetCostFuncForEngine(CostConstTableGet, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalDML, GetCostFuncForEngine(CostDML, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalHashAgg, GetCostFuncForEngine(CostHashAgg, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalHashAggDeduplicate, GetCostFuncForEngine(CostHashAgg, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalScalarAgg, GetCostFuncForEngine(CostScalarAgg, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalStreamAgg, GetCostFuncForEngine(CostStreamAgg, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalStreamAggDeduplicate, GetCostFuncForEngine(CostStreamAgg, CEngineSpec::EEngineType::EetAny)},
+	{COperator::EopPhysicalCTEProducer, CostCTEProducer},
+	{COperator::EopPhysicalCTEConsumer, CostCTEConsumer},
+	{COperator::EopPhysicalConstTableGet, CostConstTableGet},
+	{COperator::EopPhysicalDML, CostDML},
+	{COperator::EopPhysicalHashAgg, CostHashAgg},
+	{COperator::EopPhysicalHashAggDeduplicate, CostHashAgg},
+	{COperator::EopPhysicalScalarAgg, CostScalarAgg},
+	{COperator::EopPhysicalStreamAgg, CostStreamAgg},
+	{COperator::EopPhysicalStreamAggDeduplicate, CostStreamAgg},
 
-	{COperator::EopPhysicalSequence, GetCostFuncForEngine(CostSequence, CEngineSpec::EEngineType::EetAny)},
+	{COperator::EopPhysicalSequence, CostSequence},
 
-	{COperator::EopPhysicalSort, GetCostFuncForEngine(CostSort, CEngineSpec::EEngineType::EetAny)},
+	{COperator::EopPhysicalSort, CostSort},
 
-	{COperator::EopPhysicalTVF, GetCostFuncForEngine(CostTVF, CEngineSpec::EEngineType::EetAny)},
+	{COperator::EopPhysicalTVF, CostTVF},
 
-	{COperator::EopPhysicalSerialUnionAll, GetCostFuncForEngine(CostUnionAll, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalParallelUnionAll, GetCostFuncForEngine(CostUnionAll, CEngineSpec::EEngineType::EetAny)},
+	{COperator::EopPhysicalSerialUnionAll, CostUnionAll},
+	{COperator::EopPhysicalParallelUnionAll, CostUnionAll},
 
-	{COperator::EopPhysicalInnerHashJoin, GetCostFuncForEngine(CostHashJoin, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalLeftSemiHashJoin, GetCostFuncForEngine(CostHashJoin, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalLeftAntiSemiHashJoin, GetCostFuncForEngine(CostHashJoin, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalLeftAntiSemiHashJoinNotIn, GetCostFuncForEngine(CostHashJoin, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalLeftOuterHashJoin, GetCostFuncForEngine(CostHashJoin, CEngineSpec::EEngineType::EetAny)},
+	{COperator::EopPhysicalInnerHashJoin, CostHashJoin},
+	{COperator::EopPhysicalLeftSemiHashJoin, CostHashJoin},
+	{COperator::EopPhysicalLeftAntiSemiHashJoin, CostHashJoin},
+	{COperator::EopPhysicalLeftAntiSemiHashJoinNotIn, CostHashJoin},
+	{COperator::EopPhysicalLeftOuterHashJoin, CostHashJoin},
 
-	{COperator::EopPhysicalInnerIndexNLJoin, GetCostFuncForEngine(CostIndexNLJoin, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalLeftOuterIndexNLJoin, GetCostFuncForEngine(CostIndexNLJoin, CEngineSpec::EEngineType::EetAny)},
+	{COperator::EopPhysicalInnerIndexNLJoin, CostIndexNLJoin},
+	{COperator::EopPhysicalLeftOuterIndexNLJoin, CostIndexNLJoin},
 
-	{COperator::EopPhysicalMotionGather, GetCostFuncForEngine(CostMotion, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalMotionBroadcast, GetCostFuncForEngine(CostMotion, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalMotionHashDistribute, GetCostFuncForEngine(CostMotion, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalMotionRandom, GetCostFuncForEngine(CostMotion, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalMotionRoutedDistribute, GetCostFuncForEngine(CostMotion, CEngineSpec::EEngineType::EetAny)},
+	{COperator::EopPhysicalMotionGather, CostMotion},
+	{COperator::EopPhysicalMotionBroadcast, CostMotion},
+	{COperator::EopPhysicalMotionHashDistribute, CostMotion},
+	{COperator::EopPhysicalMotionRandom, CostMotion},
+	{COperator::EopPhysicalMotionRoutedDistribute, CostMotion},
 
-	{COperator::EopPhysicalInnerNLJoin, GetCostFuncForEngine(CostNLJoin, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalLeftSemiNLJoin, GetCostFuncForEngine(CostNLJoin, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalLeftAntiSemiNLJoin, GetCostFuncForEngine(CostNLJoin, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalLeftAntiSemiNLJoinNotIn, GetCostFuncForEngine(CostNLJoin, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalLeftOuterNLJoin, GetCostFuncForEngine(CostNLJoin, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalCorrelatedInnerNLJoin, GetCostFuncForEngine(CostNLJoin, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalCorrelatedLeftOuterNLJoin, GetCostFuncForEngine(CostNLJoin, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalCorrelatedLeftSemiNLJoin, GetCostFuncForEngine(CostNLJoin, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalCorrelatedInLeftSemiNLJoin, GetCostFuncForEngine(CostNLJoin, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalCorrelatedLeftAntiSemiNLJoin, GetCostFuncForEngine(CostNLJoin, CEngineSpec::EEngineType::EetAny)},
-	{COperator::EopPhysicalCorrelatedNotInLeftAntiSemiNLJoin, GetCostFuncForEngine(CostNLJoin, CEngineSpec::EEngineType::EetAny)},
+	{COperator::EopPhysicalInnerNLJoin, CostNLJoin},
+	{COperator::EopPhysicalLeftSemiNLJoin, CostNLJoin},
+	{COperator::EopPhysicalLeftAntiSemiNLJoin, CostNLJoin},
+	{COperator::EopPhysicalLeftAntiSemiNLJoinNotIn, CostNLJoin},
+	{COperator::EopPhysicalLeftOuterNLJoin, CostNLJoin},
+	{COperator::EopPhysicalCorrelatedInnerNLJoin, CostNLJoin},
+	{COperator::EopPhysicalCorrelatedLeftOuterNLJoin, CostNLJoin},
+	{COperator::EopPhysicalCorrelatedLeftSemiNLJoin, CostNLJoin},
+	{COperator::EopPhysicalCorrelatedInLeftSemiNLJoin, CostNLJoin},
+	{COperator::EopPhysicalCorrelatedLeftAntiSemiNLJoin, CostNLJoin},
+	{COperator::EopPhysicalCorrelatedNotInLeftAntiSemiNLJoin, CostNLJoin},
 
-	{COperator::EopPhysicalFullMergeJoin, GetCostFuncForEngine(CostMergeJoin, CEngineSpec::EEngineType::EetAny)},
+	{COperator::EopPhysicalFullMergeJoin, CostMergeJoin},
 
-  {COperator::EopPhysicalAssert, GetCostFuncForEngine(CostUnary, CEngineSpec::EEngineType::EetAny)},
-  {COperator::EopPhysicalComputeScalar, GetCostFuncForEngine(CostUnary, CEngineSpec::EEngineType::EetAny)},
-  {COperator::EopPhysicalLimit, GetCostFuncForEngine(CostUnary, CEngineSpec::EEngineType::EetAny)},
-  {COperator::EopPhysicalPartitionSelector, GetCostFuncForEngine(CostUnary, CEngineSpec::EEngineType::EetAny)},
-  {COperator::EopPhysicalPartitionSelectorDML, GetCostFuncForEngine(CostUnary, CEngineSpec::EEngineType::EetAny)},
-  {COperator::EopPhysicalRowTrigger, GetCostFuncForEngine(CostUnary, CEngineSpec::EEngineType::EetAny)},
-  {COperator::EopPhysicalSplit, GetCostFuncForEngine(CostUnary, CEngineSpec::EEngineType::EetAny)},
-  {COperator::EopPhysicalSpool, GetCostFuncForEngine(CostUnary, CEngineSpec::EEngineType::EetAny)},
+  {COperator::EopPhysicalAssert, CostUnary},
+  {COperator::EopPhysicalComputeScalar, CostUnary},
+  {COperator::EopPhysicalLimit, CostUnary},
+  {COperator::EopPhysicalPartitionSelector, CostUnary},
+  {COperator::EopPhysicalPartitionSelectorDML, CostUnary},
+  {COperator::EopPhysicalRowTrigger, CostUnary},
+  {COperator::EopPhysicalSplit, CostUnary},
+  {COperator::EopPhysicalSpool, CostUnary},
 
 	{COperator::EopPhysicalEngineTransform, CostEngineTransform}
 };
 
-std::unordered_map<std::pair<CEngineSpec::EEngineType, CEngineSpec::EEngineType>, BOSSCostModel::FnCost, BOSSCostModel::EngineTransformPairHash> BOSSCostModel::m_engine_transform_map = {
-	{std::make_pair(CEngineSpec::EEngineType::EetAny, CEngineSpec::EEngineType::EetAny), [](CMemoryPool*, CExpressionHandle&, const BOSSCostModel*, const SCostingInfo*) {
-		return CCost(0);
-	}}
-};
+std::unordered_map<std::pair<CEngineSpec::EEngineType, CEngineSpec::EEngineType>, BOSSCostModel::FnCost, BOSSCostModel::EngineTransformPairHash> BOSSCostModel::m_engine_transform_map = {};
 
 //---------------------------------------------------------------------------
 //	@function:
@@ -123,13 +119,13 @@ BOSSCostModel::BOSSCostModel(CMemoryPool *mp, ULONG ulSegments,
 
 	if (NULL == pcp)
 	{
-		m_cost_model_params_map[CEngineSpec::EEngineType::EetAny] = GPOS_NEW(mp) CCostModelParamsGPDB(mp);
+		m_cost_model_params_map[CEngineSpec::EEngineType::EetGP] = GPOS_NEW(mp) CCostModelParamsGPDB(mp);
 	}
 	else
 	{
 		GPOS_ASSERT(NULL != pcp);
 
-		m_cost_model_params_map[CEngineSpec::EEngineType::EetAny] = pcp;
+		m_cost_model_params_map[CEngineSpec::EEngineType::EetGP] = pcp;
 	}
 }
 
@@ -223,9 +219,11 @@ BOSSCostModel::CostScanOutput(CMemoryPool *,  // mp
 
 CCost
 BOSSCostModel::CostUnary(CMemoryPool *mp, CExpressionHandle &exprhdl, const BOSSCostModel *pcmgpdb,
-						  const SCostingInfo *pci, CEngineSpec::EEngineType engine)
+						  const SCostingInfo *pci)
 {
 	GPOS_ASSERT(NULL != pci);
+
+	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
 
 	DOUBLE rows = pci->Rows();
 	DOUBLE width = pci->Width();
@@ -419,13 +417,15 @@ BOSSCostModel::CostMaxChild(CMemoryPool *, CExpressionHandle &,
 CCost
 BOSSCostModel::CostCTEProducer(CMemoryPool *mp, CExpressionHandle &exprhdl,
 								const BOSSCostModel *pcmgpdb,
-								const SCostingInfo *pci, CEngineSpec::EEngineType engine)
+								const SCostingInfo *pci)
 {
 	GPOS_ASSERT(NULL != pcmgpdb);
 	GPOS_ASSERT(NULL != pci);
 	GPOS_ASSERT(COperator::EopPhysicalCTEProducer == exprhdl.Pop()->Eopid());
 
-  CCost cost = CostUnary(mp, exprhdl, pcmgpdb, pci, engine);
+	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
+
+  CCost cost = CostUnary(mp, exprhdl, pcmgpdb, pci);
 
 	// In GPDB, the child of a ShareInputScan representing the producer can
 	// only be a materialize or sort. Here, we check if a materialize node
@@ -470,18 +470,20 @@ BOSSCostModel::CostCTEProducer(CMemoryPool *mp, CExpressionHandle &exprhdl,
 //
 //---------------------------------------------------------------------------
 CCost
-BOSSCostModel::CostCTEConsumer(CMemoryPool *,	// mp
+BOSSCostModel::CostCTEConsumer(CMemoryPool *mp,	// mp
 								CExpressionHandle &
 #ifdef GPOS_DEBUG
 									exprhdl
 #endif	// GPOS_DEBUG
 								,
 								const BOSSCostModel *pcmgpdb,
-								const SCostingInfo *pci, CEngineSpec::EEngineType engine)
+								const SCostingInfo *pci)
 {
 	GPOS_ASSERT(NULL != pcmgpdb);
 	GPOS_ASSERT(NULL != pci);
 	GPOS_ASSERT(COperator::EopPhysicalCTEConsumer == exprhdl.Pop()->Eopid());
+
+	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
 
 	const CDouble dInitScan =
 		pcmgpdb->GetCostModelParams(engine)
@@ -513,18 +515,20 @@ BOSSCostModel::CostCTEConsumer(CMemoryPool *,	// mp
 //
 //---------------------------------------------------------------------------
 CCost
-BOSSCostModel::CostConstTableGet(CMemoryPool *,  // mp
+BOSSCostModel::CostConstTableGet(CMemoryPool *mp,  // mp
 								  CExpressionHandle &
 #ifdef GPOS_DEBUG
 									  exprhdl
 #endif	// GPOS_DEBUG
 								  ,
 								  const BOSSCostModel *pcmgpdb,
-								  const SCostingInfo *pci, CEngineSpec::EEngineType engine)
+								  const SCostingInfo *pci)
 {
 	GPOS_ASSERT(NULL != pcmgpdb);
 	GPOS_ASSERT(NULL != pci);
 	GPOS_ASSERT(COperator::EopPhysicalConstTableGet == exprhdl.Pop()->Eopid());
+
+	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
 
 	return CCost(pci->NumRebinds() *
 				 CostTupleProcessing(pci->Rows(), pci->Width(),
@@ -543,11 +547,13 @@ BOSSCostModel::CostConstTableGet(CMemoryPool *,  // mp
 //---------------------------------------------------------------------------
 CCost
 BOSSCostModel::CostDML(CMemoryPool *mp, CExpressionHandle &exprhdl,
-						const BOSSCostModel *pcmgpdb, const SCostingInfo *pci, CEngineSpec::EEngineType engine)
+						const BOSSCostModel *pcmgpdb, const SCostingInfo *pci)
 {
 	GPOS_ASSERT(NULL != pcmgpdb);
 	GPOS_ASSERT(NULL != pci);
 	GPOS_ASSERT(COperator::EopPhysicalDML == exprhdl.Pop()->Eopid());
+
+	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
 
 	const CDouble dTupUpdateBandwidth =
 		pcmgpdb->GetCostModelParams(engine)
@@ -578,11 +584,13 @@ BOSSCostModel::CostDML(CMemoryPool *mp, CExpressionHandle &exprhdl,
 CCost
 BOSSCostModel::CostScalarAgg(CMemoryPool *mp, CExpressionHandle &exprhdl,
 							  const BOSSCostModel *pcmgpdb,
-							  const SCostingInfo *pci, CEngineSpec::EEngineType engine)
+							  const SCostingInfo *pci)
 {
 	GPOS_ASSERT(NULL != pcmgpdb);
 	GPOS_ASSERT(NULL != pci);
 	GPOS_ASSERT(COperator::EopPhysicalScalarAgg == exprhdl.Pop()->Eopid());
+
+	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
 
 	const DOUBLE num_rows_outer = pci->PdRows()[0];
 	const DOUBLE dWidthOuter = pci->GetWidth()[0];
@@ -622,7 +630,7 @@ BOSSCostModel::CostScalarAgg(CMemoryPool *mp, CExpressionHandle &exprhdl,
 CCost
 BOSSCostModel::CostStreamAgg(CMemoryPool *mp, CExpressionHandle &exprhdl,
 							  const BOSSCostModel *pcmgpdb,
-							  const SCostingInfo *pci, CEngineSpec::EEngineType engine)
+							  const SCostingInfo *pci)
 {
 	GPOS_ASSERT(NULL != pcmgpdb);
 	GPOS_ASSERT(NULL != pci);
@@ -633,6 +641,7 @@ BOSSCostModel::CostStreamAgg(CMemoryPool *mp, CExpressionHandle &exprhdl,
 				COperator::EopPhysicalStreamAggDeduplicate == op_id);
 #endif	// GPOS_DEBUG
 
+	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
 	const CDouble dHashAggOutputTupWidthCostUnit =
 		pcmgpdb->GetCostModelParams(engine)
 			->PcpLookup(CCostModelParamsGPDB::EcpHashAggOutputTupWidthCostUnit)
@@ -669,11 +678,13 @@ BOSSCostModel::CostStreamAgg(CMemoryPool *mp, CExpressionHandle &exprhdl,
 CCost
 BOSSCostModel::CostSequence(CMemoryPool *mp, CExpressionHandle &exprhdl,
 							 const BOSSCostModel *pcmgpdb,
-							 const SCostingInfo *pci, CEngineSpec::EEngineType engine)
+							 const SCostingInfo *pci)
 {
 	GPOS_ASSERT(NULL != pcmgpdb);
 	GPOS_ASSERT(NULL != pci);
 	GPOS_ASSERT(COperator::EopPhysicalSequence == exprhdl.Pop()->Eopid());
+
+	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
 
 	CCost costLocal = CCost(pci->NumRebinds() *
 							CostTupleProcessing(pci->Rows(), pci->Width(),
@@ -696,11 +707,13 @@ BOSSCostModel::CostSequence(CMemoryPool *mp, CExpressionHandle &exprhdl,
 //---------------------------------------------------------------------------
 CCost
 BOSSCostModel::CostSort(CMemoryPool *mp, CExpressionHandle &exprhdl,
-						 const BOSSCostModel *pcmgpdb, const SCostingInfo *pci, CEngineSpec::EEngineType engine)
+						 const BOSSCostModel *pcmgpdb, const SCostingInfo *pci)
 {
 	GPOS_ASSERT(NULL != pcmgpdb);
 	GPOS_ASSERT(NULL != pci);
 	GPOS_ASSERT(COperator::EopPhysicalSort == exprhdl.Pop()->Eopid());
+
+	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
 
 	// log operation below
 	const CDouble rows = CDouble(std::max(1.0, pci->Rows()));
@@ -732,17 +745,19 @@ BOSSCostModel::CostSort(CMemoryPool *mp, CExpressionHandle &exprhdl,
 //
 //---------------------------------------------------------------------------
 CCost
-BOSSCostModel::CostTVF(CMemoryPool *,	// mp
+BOSSCostModel::CostTVF(CMemoryPool *mp,	// mp
 						CExpressionHandle &
 #ifdef GPOS_DEBUG
 							exprhdl
 #endif	// GPOS_DEBUG
 						,
-						const BOSSCostModel *pcmgpdb, const SCostingInfo *pci, CEngineSpec::EEngineType engine)
+						const BOSSCostModel *pcmgpdb, const SCostingInfo *pci)
 {
 	GPOS_ASSERT(NULL != pcmgpdb);
 	GPOS_ASSERT(NULL != pci);
 	GPOS_ASSERT(COperator::EopPhysicalTVF == exprhdl.Pop()->Eopid());
+
+	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
 
 	return CCost(pci->NumRebinds() *
 				 CostTupleProcessing(pci->Rows(), pci->Width(),
@@ -762,11 +777,13 @@ BOSSCostModel::CostTVF(CMemoryPool *,	// mp
 CCost
 BOSSCostModel::CostUnionAll(CMemoryPool *mp, CExpressionHandle &exprhdl,
 							const BOSSCostModel *pcmgpdb,
-							const SCostingInfo *pci, CEngineSpec::EEngineType engine)
+							const SCostingInfo *pci)
 {
 	GPOS_ASSERT(NULL != pcmgpdb);
 	GPOS_ASSERT(NULL != pci);
 	GPOS_ASSERT(NULL != CPhysicalUnionAll::PopConvert(exprhdl.Pop()));
+
+	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
 
 	if (COperator::EopPhysicalParallelUnionAll == exprhdl.Pop()->Eopid())
 	{
@@ -795,10 +812,12 @@ BOSSCostModel::CostUnionAll(CMemoryPool *mp, CExpressionHandle &exprhdl,
 CCost
 BOSSCostModel::CostHashAgg(CMemoryPool *mp, CExpressionHandle &exprhdl,
 							const BOSSCostModel *pcmgpdb,
-							const SCostingInfo *pci, CEngineSpec::EEngineType engine)
+							const SCostingInfo *pci)
 {
 	GPOS_ASSERT(NULL != pcmgpdb);
 	GPOS_ASSERT(NULL != pci);
+
+	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
 
 #ifdef GPOS_DEBUG
 	COperator::EOperatorId op_id = exprhdl.Pop()->Eopid();
@@ -875,7 +894,7 @@ BOSSCostModel::CostHashAgg(CMemoryPool *mp, CExpressionHandle &exprhdl,
 CCost
 BOSSCostModel::CostHashJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 							 const BOSSCostModel *pcmgpdb,
-							 const SCostingInfo *pci, CEngineSpec::EEngineType engine)
+							 const SCostingInfo *pci)
 {
 	GPOS_ASSERT(NULL != pcmgpdb);
 	GPOS_ASSERT(NULL != pci);
@@ -887,6 +906,8 @@ BOSSCostModel::CostHashJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 				COperator::EopPhysicalLeftAntiSemiHashJoinNotIn == op_id ||
 				COperator::EopPhysicalLeftOuterHashJoin == op_id);
 #endif	// GPOS_DEBUG
+
+	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
 
 	const DOUBLE num_rows_outer = pci->PdRows()[0];
 	const DOUBLE dWidthOuter = pci->GetWidth()[0];
@@ -1071,7 +1092,7 @@ BOSSCostModel::CostHashJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 CCost
 BOSSCostModel::CostMergeJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 							  const BOSSCostModel *pcmgpdb,
-							  const SCostingInfo *pci, CEngineSpec::EEngineType engine)
+							  const SCostingInfo *pci)
 {
 	GPOS_ASSERT(NULL != pcmgpdb);
 	GPOS_ASSERT(NULL != pci);
@@ -1079,6 +1100,8 @@ BOSSCostModel::CostMergeJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 	COperator::EOperatorId op_id = exprhdl.Pop()->Eopid();
 	GPOS_ASSERT(COperator::EopPhysicalFullMergeJoin == op_id);
 #endif	// GPOS_DEBUG
+
+	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
 
 	const DOUBLE num_rows_outer = pci->PdRows()[0];
 	const DOUBLE dWidthOuter = pci->GetWidth()[0];
@@ -1149,13 +1172,15 @@ BOSSCostModel::CostMergeJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 CCost
 BOSSCostModel::CostIndexNLJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 								const BOSSCostModel *pcmgpdb,
-								const SCostingInfo *pci, CEngineSpec::EEngineType engine)
+								const SCostingInfo *pci)
 {
 	GPOS_ASSERT(NULL != pcmgpdb);
 	GPOS_ASSERT(NULL != pci);
 	GPOS_ASSERT(
 		COperator::EopPhysicalInnerIndexNLJoin == exprhdl.Pop()->Eopid() ||
 		COperator::EopPhysicalLeftOuterIndexNLJoin == exprhdl.Pop()->Eopid());
+
+	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
 
 	const DOUBLE num_rows_outer = pci->PdRows()[0];
 	const DOUBLE dWidthOuter = pci->GetWidth()[0];
@@ -1231,11 +1256,13 @@ BOSSCostModel::CostIndexNLJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 CCost
 BOSSCostModel::CostNLJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 						   const BOSSCostModel *pcmgpdb,
-						   const SCostingInfo *pci, CEngineSpec::EEngineType engine)
+						   const SCostingInfo *pci)
 {
 	GPOS_ASSERT(NULL != pcmgpdb);
 	GPOS_ASSERT(NULL != pci);
 	GPOS_ASSERT(CUtils::FNLJoin(exprhdl.Pop()));
+
+	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
 
 	const DOUBLE num_rows_outer = pci->PdRows()[0];
 	const DOUBLE dWidthOuter = pci->GetWidth()[0];
@@ -1355,10 +1382,12 @@ BOSSCostModel::CostNLJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 CCost
 BOSSCostModel::CostMotion(CMemoryPool *mp, CExpressionHandle &exprhdl,
 						   const BOSSCostModel *pcmgpdb,
-						   const SCostingInfo *pci, CEngineSpec::EEngineType engine)
+						   const SCostingInfo *pci)
 {
 	GPOS_ASSERT(NULL != pcmgpdb);
 	GPOS_ASSERT(NULL != pci);
+
+	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
 
 	COperator::EOperatorId op_id = exprhdl.Pop()->Eopid();
 	GPOS_ASSERT(COperator::EopPhysicalMotionGather == op_id ||
@@ -1484,12 +1513,14 @@ BOSSCostModel::CostMotion(CMemoryPool *mp, CExpressionHandle &exprhdl,
 CCost
 BOSSCostModel::CostSequenceProject(CMemoryPool *mp, CExpressionHandle &exprhdl,
 									const BOSSCostModel *pcmgpdb,
-									const SCostingInfo *pci, CEngineSpec::EEngineType engine)
+									const SCostingInfo *pci)
 {
 	GPOS_ASSERT(NULL != pcmgpdb);
 	GPOS_ASSERT(NULL != pci);
 	GPOS_ASSERT(COperator::EopPhysicalSequenceProject ==
 				exprhdl.Pop()->Eopid());
+
+	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
 
 	const DOUBLE num_rows_outer = pci->PdRows()[0];
 	const DOUBLE dWidthOuter = pci->GetWidth()[0];
@@ -1530,13 +1561,15 @@ BOSSCostModel::CostSequenceProject(CMemoryPool *mp, CExpressionHandle &exprhdl,
 //
 //---------------------------------------------------------------------------
 CCost
-BOSSCostModel::CostIndexScan(CMemoryPool *,  // mp
+BOSSCostModel::CostIndexScan(CMemoryPool *mp,  // mp
 							  CExpressionHandle &exprhdl,
 							  const BOSSCostModel *pcmgpdb,
-							  const SCostingInfo *pci, CEngineSpec::EEngineType engine)
+							  const SCostingInfo *pci)
 {
 	GPOS_ASSERT(NULL != pcmgpdb);
 	GPOS_ASSERT(NULL != pci);
+
+	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
 
 	COperator *pop = exprhdl.Pop();
 	COperator::EOperatorId op_id = pop->Eopid();
@@ -1595,13 +1628,15 @@ BOSSCostModel::CostIndexScan(CMemoryPool *,  // mp
 CCost
 BOSSCostModel::CostBitmapTableScan(CMemoryPool *mp, CExpressionHandle &exprhdl,
 									const BOSSCostModel *pcmgpdb,
-									const SCostingInfo *pci, CEngineSpec::EEngineType engine)
+									const SCostingInfo *pci)
 {
 	GPOS_ASSERT(NULL != pcmgpdb);
 	GPOS_ASSERT(NULL != pci);
 	GPOS_ASSERT(
 		COperator::EopPhysicalBitmapTableScan == exprhdl.Pop()->Eopid() ||
 		COperator::EopPhysicalDynamicBitmapTableScan == exprhdl.Pop()->Eopid());
+
+	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
 
 	CCost result(0.0);
 	CExpression *pexprIndexCond =
@@ -1855,12 +1890,14 @@ BOSSCostModel::CostBitmapLargeNDV(const BOSSCostModel *pcmgpdb,
 //
 //---------------------------------------------------------------------------
 CCost
-BOSSCostModel::CostScan(CMemoryPool *,	 // mp
+BOSSCostModel::CostScan(CMemoryPool *mp,	 // mp
 						 CExpressionHandle &exprhdl,
-						 const BOSSCostModel *pcmgpdb, const SCostingInfo *pci, CEngineSpec::EEngineType engine)
+						 const BOSSCostModel *pcmgpdb, const SCostingInfo *pci)
 {
 	GPOS_ASSERT(NULL != pcmgpdb);
 	GPOS_ASSERT(NULL != pci);
+
+	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
 
 	COperator *pop = exprhdl.Pop();
 	COperator::EOperatorId op_id = pop->Eopid();
@@ -1912,11 +1949,13 @@ BOSSCostModel::CostScan(CMemoryPool *,	 // mp
 CCost
 BOSSCostModel::CostFilter(CMemoryPool *mp, CExpressionHandle &exprhdl,
 						   const BOSSCostModel *pcmgpdb,
-						   const SCostingInfo *pci, CEngineSpec::EEngineType engine)
+						   const SCostingInfo *pci)
 {
 	GPOS_ASSERT(NULL != pcmgpdb);
 	GPOS_ASSERT(NULL != pci);
 	GPOS_ASSERT(COperator::EopPhysicalFilter == exprhdl.Pop()->Eopid());
+
+	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
 
 	const DOUBLE dInput = pci->PdRows()[0];
 	const ULONG ulFilterCols = exprhdl.DeriveUsedColumns(1)->Size();
@@ -1969,27 +2008,6 @@ BOSSCostModel::Cost(
 void BOSSCostModel::RegisterCostFunction(COperator::EOperatorId op_id, FnCost fn_cost)
 {
 	m_cost_map[op_id] = fn_cost;
-}
-
-void 
-BOSSCostModel::RegisterCostFunctionForEngine(
-    COperator::EOperatorId eopid,
-    CCost (*base_func)(CMemoryPool*, CExpressionHandle&, const BOSSCostModel*, const SCostingInfo*, CEngineSpec::EEngineType),
-    CEngineSpec::EEngineType engine) 
-{
-    m_cost_map[eopid] = GetCostFuncForEngine(base_func, engine);
-}
-
-BOSSCostModel::FnCost 
-BOSSCostModel::GetCostFuncForEngine(
-    CCost (*base_func)(CMemoryPool*, CExpressionHandle&, const BOSSCostModel*, const SCostingInfo*, CEngineSpec::EEngineType),
-    CEngineSpec::EEngineType engine)
-{
-
-  return [base_func, engine](CMemoryPool* mp, CExpressionHandle& exprhdl, 
-                            const BOSSCostModel* pcmgpdb, const SCostingInfo* pci) -> CCost {
-    return base_func(mp, exprhdl, pcmgpdb, pci, engine);
-  };  
 }
 
 void BOSSCostModel::RegisterCostModelParams(CEngineSpec::EEngineType engine, ICostModelParams* pcp)

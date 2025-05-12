@@ -14,7 +14,7 @@ public:
     // Engine types
     enum EEngineType
     {
-        EetCPU,
+        EetGP,
         EetAny,   // Can be executed on any engine
         EetSentinel
     };
@@ -26,7 +26,7 @@ private:
 
 public:
     // Ctor
-    CEngineSpec() : m_eet(EetAny)
+    CEngineSpec() : m_eet(EetGP)
     {
     }
 
