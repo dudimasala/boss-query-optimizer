@@ -37,16 +37,16 @@ class DynamicOperatorRegistry {
 	};
 
 
-    std::unordered_map<std::pair<CEngineSpec::EEngineType, std::string>, COperator::EOperatorId, EngineStringPairHash> opEngineAndNameToOperatorId;
-    std::unordered_map<std::string, CXform::EXformId> transformNameToTransformId;
-    std::unordered_map<std::string, CEngineSpec::EEngineType> engineNameToEngineType;
+    std::unordered_map<std::pair<CEngineSpec::EEngineType, std::string>, COperator::EOperatorId, EngineStringPairHash> opEngineAndNameToOperatorId = {};
+    std::unordered_map<std::string, CXform::EXformId> transformNameToTransformId = {};
+    std::unordered_map<std::string, CEngineSpec::EEngineType> engineNameToEngineType = {};
 
-    std::unordered_map<COperator::EOperatorId, std::vector<CXform::EXformId>> relevantTransforms;
-    std::unordered_map<CXform::EXformId, std::vector<FnOperatorFactory>> opFactories;
-    std::unordered_map<CEngineSpec::EEngineType, std::vector<std::string>> engineToOperatorNames; // for querying.
+    std::unordered_map<COperator::EOperatorId, std::vector<CXform::EXformId>> relevantTransforms = {};
+    std::unordered_map<CXform::EXformId, std::vector<FnOperatorFactory>> opFactories = {};
+    std::unordered_map<std::string, std::vector<std::string>> engineToOperatorNames = {}; // for querying.
   public:
     static DynamicOperatorRegistry* GetInstance();
-    static DynamicOperatorRegistry* Init(CMemoryPool* mp, BOSSCostModel* costModel);
+    static void Init(CMemoryPool* mp, BOSSCostModel* costModel);
 
     ~DynamicOperatorRegistry();
 
@@ -64,6 +64,7 @@ class DynamicOperatorRegistry {
     std::vector<CXform::EXformId> GetRelevantTransformsForOperator(COperator::EOperatorId opId);
     CXform::EXformId GetTransformId(const std::string& transformName);
     CEngineSpec::EEngineType GetEngineType(const std::string& engineName);
+    std::unordered_map<std::string, std::vector<std::string>>& GetAllOperators() { return engineToOperatorNames; };
 
 };
 }  // namespace orcaextender

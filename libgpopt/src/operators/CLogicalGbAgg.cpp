@@ -608,8 +608,6 @@ CLogicalGbAgg::PxfsCandidates(CMemoryPool *mp) const
   }
 
 	delete registry;
-
-	// for (CXform::EXformId xformId : orcaextender::DynamicOperatorRegistry::GetInstance()->GetRelevantTransforms("CLogicalGbAgg")) {
 	return xform_set;
 }
 

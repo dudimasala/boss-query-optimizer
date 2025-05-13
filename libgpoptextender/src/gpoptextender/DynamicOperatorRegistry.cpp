@@ -7,6 +7,7 @@ DynamicOperatorRegistry::DynamicOperatorRegistry(BOSSCostModel* costModel) : cos
   currentOperatorId = COperator::EopDynamicStart;
   currentTransformId = CXform::ExfDynamicStart;
   currentEngineType = CEngineSpec::EetDynamicStart;
+  // TODO: populate with default (orca) operators and transforms.
 }
 
 DynamicOperatorRegistry::~DynamicOperatorRegistry() {
@@ -17,11 +18,8 @@ DynamicOperatorRegistry* DynamicOperatorRegistry::GetInstance() {
   return s_pInstance;
 }
 
-DynamicOperatorRegistry* DynamicOperatorRegistry::Init(CMemoryPool* mp, BOSSCostModel* costModel) {
-  if (s_pInstance == nullptr) {
-    s_pInstance = GPOS_NEW(mp) DynamicOperatorRegistry(costModel);
-  }
-  return s_pInstance;
+void DynamicOperatorRegistry::Init(CMemoryPool* mp, BOSSCostModel* costModel) {
+  s_pInstance = GPOS_NEW(mp) DynamicOperatorRegistry(costModel);
 }
 
 
@@ -71,7 +69,7 @@ std::vector<CXform::EXformId> DynamicOperatorRegistry::GetRelevantTransformsForO
 
 void DynamicOperatorRegistry::RegisterEngine(const std::string& engineName) {
   currentEngineType = (CEngineSpec::EEngineType) (currentEngineType + 1);
-  engineToOperatorNames[currentEngineType] = std::vector<std::string>();
+  engineToOperatorNames[engineName] = std::vector<std::string>();
   engineNameToEngineType[engineName] = currentEngineType;
 }
 

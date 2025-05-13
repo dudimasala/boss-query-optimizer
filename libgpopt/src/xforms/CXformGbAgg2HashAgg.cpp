@@ -160,7 +160,7 @@ CXformGbAgg2HashAgg::Transform(CXformContext *pxfctxt, CXformResult *pxfres,
 	BOOL should_enforce_distribution = !CXformUtils::FLocalAggCreatedByEagerAggXform(pexpr);
 	args.set("should_enforce_distribution", &should_enforce_distribution);
 
-	std::vector<COperator*> dynOperators = registry->GetRelevantOperatorsForTransform(CXform::ExfGbAgg2HashAgg, &args);
+	std::vector<COperator*> dynOperators = registry->GetRelevantOperatorsForTransform(Exfid(), &args);
 
 	for (size_t i = 0; i < dynOperators.size(); i++) {
 		CExpression *pexprAnotherAlt = GPOS_NEW(mp) CExpression(
