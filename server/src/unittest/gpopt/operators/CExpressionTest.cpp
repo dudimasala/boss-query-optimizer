@@ -25,8 +25,8 @@
 #include "naucrates/md/CMDIdGPDB.h"
 #include "naucrates/md/IMDScalarOp.h"
 
-#include "gpoptextender/CEnfdEngine.hpp"
-#include "gpoptextender/CEngineSpec.hpp"
+#include "gpoptextender/EngineProperty/CEnfdEngine.hpp"
+#include "gpoptextender/EngineProperty/CEngineSpec.hpp"
 
 #include "unittest/base.h"
 #include "unittest/gpopt/CTestUtils.h"

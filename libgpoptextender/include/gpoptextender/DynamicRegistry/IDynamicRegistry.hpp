@@ -10,14 +10,14 @@ using namespace gpopt;
 using namespace gpmd;
 
 // Only exposes the one method you need, in C++98-compatible form:
-struct IDynamicOperatorRegistry {
-    virtual ~IDynamicOperatorRegistry() {}
+struct IDynamicRegistry {
+    virtual ~IDynamicRegistry() {}
     virtual std::vector<CXform::EXformId>
         GetRelevantTransformsForOperator(COperator::EOperatorId opId) = 0;
     virtual std::vector<gpopt::COperator*> GetRelevantOperatorsForTransform(CXform::EXformId transformId, void* opaqueArgs) = 0;
 };
 
 // Factory function – C linkage keeps name-mangling simple.
-extern "C" IDynamicOperatorRegistry *CreateDynamicOperatorRegistry();
+extern "C" IDynamicRegistry *CreateDynamicRegistry();
 
 } // namespace orcaextender

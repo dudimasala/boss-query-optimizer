@@ -1,14 +1,14 @@
-#include "gpoptextender/IDynamicOperatorRegistry.hpp"
-#include "gpoptextender/DynamicOperatorRegistry.hpp"  // your full C++17 class
+#include "gpoptextender/DynamicRegistry/IDynamicRegistry.hpp"
+#include "gpoptextender/DynamicRegistry/DynamicRegistry.hpp"  // your full C++17 class
 
 using namespace orcaextender;
 
-class RegistryAdapter : public IDynamicOperatorRegistry {
-    DynamicOperatorRegistry *impl;
+class RegistryAdapter : public IDynamicRegistry {
+    DynamicRegistry *impl;
 public:
     RegistryAdapter() {
         // however you normally set it up; e.g. single-instance
-        impl = DynamicOperatorRegistry::GetInstance();
+        impl = DynamicRegistry::GetInstance();
     }
     std::vector<CXform::EXformId>
     GetRelevantTransformsForOperator(COperator::EOperatorId opId) override {
@@ -20,7 +20,7 @@ public:
 };
 
 // Export the C-linkage factory.
-extern "C" IDynamicOperatorRegistry *CreateDynamicOperatorRegistry() {
+extern "C" IDynamicRegistry *CreateDynamicRegistry() {
     return new RegistryAdapter();
 }
 

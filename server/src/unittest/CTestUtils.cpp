@@ -66,8 +66,8 @@
 #include "naucrates/md/IMDTypeInt8.h"
 #include "naucrates/statistics/CStatsPredUtils.h"
 
-#include "gpoptextender/CEngineSpec.hpp"
-#include "gpoptextender/CEnfdEngine.hpp"
+#include "gpoptextender/EngineProperty/CEngineSpec.hpp"
+#include "gpoptextender/EngineProperty/CEnfdEngine.hpp"
 
 
 #include "unittest/base.h"

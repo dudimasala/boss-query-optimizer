@@ -1,4 +1,4 @@
-#include "gpoptextender/DynamicOperatorRegistry.hpp"
+#include "gpoptextender/DynamicRegistry/DynamicRegistry.hpp"
 
 namespace orcaextender {
 class Engine {
@@ -12,8 +12,8 @@ class Engine {
     virtual ~Engine() {}
     
     virtual void UpdateEngineType() { 
-      if (DynamicOperatorRegistry::GetInstance()->GetEngineType(m_engineName) == CEngineSpec::EEngineType::EetSentinel) {
-        DynamicOperatorRegistry::GetInstance()->RegisterEngine(m_engineName); 
+      if (DynamicRegistry::GetInstance()->GetEngineType(m_engineName) == CEngineSpec::EEngineType::EetSentinel) {
+        DynamicRegistry::GetInstance()->RegisterEngine(m_engineName); 
       }
     }
 

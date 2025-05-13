@@ -28,7 +28,7 @@
 #include "gpopt/operators/CExpressionHandle.h"
 #include "gpopt/operators/CScalarIdent.h"
 
-#include "gpoptextender/CEngineSpec.hpp"
+#include "gpoptextender/EngineProperty/CEngineSpec.hpp"
 
 using namespace gpopt;
 

@@ -17,8 +17,8 @@
 #include "gpopt/xforms/CXformUtils.h"
 #include "naucrates/md/IMDAggregate.h"
 
-#include "gpoptextender/IDynamicOperatorRegistry.hpp"
-#include "gpoptextender/DynamicOperatorArgs.hpp"
+#include "gpoptextender/DynamicRegistry/IDynamicRegistry.hpp"
+#include "gpoptextender/DynamicRegistry/DynamicOperatorArgs.hpp"
 
 using namespace gpopt;
 
@@ -141,7 +141,7 @@ CXformGbAgg2HashAgg::Transform(CXformContext *pxfctxt, CXformResult *pxfres,
 	// add alternative to transformation result
 	pxfres->Add(pexprAlt);
 
-	orcaextender::IDynamicOperatorRegistry *registry = orcaextender::CreateDynamicOperatorRegistry();
+	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
 	orcaextender::DynamicOperatorArgs args;
 	args.set("mp", mp);
 	args.set("colref_array", colref_array);

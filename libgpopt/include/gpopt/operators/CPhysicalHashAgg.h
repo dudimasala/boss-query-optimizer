@@ -14,7 +14,7 @@
 #include "gpos/base.h"
 
 #include "gpopt/operators/CPhysicalAgg.h"
-#include "gpoptextender/CEngineSpec.hpp"
+#include "gpoptextender/EngineProperty/CEngineSpec.hpp"
 namespace gpopt
 {
 // fwd declaration

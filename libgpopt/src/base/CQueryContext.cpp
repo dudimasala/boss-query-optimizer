@@ -16,7 +16,7 @@
 #include "gpopt/base/CColRefSetIter.h"
 #include "gpopt/base/CColumnFactory.h"
 #include "gpopt/base/CDistributionSpecAny.h"
-#include "gpoptextender/CEngineSpec.hpp"
+#include "gpoptextender/EngineProperty/CEngineSpec.hpp"
 #include "gpopt/base/COptCtxt.h"
 #include "gpopt/operators/CLogicalLimit.h"
 

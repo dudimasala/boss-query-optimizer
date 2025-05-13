@@ -7,7 +7,7 @@
 #include "gpopt/cost/CCost.h"
 #include "gpopt/cost/ICostModel.h"
 #include "gpopt/cost/ICostModelParams.h"
-#include "gpoptextender/CEngineSpec.hpp"
+#include "gpoptextender/EngineProperty/CEngineSpec.hpp"
 
 #include <unordered_map>
 #include <functional>

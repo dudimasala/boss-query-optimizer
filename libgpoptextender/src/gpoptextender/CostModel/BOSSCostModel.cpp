@@ -1,4 +1,4 @@
-#include "gpoptextender/BOSSCostModel.hpp"
+#include "gpoptextender/CostModel/BOSSCostModel.hpp"
 
 #include "gpopt/base/CColRefSetIter.h"
 #include "gpopt/base/COrderSpec.h"
@@ -20,7 +20,7 @@
 #include "gpopt/optimizer/COptimizerConfig.h"
 #include "naucrates/statistics/CStatisticsUtils.h"
 
-#include "gpoptextender/CPhysicalEngineTransition.hpp"
+#include "gpoptextender/EngineProperty/CPhysicalEngineTransition.hpp"
 
 using namespace gpos;
 using namespace orcaextender;
@@ -471,11 +471,7 @@ BOSSCostModel::CostCTEProducer(CMemoryPool *mp, CExpressionHandle &exprhdl,
 //---------------------------------------------------------------------------
 CCost
 BOSSCostModel::CostCTEConsumer(CMemoryPool *mp,	// mp
-								CExpressionHandle &
-#ifdef GPOS_DEBUG
-									exprhdl
-#endif	// GPOS_DEBUG
-								,
+								CExpressionHandle &exprhdl,
 								const BOSSCostModel *pcmgpdb,
 								const SCostingInfo *pci)
 {
@@ -516,11 +512,7 @@ BOSSCostModel::CostCTEConsumer(CMemoryPool *mp,	// mp
 //---------------------------------------------------------------------------
 CCost
 BOSSCostModel::CostConstTableGet(CMemoryPool *mp,  // mp
-								  CExpressionHandle &
-#ifdef GPOS_DEBUG
-									  exprhdl
-#endif	// GPOS_DEBUG
-								  ,
+								  CExpressionHandle &exprhdl,
 								  const BOSSCostModel *pcmgpdb,
 								  const SCostingInfo *pci)
 {
@@ -746,11 +738,7 @@ BOSSCostModel::CostSort(CMemoryPool *mp, CExpressionHandle &exprhdl,
 //---------------------------------------------------------------------------
 CCost
 BOSSCostModel::CostTVF(CMemoryPool *mp,	// mp
-						CExpressionHandle &
-#ifdef GPOS_DEBUG
-							exprhdl
-#endif	// GPOS_DEBUG
-						,
+						CExpressionHandle &exprhdl,
 						const BOSSCostModel *pcmgpdb, const SCostingInfo *pci)
 {
 	GPOS_ASSERT(NULL != pcmgpdb);

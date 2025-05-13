@@ -3,8 +3,8 @@
 #include "gpos/base.h"
 
 #include "gpopt/operators/CPhysical.h"
-#include "gpoptextender/CEngineSpec.hpp"
-#include "gpoptextender/CEnfdEngine.hpp"
+#include "gpoptextender/EngineProperty/CEngineSpec.hpp"
+#include "gpoptextender/EngineProperty/CEnfdEngine.hpp"
 
 namespace gpopt {
 using namespace gpos;

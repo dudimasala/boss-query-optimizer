@@ -1,4 +1,4 @@
-#include "gpoptextender/CPhysicalEngineTransition.hpp"
+#include "gpoptextender/EngineProperty/CPhysicalEngineTransition.hpp"
 #include "gpopt/base/CDistributionSpecAny.h"
 #include "gpopt/operators/CExpressionHandle.h"
 using namespace gpopt;
@@ -51,11 +51,7 @@ CDistributionSpec *CPhysicalEngineTransition::PdsRequired(CMemoryPool *mp,
 CRewindabilitySpec *
 CPhysicalEngineTransition::PrsRequired(CMemoryPool *mp, CExpressionHandle &exprhdl,
 						   CRewindabilitySpec *prsRequired,  //prsRequired,
-						   ULONG
-#ifdef GPOS_DEBUG
-							   child_index
-#endif	// GPOPS_DEBUG
-						   ,
+						   ULONG child_index,
 						   CDrvdPropArray *,  // pdrgpdpCtxt
 						   ULONG			  // ulOptReq
 ) const

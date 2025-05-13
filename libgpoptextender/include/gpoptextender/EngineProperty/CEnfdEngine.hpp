@@ -3,7 +3,7 @@
 #include "gpos/base.h"
 
 #include "gpopt/base/CEnfdProp.h"
-#include "gpoptextender/CEngineSpec.hpp"
+#include "gpoptextender/EngineProperty/CEngineSpec.hpp"
 #include "gpopt/base/CDrvdPropPlan.h"
 
 namespace gpopt {

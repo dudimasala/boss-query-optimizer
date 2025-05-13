@@ -1,6 +1,6 @@
 #pragma once
 
-#include "gpoptextender/BOSSCostModel.hpp"
+#include "gpoptextender/CostModel/BOSSCostModel.hpp"
 #include "gpopt/xforms/CXform.h"
 #include "gpopt/xforms/CXformFactory.h"
 
@@ -10,13 +10,13 @@ using namespace gpos;
 using namespace gpopt;
 using namespace gpmd;
 
-class DynamicOperatorRegistry {   
+class DynamicRegistry {   
   private:
     typedef std::function<CCost(CMemoryPool*, CExpressionHandle&, const BOSSCostModel*, const ICostModel::SCostingInfo*)> FnCost;
     typedef std::function<COperator*(void*)> FnOperatorFactory;
 
-    DynamicOperatorRegistry(BOSSCostModel* costModel);
-    static DynamicOperatorRegistry* s_pInstance;
+    DynamicRegistry(BOSSCostModel* costModel);
+    static DynamicRegistry* s_pInstance;
 
     COperator::EOperatorId currentOperatorId;
     CXform::EXformId currentTransformId;
@@ -45,10 +45,10 @@ class DynamicOperatorRegistry {
     std::unordered_map<CXform::EXformId, std::vector<FnOperatorFactory>> opFactories = {};
     std::unordered_map<std::string, std::vector<std::string>> engineToOperatorNames = {}; // for querying.
   public:
-    static DynamicOperatorRegistry* GetInstance();
+    static DynamicRegistry* GetInstance();
     static void Init(CMemoryPool* mp, BOSSCostModel* costModel);
 
-    ~DynamicOperatorRegistry();
+    ~DynamicRegistry();
 
     void RegisterOperator(const std::string& opName, CEngineSpec::EEngineType engine, FnCost costFunc, std::vector<CXform::EXformId>& relevantTransforms, FnOperatorFactory opFactory);
     void RegisterTransform(const std::string& transformName, std::vector<COperator::EOperatorId>& relevantOperators, CXform* transform);
