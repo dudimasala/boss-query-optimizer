@@ -602,7 +602,7 @@ CLogicalGbAgg::PxfsCandidates(CMemoryPool *mp) const
 	(void) xform_set->ExchangeSet(CXform::ExfEagerAgg);
 
   orcaextender::IDynamicOperatorRegistry *registry = orcaextender::CreateDynamicOperatorRegistry();
-	std::vector<CXform::EXformId> xformIds = registry->GetRelevantTransforms("CLogicalGbAgg");
+	std::vector<CXform::EXformId> xformIds = registry->GetRelevantTransformsForOperator(Eopid());
   for (size_t i = 0; i < xformIds.size(); i++) {
     (void) xform_set->ExchangeSet(xformIds[i]);
   }

@@ -85,7 +85,7 @@ public:
 	virtual ICostModelParams *
 	GetCostModelParams() const
 	{
-		return m_cost_model_params_map.at(CEngineSpec::EEngineType::EetAny);
+		return m_cost_model_params_map.at(CEngineSpec::EEngineType::EetGP);
 	}
 
 	// in use - real implementation

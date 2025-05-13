@@ -16,7 +16,10 @@ public:
     {
         EetGP,
         EetAny,   // Can be executed on any engine
-        EetSentinel
+        EetSentinel,
+
+        EetDynamicStart = 10000,
+        EetDynamicEnd = gpos::ulong_max
     };
 
 private:

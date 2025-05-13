@@ -11,11 +11,11 @@ public:
         impl = DynamicOperatorRegistry::GetInstance();
     }
     std::vector<CXform::EXformId>
-    GetRelevantTransforms(const std::string &from) override {
-        return impl->GetRelevantTransforms(from);
+    GetRelevantTransformsForOperator(COperator::EOperatorId opId) override {
+        return impl->GetRelevantTransformsForOperator(opId);
     }
-    std::vector<gpopt::COperator*> GetOperators(const std::string& opName, void* opaqueArgs) override {
-        return impl->GetOperators(opName, opaqueArgs);
+    std::vector<gpopt::COperator*> GetRelevantOperatorsForTransform(CXform::EXformId transformId, void* opaqueArgs) override {
+        return impl->GetRelevantOperatorsForTransform(transformId, opaqueArgs);
     }
 };
 

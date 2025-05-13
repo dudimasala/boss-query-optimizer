@@ -21,23 +21,49 @@ class DynamicOperatorRegistry {
     COperator::EOperatorId currentOperatorId;
     CXform::EXformId currentTransformId;
     BOSSCostModel* costModel;
+    CEngineSpec::EEngineType currentEngineType;
 
-    std::unordered_map<std::string, COperator::EOperatorId> opNameToOperatorId;
+	// First, create a hash struct for the pair
+	struct EngineStringPairHash {
+			std::size_t operator()(const std::pair<CEngineSpec::EEngineType, std::string>& p) const {
+					// Combine the hashes of both enum values
+					// This is a simple but effective way to hash a pair
+					std::size_t h1 = std::hash<int>{}(static_cast<int>(p.first));
+					std::size_t h2 = std::hash<std::string>{}(p.second);
+					
+					// Combine the hashes - a common technique is to shift one and XOR
+					return h1 ^ (h2 << 1);
+			}
+	};
+
+
+    std::unordered_map<std::pair<CEngineSpec::EEngineType, std::string>, COperator::EOperatorId, EngineStringPairHash> opEngineAndNameToOperatorId;
     std::unordered_map<std::string, CXform::EXformId> transformNameToTransformId;
-    std::unordered_map<std::string, std::vector<CXform::EXformId>> relevantTransforms;
-    std::unordered_map<std::string, std::vector<FnOperatorFactory>> opFactories;
+    std::unordered_map<std::string, CEngineSpec::EEngineType> engineNameToEngineType;
+
+    std::unordered_map<COperator::EOperatorId, std::vector<CXform::EXformId>> relevantTransforms;
+    std::unordered_map<CXform::EXformId, std::vector<FnOperatorFactory>> opFactories;
+    std::unordered_map<CEngineSpec::EEngineType, std::vector<std::string>> engineToOperatorNames; // for querying.
   public:
     static DynamicOperatorRegistry* GetInstance();
     static DynamicOperatorRegistry* Init(CMemoryPool* mp, BOSSCostModel* costModel);
 
     ~DynamicOperatorRegistry();
 
-    void RegisterOperator(const std::string& opName, FnCost costFunc, const std::string& similarOpName, FnOperatorFactory opFactory);
-    std::vector<COperator*> GetOperators(const std::string& opName, void* args);
-    COperator::EOperatorId GetOperatorId(const std::string& opName);
+    void RegisterOperator(const std::string& opName, CEngineSpec::EEngineType engine, FnCost costFunc, std::vector<CXform::EXformId>& relevantTransforms, FnOperatorFactory opFactory);
+    void RegisterTransform(const std::string& transformName, std::vector<COperator::EOperatorId>& relevantOperators, CXform* transform);
+    void RegisterEngine(const std::string& engineName);
 
-    void RegisterTransform(const std::string& transformName, const std::string& transformFrom, CXform* transform);
+    void RegisterCostModelParams(CEngineSpec::EEngineType engine, ICostModelParams* pcp) {
+      costModel->RegisterCostModelParams(engine, pcp);
+    };
+
+
+    COperator::EOperatorId GetOperatorId(CEngineSpec::EEngineType engine, const std::string& opName);
+    std::vector<COperator*> GetRelevantOperatorsForTransform(CXform::EXformId transformId, void* args);
+    std::vector<CXform::EXformId> GetRelevantTransformsForOperator(COperator::EOperatorId opId);
     CXform::EXformId GetTransformId(const std::string& transformName);
-    std::vector<CXform::EXformId> GetRelevantTransforms(const std::string& transformFrom);
+    CEngineSpec::EEngineType GetEngineType(const std::string& engineName);
+
 };
 }  // namespace orcaextender
