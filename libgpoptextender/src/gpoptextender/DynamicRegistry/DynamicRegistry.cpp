@@ -53,6 +53,7 @@ void DynamicRegistry::RegisterTransform(const std::string& transformName, std::v
   for (auto& operatorId : relevantOperators) {
     relevantTransforms[operatorId].push_back(currentTransformId);
   }
+
   CXformFactory::Pxff()->Add(transform);
 }
 

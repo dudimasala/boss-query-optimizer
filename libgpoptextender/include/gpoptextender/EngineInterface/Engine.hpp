@@ -2,13 +2,12 @@
 
 namespace orcaextender {
 class Engine {
-
-  private:
+  protected:
     std::string m_engineName;
     CEngineSpec::EEngineType m_engineType;
-
+    CMemoryPool *m_mp;
   public:
-    Engine(std::string engineName) : m_engineName(engineName) {}
+    Engine(std::string engineName, CMemoryPool *mp) : m_engineName(engineName), m_mp(mp) {}
     virtual ~Engine() {}
     
     virtual void UpdateEngineType() { 
