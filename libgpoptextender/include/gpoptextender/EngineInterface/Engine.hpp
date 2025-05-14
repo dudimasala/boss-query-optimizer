@@ -17,13 +17,13 @@ class Engine {
       }
     }
 
-    virtual void RegisterOperators(); // register cost constants.
-    virtual void RegisterTransforms(); // register transforms. Note these are technically allowed to be cross-engine.
-    virtual void RegisterTranslators(); // orca to boss physical translators must also be dynamically extensible.
+    virtual void RegisterOperators() = 0; // register cost constants.
+    virtual void RegisterTransforms() = 0; // register transforms. Note these are technically allowed to be cross-engine.
+    virtual void RegisterTranslators() = 0; // orca to boss physical translators must also be dynamically extensible.
 
-    virtual void RemoveTranslators();
-    virtual void RemoveOperators(); // remove cost models
-    virtual void RemoveTransforms(); // remove transforms
+    virtual void RemoveTranslators() = 0;
+    virtual void RemoveOperators() = 0; // remove cost models
+    virtual void RemoveTransforms() = 0; // remove transforms
 
     virtual void Enforce() {
       UpdateEngineType();
