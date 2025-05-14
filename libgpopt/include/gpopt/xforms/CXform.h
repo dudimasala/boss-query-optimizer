@@ -219,9 +219,8 @@ public:
 		ExfLeftOuterJoinWithInnerSelect2DynamicIndexGetApply,
 		ExfInvalid,
 		ExfSentinel = ExfInvalid,
-
-		ExfDynamicStart = 10000,
-		ExfDynamicEnd = gpos::ulong_max
+		ExfDynamicStart = ExfSentinel,
+		ExfDynamicEnd = 10000
 	};
 
 	// promise levels;
@@ -354,8 +353,8 @@ operator<<(IOstream &os, CXform &xform)
 }
 
 // shorthands for enum sets and iterators of xform ids
-typedef CEnumSet<CXform::EXformId, CXform::ExfSentinel> CXformSet;
-typedef CEnumSetIter<CXform::EXformId, CXform::ExfSentinel> CXformSetIter;
+typedef CEnumSet<CXform::EXformId, CXform::ExfDynamicEnd> CXformSet;
+typedef CEnumSetIter<CXform::EXformId, CXform::ExfDynamicEnd> CXformSetIter;
 }  // namespace gpopt
 
 

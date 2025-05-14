@@ -14,7 +14,7 @@
 #include "gpos/base.h"
 
 #include "gpopt/xforms/CXform.h"
-
+#include <vector>
 namespace gpopt
 {
 using namespace gpos;
@@ -39,7 +39,8 @@ private:
 	CMemoryPool *m_mp;
 
 	// range of all xforms
-	CXform *m_rgpxf[CXform::ExfSentinel];
+	std::vector<CXform *> m_rgpxf = std::vector<CXform *>();
+	// CXform *m_rgpxf[CXform::ExfSentinel];
 
 	// name -> xform map
 	XformNameToXformMap *m_phmszxform;

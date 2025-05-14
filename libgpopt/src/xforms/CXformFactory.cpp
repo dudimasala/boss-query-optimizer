@@ -39,7 +39,7 @@ CXformFactory::CXformFactory(CMemoryPool *mp)
 	// null out array so dtor can be called prematurely
 	for (ULONG i = 0; i < CXform::ExfSentinel; i++)
 	{
-		m_rgpxf[i] = NULL;
+		m_rgpxf.push_back(NULL);
 	}
 	m_phmszxform = GPOS_NEW(mp) XformNameToXformMap(mp);
 	m_pxfsExploration = GPOS_NEW(mp) CXformSet(mp);
@@ -60,12 +60,12 @@ CXformFactory::~CXformFactory()
 	GPOS_ASSERT(NULL == m_pxff && "Xform factory has not been shut down");
 
 	// delete all xforms in the array
-	for (ULONG i = 0; i < CXform::ExfSentinel; i++)
+	for (ULONG i = 0; i < m_rgpxf.size(); i++)
 	{
 		if (NULL == m_rgpxf[i])
 		{
 			// dtor called after failing to populate array
-			break;
+			continue;
 		}
 
 		m_rgpxf[i]->Release();
@@ -93,11 +93,16 @@ CXformFactory::Add(CXform *pxform)
 	GPOS_ASSERT(NULL != pxform);
 	CXform::EXformId exfid = pxform->Exfid();
 
-	GPOS_ASSERT_IMP(0 < exfid, m_rgpxf[exfid - 1] != NULL &&
+	GPOS_ASSERT_IMP(0 < exfid, ((m_rgpxf[exfid - 1] != NULL) || (exfid - 1 == CXform::ExfSentinel)) &&
 								   "Incorrect order of instantiation");
-	GPOS_ASSERT(NULL == m_rgpxf[exfid]);
 
-	m_rgpxf[exfid] = pxform;
+	if (exfid >= m_rgpxf.size())
+	{
+		m_rgpxf.push_back(pxform);
+	} else {
+		GPOS_ASSERT(NULL == m_rgpxf[exfid]);
+		m_rgpxf[exfid] = pxform;
+	}
 
 	// create name -> xform mapping
 	ULONG length = clib::Strlen(pxform->SzId());
@@ -302,7 +307,7 @@ CXformFactory::Instantiate()
 				m_mp));
 	Add(GPOS_NEW(m_mp)
 			CXformLeftOuterJoinWithInnerSelect2DynamicIndexGetApply(m_mp));
-
+	m_rgpxf.push_back(NULL); // sentinel.
 	GPOS_ASSERT(NULL != m_rgpxf[CXform::ExfSentinel - 1] &&
 				"Not all xforms have been instantiated");
 }

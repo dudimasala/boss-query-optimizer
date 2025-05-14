@@ -263,8 +263,8 @@ public:
 
 		EopSentinel,
 
-		EopDynamicStart = 10000,
-		EopDynamicEnd = gpos::ulong_max
+		EopDynamicStart = EopSentinel,
+		EopDynamicEnd = 10000,
 	};
 
 	// aggregate type

@@ -507,3 +507,4 @@ target_link_libraries(gporca_test
                       gpopt
                       naucrates
                       gpos)
+
