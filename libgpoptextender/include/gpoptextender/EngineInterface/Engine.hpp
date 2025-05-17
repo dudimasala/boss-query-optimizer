@@ -6,8 +6,9 @@ class Engine {
     std::string m_engineName;
     CEngineSpec::EEngineType m_engineType;
     CMemoryPool *m_mp;
+    CMDAccessor *m_mda;
   public:
-    Engine(std::string engineName, CMemoryPool *mp) : m_engineName(engineName), m_mp(mp) {}
+    Engine(std::string engineName, CMemoryPool *mp, CMDAccessor *mda) : m_engineName(engineName), m_mp(mp), m_mda(mda) {}
     virtual ~Engine() {}
     
     virtual void UpdateEngineType() { 
