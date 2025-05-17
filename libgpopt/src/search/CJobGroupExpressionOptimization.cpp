@@ -629,11 +629,9 @@ CJobGroupExpressionOptimization::EevtOptimizeSelf(CSchedulerContext *psc,
 	CGroupExpression *pgexpr = pjgeo->m_pgexpr;
 	COptimizationContextArray *pdrgpoc = pjgeo->m_pdrgpoc;
 	ULONG ulOptReq = pjgeo->m_ulOptReq;
-
 	CCostContext *pcc =
 		pgexpr->PccComputeCost(psc->GetGlobalMemoryPool(), poc, ulOptReq,
 							   pdrgpoc, false /*fPruned*/, CCost(0.0));
-
 	if (NULL == pcc)
 	{
 		pjgeo->Cleanup();

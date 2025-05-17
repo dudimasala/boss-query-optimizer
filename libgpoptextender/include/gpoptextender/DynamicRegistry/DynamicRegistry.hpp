@@ -58,6 +58,10 @@ class DynamicRegistry {
       costModel->RegisterCostModelParams(engine, pcp);
     };
 
+    void RegisterEngineTransform(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to, FnCost fn_cost) {
+      costModel->RegisterEngineTransform(from, to, fn_cost);
+    };
+
 
     COperator::EOperatorId GetOperatorId(CEngineSpec::EEngineType engine, const std::string& opName);
     std::vector<COperator*> GetRelevantOperatorsForTransform(CXform::EXformId transformId, void* args);

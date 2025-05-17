@@ -25,6 +25,7 @@
 using namespace gpos;
 using namespace orcaextender;
 
+// assumption for these cost functions is that the child is the same engine as parent (except in transition operator)
 
 // initialization of cost functions
 std::unordered_map<COperator::EOperatorId, BOSSCostModel::FnCost> BOSSCostModel::m_cost_map = {
@@ -120,12 +121,16 @@ BOSSCostModel::BOSSCostModel(CMemoryPool *mp, ULONG ulSegments,
 	if (NULL == pcp)
 	{
 		m_cost_model_params_map[CEngineSpec::EEngineType::EetGP] = GPOS_NEW(mp) CCostModelParamsGPDB(mp);
+		m_cost_model_params_map[CEngineSpec::EEngineType::EetAny] = GPOS_NEW(mp) CCostModelParamsGPDB(mp);
+		m_cost_model_params_map[CEngineSpec::EEngineType::EetGPU] = GPOS_NEW(mp) CCostModelParamsGPDB(mp);
 	}
 	else
 	{
 		GPOS_ASSERT(NULL != pcp);
 
 		m_cost_model_params_map[CEngineSpec::EEngineType::EetGP] = pcp;
+		m_cost_model_params_map[CEngineSpec::EEngineType::EetAny] = pcp;
+		m_cost_model_params_map[CEngineSpec::EEngineType::EetGPU] = pcp;
 	}
 }
 
@@ -867,7 +872,6 @@ BOSSCostModel::CostHashAgg(CMemoryPool *mp, CExpressionHandle &exprhdl,
 			   rows * pci->Width() * dHashAggOutputTupWidthCostUnit));
 	CCost costChild =
 		CostChildren(mp, exprhdl, pci, pcmgpdb->GetCostModelParams(engine));
-
 	return costLocal + costChild;
 }
 
@@ -1375,6 +1379,7 @@ BOSSCostModel::CostMotion(CMemoryPool *mp, CExpressionHandle &exprhdl,
 	GPOS_ASSERT(NULL != pcmgpdb);
 	GPOS_ASSERT(NULL != pci);
 
+
 	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
 
 	COperator::EOperatorId op_id = exprhdl.Pop()->Eopid();
@@ -1485,7 +1490,6 @@ BOSSCostModel::CostMotion(CMemoryPool *mp, CExpressionHandle &exprhdl,
 
 	CCost costChild =
 		CostChildren(mp, exprhdl, pci, pcmgpdb->GetCostModelParams(engine));
-
 	return costLocal + costChild;
 }
 
@@ -2014,13 +2018,19 @@ CCost BOSSCostModel::CostEngineTransform(CMemoryPool *mp, CExpressionHandle &exp
 	CDrvdPropPlan *pdpplanChild = exprhdl.Pdpplan(0);
 	CEngineSpec::EEngineType from = pdpplanChild->Pes()->Eet();
 
-	CCost cost = CostChildren(mp, exprhdl, pci, pcmgpdb->GetCostModelParams(from));
 
-	if (!(from == CEngineSpec::EEngineType::EetAny || to == CEngineSpec::EEngineType::EetAny))
+	if (!(from == CEngineSpec::EEngineType::EetAny || to == CEngineSpec::EEngineType::EetAny || from == to))
 	{
-		cost = m_engine_transform_map[std::make_pair(from, to)](mp, exprhdl, pcmgpdb, pci);
+		if (m_engine_transform_map.find(std::make_pair(from, to)) != m_engine_transform_map.end()) {
+			CCost cost = m_engine_transform_map[std::make_pair(from, to)](mp, exprhdl, pcmgpdb, pci);
+			return cost;
+		} else {
+			std::cerr << "No cost model found for engine transform" << std::endl;
+			throw std::runtime_error("No cost model found for engine transform");
+		}
 	}
-	
+
+	CCost cost = CostChildren(mp, exprhdl, pci, pcmgpdb->GetCostModelParams(from));
 	return cost;
 }
 
@@ -2032,5 +2042,11 @@ CEngineSpec::EEngineType BOSSCostModel::GetEngineType(CMemoryPool *mp,CExpressio
 	pes->Release();
   return engine_type;
 }
+
+void BOSSCostModel::RegisterEngineTransform(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to, FnCost fn_cost)
+{
+	m_engine_transform_map[std::make_pair(from, to)] = fn_cost;
+}
+
 
 // EOF

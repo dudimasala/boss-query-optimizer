@@ -25,6 +25,8 @@ class Engine {
     virtual void RemoveOperators() = 0; // remove cost models
     virtual void RemoveTransforms() = 0; // remove transforms
 
+    virtual void RegisterEngineTransforms() = 0;
+
     virtual void Enforce() {
       UpdateEngineType();
       RemoveOperators();
@@ -33,6 +35,7 @@ class Engine {
       RegisterOperators();
       RegisterTransforms();
       RegisterTranslators();
+      RegisterEngineTransforms();
     }
 
 };

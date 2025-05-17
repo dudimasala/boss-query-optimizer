@@ -71,6 +71,8 @@ public:
 
 	void RegisterCostModelParams(CEngineSpec::EEngineType engine, ICostModelParams* pcp);
 
+	void RegisterEngineTransform(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to, FnCost fn_cost);
+
 	// number of segments
 	ULONG
 	UlHosts() const

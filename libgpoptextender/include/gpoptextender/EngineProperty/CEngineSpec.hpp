@@ -15,7 +15,8 @@ public:
     enum EEngineType
     {
         EetGP,
-        EetAny,   // Can be executed on any engine
+        EetGPU,
+        EetAny,  
         EetSentinel,
         EetDynamicStart = EetSentinel,
         EetDynamicEnd = 10000

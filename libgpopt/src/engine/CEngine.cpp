@@ -1154,7 +1154,6 @@ CEngine::OptimizeGroupExpression(CGroupExpression *pgexpr,
 
 			CRefCount::SafeRelease(pdrgpoc);
 		}
-
 		GPOS_CHECK_ABORT;
 	}
 }
