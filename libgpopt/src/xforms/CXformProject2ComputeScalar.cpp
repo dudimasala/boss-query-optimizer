@@ -15,6 +15,9 @@
 
 #include "gpopt/operators/ops.h"
 
+#include "gpoptextender/DynamicRegistry/IDynamicRegistry.hpp"
+#include "gpoptextender/DynamicRegistry/DynamicOperatorArgs.hpp"
+
 
 using namespace gpopt;
 
@@ -74,6 +77,25 @@ CXformProject2ComputeScalar::Transform(CXformContext *pxfctxt,
 
 	// add alternative to results
 	pxfres->Add(pexprComputeScalar);
+
+	// dynamic
+	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
+	orcaextender::DynamicOperatorArgs args;
+  args.set("mp", mp);
+	
+	std::vector<COperator*> dynOperators = registry->GetRelevantOperatorsForTransform(Exfid(), &args);
+	for (size_t i = 0; i < dynOperators.size(); i++) {
+		pexprRelational->AddRef();
+		pexprScalar->AddRef();
+
+		CExpression *pexprAnotherAlt = GPOS_NEW(mp) CExpression(
+			mp,
+			dynOperators[i],
+			pexprRelational, pexprScalar);
+
+		// add alternative to transformation result
+		pxfres->Add(pexprAnotherAlt);
+	}
 }
 
 

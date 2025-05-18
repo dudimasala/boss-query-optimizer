@@ -50,7 +50,7 @@ CXformImplementFullOuterMergeJoin::Transform(CXformContext *pxfctxt,
 	GPOS_ASSERT(FCheckPattern(pexpr));
 
 	CXformUtils::ImplementMergeJoin<CPhysicalFullMergeJoin>(pxfctxt, pxfres,
-															pexpr);
+															pexpr, Exfid());
 }
 
 // EOF

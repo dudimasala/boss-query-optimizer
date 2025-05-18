@@ -76,7 +76,7 @@ CXformLeftOuterJoin2HashJoin::Transform(CXformContext *pxfctxt,
 	GPOS_ASSERT(FCheckPattern(pexpr));
 
 	CXformUtils::ImplementHashJoin<CPhysicalLeftOuterHashJoin>(pxfctxt, pxfres,
-															   pexpr);
+															   pexpr, Exfid());
 }
 
 

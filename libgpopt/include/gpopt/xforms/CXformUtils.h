@@ -19,6 +19,9 @@
 #include "gpopt/operators/ops.h"
 #include "gpopt/xforms/CXform.h"
 
+#include "gpoptextender/DynamicRegistry/IDynamicRegistry.hpp"
+#include "gpoptextender/DynamicRegistry/DynamicOperatorArgs.hpp"
+
 namespace gpopt
 {
 using namespace gpos;
@@ -208,7 +211,7 @@ private:
 											  CExpression *pexprJoin,
 											  CExpressionArray *pdrgpexprOuter,
 											  CExpressionArray *pdrgpexprInner,
-											  CXformResult *pxfres);
+											  CXformResult *pxfres, CXform::EXformId exfid);
 
 	// helper for transforming SubqueryAll into aggregate subquery
 	static void SubqueryAllToAgg(
@@ -356,12 +359,12 @@ public:
 	// helper function for implementation of hash joins
 	template <class T>
 	static void ImplementHashJoin(CXformContext *pxfctxt, CXformResult *pxfres,
-								  CExpression *pexpr);
+								  CExpression *pexpr, CXform::EXformId exfid);
 
 	// helper function for implementation of merge joins
 	template <class T>
 	static void ImplementMergeJoin(CXformContext *pxfctxt, CXformResult *pxfres,
-								   CExpression *pexpr);
+								   CExpression *pexpr, CXform::EXformId exfid);
 
 	// helper function for implementation of nested loops joins
 	template <class T>
@@ -781,7 +784,7 @@ CXformUtils::AddHashOrMergeJoinAlternative(CMemoryPool *mp,
 										   CExpression *pexprJoin,
 										   CExpressionArray *pdrgpexprOuter,
 										   CExpressionArray *pdrgpexprInner,
-										   CXformResult *pxfres)
+										   CXformResult *pxfres, CXform::EXformId exfid)
 {
 	GPOS_ASSERT(CUtils::FLogicalJoin(pexprJoin->Pop()));
 	GPOS_ASSERT(3 == pexprJoin->Arity());
@@ -797,6 +800,29 @@ CXformUtils::AddHashOrMergeJoinAlternative(CMemoryPool *mp,
 		CExpression(mp, GPOS_NEW(mp) T(mp, pdrgpexprOuter, pdrgpexprInner),
 					(*pexprJoin)[0], (*pexprJoin)[1], (*pexprJoin)[2]);
 	pxfres->Add(pexprResult);
+
+	// dynamic operators.
+	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
+	orcaextender::DynamicOperatorArgs args;
+  args.set("mp", mp);
+	args.set("pdrgpexprInnerKeys", pdrgpexprInner);
+	args.set("pdrgpexprOuterKeys", pdrgpexprOuter);
+	
+	std::vector<COperator*> dynOperators = registry->GetRelevantOperatorsForTransform(exfid, &args);
+	for (size_t i = 0; i < dynOperators.size(); i++) {
+		for (ULONG ul = 0; ul < 3; ul++)
+		{
+			(*pexprJoin)[ul]->AddRef();
+		}
+
+		CExpression *pexprAnotherAlt = GPOS_NEW(mp) CExpression(
+			mp,
+			dynOperators[i],
+			(*pexprJoin)[0], (*pexprJoin)[1], (*pexprJoin)[2]);
+
+		// add alternative to transformation result
+		pxfres->Add(pexprAnotherAlt);
+	}
 }
 
 
@@ -811,7 +837,7 @@ CXformUtils::AddHashOrMergeJoinAlternative(CMemoryPool *mp,
 template <class T>
 void
 CXformUtils::ImplementHashJoin(CXformContext *pxfctxt, CXformResult *pxfres,
-							   CExpression *pexpr)
+							   CExpression *pexpr, CXform::EXformId exfid)
 {
 	GPOS_ASSERT(NULL != pxfctxt);
 
@@ -843,7 +869,7 @@ CXformUtils::ImplementHashJoin(CXformContext *pxfctxt, CXformResult *pxfres,
 		{
 			// we have computed hash join keys on scalar child before, reuse them
 			AddHashOrMergeJoinAlternative<T>(mp, pexpr, pdrgpexprOuter,
-											 pdrgpexprInner, pxfres);
+											 pdrgpexprInner, pxfres, exfid);
 		}
 
 		return;
@@ -897,7 +923,7 @@ CXformUtils::ImplementHashJoin(CXformContext *pxfctxt, CXformResult *pxfres,
 	if (0 != pdrgpexprOuter->Size())
 	{
 		AddHashOrMergeJoinAlternative<T>(mp, pexprResult, pdrgpexprOuter,
-										 pdrgpexprInner, pxfres);
+										 pdrgpexprInner, pxfres, exfid);
 	}
 	else
 	{
@@ -912,7 +938,7 @@ CXformUtils::ImplementHashJoin(CXformContext *pxfctxt, CXformResult *pxfres,
 template <class T>
 void
 CXformUtils::ImplementMergeJoin(CXformContext *pxfctxt, CXformResult *pxfres,
-								CExpression *pexpr)
+								CExpression *pexpr, CXform::EXformId exfid)
 {
 	GPOS_ASSERT(NULL != pxfctxt);
 
@@ -944,7 +970,7 @@ CXformUtils::ImplementMergeJoin(CXformContext *pxfctxt, CXformResult *pxfres,
 		{
 			// we have computed join keys on scalar child before, reuse them
 			AddHashOrMergeJoinAlternative<T>(mp, pexpr, pdrgpexprOuter,
-											 pdrgpexprInner, pxfres);
+											 pdrgpexprInner, pxfres, exfid);
 		}
 
 		return;
@@ -1007,7 +1033,7 @@ CXformUtils::ImplementMergeJoin(CXformContext *pxfctxt, CXformResult *pxfres,
 	if (0 != pdrgpexprOuter->Size())
 	{
 		AddHashOrMergeJoinAlternative<T>(mp, pexprResult, pdrgpexprOuter,
-										 pdrgpexprInner, pxfres);
+										 pdrgpexprInner, pxfres, exfid);
 	}
 	else
 	{

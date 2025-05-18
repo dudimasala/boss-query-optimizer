@@ -17,6 +17,9 @@
 #include "gpopt/operators/ops.h"
 #include "gpopt/xforms/CXformUtils.h"
 
+#include "gpoptextender/DynamicRegistry/IDynamicRegistry.hpp"
+#include "gpoptextender/DynamicRegistry/DynamicOperatorArgs.hpp"
+
 using namespace gpopt;
 
 
@@ -76,7 +79,8 @@ CXformInnerJoin2HashJoin::Transform(CXformContext *pxfctxt,
 	GPOS_ASSERT(FCheckPattern(pexpr));
 
 	CXformUtils::ImplementHashJoin<CPhysicalInnerHashJoin>(pxfctxt, pxfres,
-														   pexpr);
+														   pexpr, Exfid());
+
 }
 
 // EOF

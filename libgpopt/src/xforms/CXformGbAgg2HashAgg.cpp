@@ -163,6 +163,8 @@ CXformGbAgg2HashAgg::Transform(CXformContext *pxfctxt, CXformResult *pxfres,
 	std::vector<COperator*> dynOperators = registry->GetRelevantOperatorsForTransform(Exfid(), &args);
 
 	for (size_t i = 0; i < dynOperators.size(); i++) {
+		pexprRel->AddRef();
+		pexprScalar->AddRef();
 		CExpression *pexprAnotherAlt = GPOS_NEW(mp) CExpression(
 			mp,
 			dynOperators[i],

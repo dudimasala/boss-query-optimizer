@@ -894,7 +894,8 @@ BOSSCostModel::CostHashJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 				COperator::EopPhysicalLeftSemiHashJoin == op_id ||
 				COperator::EopPhysicalLeftAntiSemiHashJoin == op_id ||
 				COperator::EopPhysicalLeftAntiSemiHashJoinNotIn == op_id ||
-				COperator::EopPhysicalLeftOuterHashJoin == op_id);
+				COperator::EopPhysicalLeftOuterHashJoin == op_id ||
+				op_id > COperator::EopSentinel);
 #endif	// GPOS_DEBUG
 
 	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
@@ -1943,7 +1944,7 @@ BOSSCostModel::CostFilter(CMemoryPool *mp, CExpressionHandle &exprhdl,
 {
 	GPOS_ASSERT(NULL != pcmgpdb);
 	GPOS_ASSERT(NULL != pci);
-	GPOS_ASSERT(COperator::EopPhysicalFilter == exprhdl.Pop()->Eopid());
+	GPOS_ASSERT(COperator::EopPhysicalFilter == exprhdl.Pop()->Eopid() || exprhdl.Pop()->Eopid() > COperator::EopSentinel);
 
 	CEngineSpec::EEngineType engine = GetEngineType(mp, exprhdl);
 

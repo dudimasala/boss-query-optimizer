@@ -77,7 +77,7 @@ CXformLeftAntiSemiJoin2HashJoin::Transform(CXformContext *pxfctxt,
 	GPOS_ASSERT(FCheckPattern(pexpr));
 
 	CXformUtils::ImplementHashJoin<CPhysicalLeftAntiSemiHashJoin>(
-		pxfctxt, pxfres, pexpr);
+		pxfctxt, pxfres, pexpr, Exfid());
 
 	if (pxfres->Pdrgpexpr()->Size() == 0)
 	{
@@ -87,7 +87,7 @@ CXformLeftAntiSemiJoin2HashJoin::Transform(CXformContext *pxfctxt,
 		{
 			// try again after simplifying join predicate
 			CXformUtils::ImplementHashJoin<CPhysicalLeftAntiSemiHashJoin>(
-				pxfctxt, pxfres, pexprProcessed);
+				pxfctxt, pxfres, pexprProcessed, Exfid());
 			pexprProcessed->Release();
 		}
 	}
