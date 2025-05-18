@@ -19,7 +19,7 @@ public:
         EetAny,  
         EetSentinel,
         EetDynamicStart = EetSentinel,
-        EetDynamicEnd = 10000
+        EetDynamicEnd = 100
     };
 
 private:

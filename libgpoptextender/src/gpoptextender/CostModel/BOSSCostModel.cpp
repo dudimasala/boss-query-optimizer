@@ -121,8 +121,6 @@ BOSSCostModel::BOSSCostModel(CMemoryPool *mp, ULONG ulSegments,
 	if (NULL == pcp)
 	{
 		m_cost_model_params_map[CEngineSpec::EEngineType::EetGP] = GPOS_NEW(mp) CCostModelParamsGPDB(mp);
-		m_cost_model_params_map[CEngineSpec::EEngineType::EetAny] = GPOS_NEW(mp) CCostModelParamsGPDB(mp);
-		m_cost_model_params_map[CEngineSpec::EEngineType::EetGPU] = GPOS_NEW(mp) CCostModelParamsGPDB(mp);
 	}
 	else
 	{
@@ -1990,6 +1988,9 @@ BOSSCostModel::Cost(
 	if (m_cost_map.find(op_id) != m_cost_map.end())
 	{
 		pfnc = m_cost_map[op_id];
+	} else {
+		std::cerr << "No cost function found for operator " << op_id << std::endl;
+		throw std::runtime_error("No cost function found for operator");
 	}
 
 	GPOS_ASSERT(NULL != pfnc);
