@@ -85,7 +85,7 @@ public:
 	virtual COrderSpec *PosDerive(CMemoryPool *mp,
 								  CExpressionHandle &exprhdl) const;
 
-	
+
 
 	//-------------------------------------------------------------------------------------
 	// Enforced Properties
@@ -106,7 +106,8 @@ public:
 	{
 		GPOS_ASSERT(NULL != pop);
 		GPOS_ASSERT(EopPhysicalHashAgg == pop->Eopid() ||
-					EopPhysicalHashAggDeduplicate == pop->Eopid());
+					EopPhysicalHashAggDeduplicate == pop->Eopid() ||
+					pop->Eopid() > COperator::EopSentinel);
 
 		return reinterpret_cast<CPhysicalHashAgg *>(pop);
 	}

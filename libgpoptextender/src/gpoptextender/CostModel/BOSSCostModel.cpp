@@ -813,7 +813,7 @@ BOSSCostModel::CostHashAgg(CMemoryPool *mp, CExpressionHandle &exprhdl,
 #ifdef GPOS_DEBUG
 	COperator::EOperatorId op_id = exprhdl.Pop()->Eopid();
 	GPOS_ASSERT(COperator::EopPhysicalHashAgg == op_id ||
-				COperator::EopPhysicalHashAggDeduplicate == op_id);
+				COperator::EopPhysicalHashAggDeduplicate == op_id || op_id > COperator::EopSentinel);
 #endif	// GPOS_DEBUG
 
 	DOUBLE num_rows_outer = pci->PdRows()[0];
