@@ -3,7 +3,7 @@
 #include "gpos/base.h"
 
 #include "gpopt/operators/CPhysical.h"
-#include "gpoptextender/EngineProperty/CBasePhysicalUnaryOp.hpp"
+#include "gpoptextender/GenericOps/CBasePhysicalUnaryOp.hpp"
 #include "gpoptextender/EngineProperty/CEngineSpec.hpp"
 #include "gpoptextender/EngineProperty/CEnfdEngine.hpp"
 

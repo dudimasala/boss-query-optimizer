@@ -1,4 +1,4 @@
-#include "gpoptextender/EngineProperty/CBasePhysicalUnaryOp.hpp"
+#include "gpoptextender/GenericOps/CBasePhysicalUnaryOp.hpp"
 #include "gpopt/base/CDistributionSpecAny.h"
 #include "gpopt/operators/CExpressionHandle.h"
 using namespace gpopt;
