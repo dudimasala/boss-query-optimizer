@@ -50,9 +50,12 @@ class DynamicRegistry {
 
     ~DynamicRegistry();
 
-    void RegisterOperator(const std::string& opName, CEngineSpec::EEngineType engine, FnCost costFunc, std::vector<CXform::EXformId>& relevantTransforms, FnOperatorFactory opFactory);
-    void RegisterTransform(const std::string& transformName, std::vector<COperator::EOperatorId>& relevantOperators, CXform* transform);
+    void RegisterOperator(const std::string& opName, CEngineSpec::EEngineType engine, FnCost costFunc);
+    void RegisterTransform(const std::string& transformName, CXform* transform);
     void RegisterEngine(const std::string& engineName);
+    
+    void HookOpToTransform(CXform::EXformId transformId, FnOperatorFactory opFactory);
+    void HookTransformToOp(COperator::EOperatorId opId, CXform::EXformId transformId);
 
     void RegisterCostModelParams(CEngineSpec::EEngineType engine, ICostModelParams* pcp) {
       costModel->RegisterCostModelParams(engine, pcp);

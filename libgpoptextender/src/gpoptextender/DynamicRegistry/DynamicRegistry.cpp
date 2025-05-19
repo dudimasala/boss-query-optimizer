@@ -23,13 +23,18 @@ void DynamicRegistry::Init(CMemoryPool* mp, BOSSCostModel* costModel) {
 }
 
 
-void DynamicRegistry::RegisterOperator(const std::string& opName, CEngineSpec::EEngineType engine, FnCost costFunc, std::vector<CXform::EXformId>& relevantTransforms, FnOperatorFactory opFactory) {
+void DynamicRegistry::RegisterOperator(const std::string& opName, CEngineSpec::EEngineType engine, FnCost costFunc) {
   currentOperatorId = (COperator::EOperatorId) (currentOperatorId + 1);
   costModel->RegisterCostFunction(currentOperatorId, costFunc);
   opEngineAndNameToOperatorId[std::make_pair(engine, opName)] = currentOperatorId;
-  for (auto& transformId : relevantTransforms) {
-    opFactories[transformId].push_back(opFactory);
-  }
+}
+
+void DynamicRegistry::HookOpToTransform(CXform::EXformId transformId, FnOperatorFactory opFactory) {
+  opFactories[transformId].push_back(opFactory);
+}
+
+void DynamicRegistry::HookTransformToOp(COperator::EOperatorId opId, CXform::EXformId transformId) {
+  relevantTransforms[opId].push_back(transformId);
 }
 
 std::vector<COperator*> DynamicRegistry::GetRelevantOperatorsForTransform(CXform::EXformId transformId, void* opaqueArgs) {
@@ -47,13 +52,9 @@ COperator::EOperatorId DynamicRegistry::GetOperatorId(CEngineSpec::EEngineType e
   return opEngineAndNameToOperatorId[std::make_pair(engine, opName)];
 }
 
-void DynamicRegistry::RegisterTransform(const std::string& transformName, std::vector<COperator::EOperatorId>& relevantOperators, CXform* transform) {
+void DynamicRegistry::RegisterTransform(const std::string& transformName, CXform* transform) {
   currentTransformId = (CXform::EXformId) (currentTransformId + 1);
   transformNameToTransformId[transformName] = currentTransformId;
-  for (auto& operatorId : relevantOperators) {
-    relevantTransforms[operatorId].push_back(currentTransformId);
-  }
-
   CXformFactory::Pxff()->Add(transform);
 }
 

@@ -2027,8 +2027,8 @@ CCost BOSSCostModel::CostEngineTransform(CMemoryPool *mp, CExpressionHandle &exp
 			CCost cost = m_engine_transform_map[std::make_pair(from, to)](mp, exprhdl, pcmgpdb, pci);
 			return cost;
 		} else {
-			std::cerr << "No cost model found for engine transform" << std::endl;
-			throw std::runtime_error("No cost model found for engine transform");
+			// default cost for engine transform is 0
+			return CCost(0);
 		}
 	}
 
