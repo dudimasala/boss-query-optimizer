@@ -50,7 +50,8 @@ class DynamicRegistry {
 
     ~DynamicRegistry();
 
-    void RegisterOperator(const std::string& opName, CEngineSpec::EEngineType engine, FnCost costFunc);
+    void RegisterPhysicalOperator(const std::string& opName, CEngineSpec::EEngineType engine, FnCost costFunc);
+    void RegisterLogicalOperator(const std::string& opName, CEngineSpec::EEngineType engine);
     void RegisterTransform(const std::string& transformName, CXform* transform);
     void RegisterEngine(const std::string& engineName);
     
@@ -66,11 +67,11 @@ class DynamicRegistry {
     };
 
 
-    COperator::EOperatorId GetOperatorId(CEngineSpec::EEngineType engine, const std::string& opName);
+    COperator::EOperatorId GetOperatorId(CEngineSpec::EEngineType engine, const std::string& opName, bool throwError = true);
     std::vector<COperator*> GetRelevantOperatorsForTransform(CXform::EXformId transformId, void* args);
     std::vector<CXform::EXformId> GetRelevantTransformsForOperator(COperator::EOperatorId opId);
-    CXform::EXformId GetTransformId(const std::string& transformName);
-    CEngineSpec::EEngineType GetEngineType(const std::string& engineName);
+    CXform::EXformId GetTransformId(const std::string& transformName, bool throwError = true);
+    CEngineSpec::EEngineType GetEngineType(const std::string& engineName, bool throwError = true);
     std::unordered_map<std::string, std::vector<std::string>>& GetAllOperators() { return engineToOperatorNames; };
 
 };

@@ -23,6 +23,8 @@
 #include "gpopt/operators/CPredicateUtils.h"
 #include "naucrates/statistics/CFilterStatsProcessor.h"
 #include "naucrates/statistics/CStatisticsUtils.h"
+#include "gpoptextender/DynamicRegistry/IDynamicRegistry.hpp"
+
 using namespace gpopt;
 
 //---------------------------------------------------------------------------
@@ -105,6 +107,12 @@ CLogicalSelect::PxfsCandidates(CMemoryPool *mp) const
 	(void) xform_set->ExchangeSet(CXform::ExfSelect2DynamicBitmapBoolOp);
 	(void) xform_set->ExchangeSet(CXform::ExfSimplifySelectWithSubquery);
 	(void) xform_set->ExchangeSet(CXform::ExfSelect2Filter);
+
+	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
+	std::vector<CXform::EXformId> xformIds = registry->GetRelevantTransformsForOperator(Eopid());
+  for (size_t i = 0; i < xformIds.size(); i++) {
+    (void) xform_set->ExchangeSet(xformIds[i]);
+  }
 
 	return xform_set;
 }

@@ -12,7 +12,7 @@ class Engine {
     virtual ~Engine() {}
     
     virtual void UpdateEngineType() { 
-      if (DynamicRegistry::GetInstance()->GetEngineType(m_engineName) == CEngineSpec::EEngineType::EetSentinel) {
+      if (DynamicRegistry::GetInstance()->GetEngineType(m_engineName, false) == CEngineSpec::EEngineType::EetSentinel) {
         DynamicRegistry::GetInstance()->RegisterEngine(m_engineName); 
       }
       m_engineType = DynamicRegistry::GetInstance()->GetEngineType(m_engineName);

@@ -23,9 +23,14 @@ void DynamicRegistry::Init(CMemoryPool* mp, BOSSCostModel* costModel) {
 }
 
 
-void DynamicRegistry::RegisterOperator(const std::string& opName, CEngineSpec::EEngineType engine, FnCost costFunc) {
+void DynamicRegistry::RegisterPhysicalOperator(const std::string& opName, CEngineSpec::EEngineType engine, FnCost costFunc) {
   currentOperatorId = (COperator::EOperatorId) (currentOperatorId + 1);
   costModel->RegisterCostFunction(currentOperatorId, costFunc);
+  opEngineAndNameToOperatorId[std::make_pair(engine, opName)] = currentOperatorId;
+}
+
+void DynamicRegistry::RegisterLogicalOperator(const std::string& opName, CEngineSpec::EEngineType engine) {
+  currentOperatorId = (COperator::EOperatorId) (currentOperatorId + 1);
   opEngineAndNameToOperatorId[std::make_pair(engine, opName)] = currentOperatorId;
 }
 
@@ -45,9 +50,14 @@ std::vector<COperator*> DynamicRegistry::GetRelevantOperatorsForTransform(CXform
   return operators;
 }
 
-COperator::EOperatorId DynamicRegistry::GetOperatorId(CEngineSpec::EEngineType engine, const std::string& opName) {
+COperator::EOperatorId DynamicRegistry::GetOperatorId(CEngineSpec::EEngineType engine, const std::string& opName, bool throwError) {
   if (opEngineAndNameToOperatorId.find(std::make_pair(engine, opName)) == opEngineAndNameToOperatorId.end()) {
-    return COperator::EopSentinel;
+    if (throwError) {
+      std::cerr << "Operator " << opName << " not found" << std::endl;
+      throw std::runtime_error("Operator not found");
+    } else {
+      return COperator::EopSentinel;
+    }
   }
   return opEngineAndNameToOperatorId[std::make_pair(engine, opName)];
 }
@@ -58,9 +68,14 @@ void DynamicRegistry::RegisterTransform(const std::string& transformName, CXform
   CXformFactory::Pxff()->Add(transform);
 }
 
-CXform::EXformId DynamicRegistry::GetTransformId(const std::string& transformName) {
+CXform::EXformId DynamicRegistry::GetTransformId(const std::string& transformName, bool throwError) {
   if (transformNameToTransformId.find(transformName) == transformNameToTransformId.end()) {
-    return CXform::ExfSentinel;
+    if (throwError) {
+      std::cerr << "Transform " << transformName << " not found" << std::endl;
+      throw std::runtime_error("Transform not found");
+    } else {
+      return CXform::ExfSentinel;
+    }
   }
   return transformNameToTransformId[transformName];
 }
@@ -75,9 +90,14 @@ void DynamicRegistry::RegisterEngine(const std::string& engineName) {
   engineNameToEngineType[engineName] = currentEngineType;
 }
 
-CEngineSpec::EEngineType DynamicRegistry::GetEngineType(const std::string& engineName) {
+CEngineSpec::EEngineType DynamicRegistry::GetEngineType(const std::string& engineName, bool throwError) {
   if (engineNameToEngineType.find(engineName) == engineNameToEngineType.end()) {
-    return CEngineSpec::EEngineType::EetSentinel;
+    if (throwError) {
+      std::cerr << "Engine " << engineName << " not found" << std::endl;
+      throw std::runtime_error("Engine not found");
+    } else {
+      return CEngineSpec::EetSentinel;
+    }
   }
   return engineNameToEngineType[engineName];
 }
