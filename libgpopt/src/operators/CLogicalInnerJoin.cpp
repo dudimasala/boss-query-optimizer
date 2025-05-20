@@ -18,6 +18,7 @@
 #include "gpopt/operators/CExpression.h"
 #include "gpopt/operators/CExpressionHandle.h"
 #include "gpopt/operators/CPredicateUtils.h"
+#include "gpoptextender/DynamicRegistry/IDynamicRegistry.hpp"
 
 using namespace gpopt;
 
@@ -92,6 +93,12 @@ CLogicalInnerJoin::PxfsCandidates(CMemoryPool *mp) const
 	(void) xform_set->ExchangeSet(CXform::ExfInnerJoinSemiJoinSwap);
 	(void) xform_set->ExchangeSet(CXform::ExfInnerJoinAntiSemiJoinSwap);
 	(void) xform_set->ExchangeSet(CXform::ExfInnerJoinAntiSemiJoinNotInSwap);
+
+	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
+	std::vector<CXform::EXformId> xformIds = registry->GetRelevantTransformsForOperator(Eopid());
+  for (size_t i = 0; i < xformIds.size(); i++) {
+    (void) xform_set->ExchangeSet(xformIds[i]);
+  }
 
 	return xform_set;
 }
