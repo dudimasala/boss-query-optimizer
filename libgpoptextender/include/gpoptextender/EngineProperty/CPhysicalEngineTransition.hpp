@@ -58,12 +58,6 @@ public:
 			return m_pes;
     }
 
-    // // Derive engine spec
-    // CEngineSpec *PesDerive(CMemoryPool *, CExpressionHandle &) const
-    // {
-    //     m_pes_target->AddRef();
-    //     return m_pes_target;
-    // }
 
 		BOOL FInputOrderSensitive() const {
 			return false;

@@ -554,7 +554,8 @@ CJoinStatsProcessor::DeriveJoinStats(CMemoryPool *mp,
 	COperator::EOperatorId op_id = exprhdl.Pop()->Eopid();
 	GPOS_ASSERT(COperator::EopLogicalLeftOuterJoin == op_id ||
 				COperator::EopLogicalInnerJoin == op_id ||
-				COperator::EopLogicalNAryJoin == op_id);
+				COperator::EopLogicalNAryJoin == op_id ||
+				op_id > COperator::EopSentinel);
 #endif
 
 	// derive stats based on local join condition

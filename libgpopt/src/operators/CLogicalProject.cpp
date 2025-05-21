@@ -23,6 +23,7 @@
 #include "gpopt/operators/CExpressionHandle.h"
 #include "gpopt/operators/CScalarIdent.h"
 #include "gpopt/operators/CScalarProjectElement.h"
+#include "gpoptextender/DynamicRegistry/IDynamicRegistry.hpp"
 
 using namespace gpopt;
 using namespace gpnaucrates;
@@ -325,6 +326,12 @@ CLogicalProject::PxfsCandidates(CMemoryPool *mp) const
 	(void) xform_set->ExchangeSet(CXform::ExfProject2Apply);
 	(void) xform_set->ExchangeSet(CXform::ExfProject2ComputeScalar);
 	(void) xform_set->ExchangeSet(CXform::ExfCollapseProject);
+
+	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
+	std::vector<CXform::EXformId> xformIds = registry->GetRelevantTransformsForOperator(Eopid());
+  for (size_t i = 0; i < xformIds.size(); i++) {
+    (void) xform_set->ExchangeSet(xformIds[i]);
+  }
 
 	return xform_set;
 }
