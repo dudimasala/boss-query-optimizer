@@ -54,6 +54,32 @@ CEngineSpec* CPhysicalEngineTransition::PesRequired(CMemoryPool *mp, CExpression
 }
 
 
+CEnfdProp::EPropEnforcingType CPhysicalEngineTransition::EpetOrder(CExpressionHandle &exprhdl, const CEnfdOrder *peo) const
+{
+	// get order delivered by the limit node
+	COrderSpec *pos = CDrvdPropPlan::Pdpplan(exprhdl.Pdp())->Pos();
+
+	if (peo->FCompatible(pos))
+	{
+		return CEnfdProp::EpetUnnecessary;
+	}
+
+	return CEnfdProp::EpetRequired;
+}
+
+CEnfdProp::EPropEnforcingType CPhysicalEngineTransition::EpetDistribution(CExpressionHandle &exprhdl, const CEnfdDistribution *ped) const
+{
+		// get distribution delivered by the limit node
+	CDistributionSpec *pds = CDrvdPropPlan::Pdpplan(exprhdl.Pdp())->Pds();
+
+	if (ped->FCompatible(pds))
+	{
+		return CEnfdProp::EpetUnnecessary;
+	}
+
+	return CEnfdProp::EpetRequired;
+}
+
 
 
 

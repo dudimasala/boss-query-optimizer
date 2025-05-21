@@ -23,15 +23,21 @@ void DynamicRegistry::Init(CMemoryPool* mp, BOSSCostModel* costModel) {
 }
 
 
-void DynamicRegistry::RegisterPhysicalOperator(const std::string& opName, CEngineSpec::EEngineType engine, FnCost costFunc) {
+void DynamicRegistry::RegisterPhysicalOperator(const std::string& opName, CEngineSpec::EEngineType engine, FnCost costFunc, bool isPassThrough) {
   currentOperatorId = (COperator::EOperatorId) (currentOperatorId + 1);
   costModel->RegisterCostFunction(currentOperatorId, costFunc);
   opEngineAndNameToOperatorId[std::make_pair(engine, opName)] = currentOperatorId;
+  if (isPassThrough) {
+    passThroughOperators.insert(currentOperatorId);
+  }
 }
 
-void DynamicRegistry::RegisterLogicalOperator(const std::string& opName, CEngineSpec::EEngineType engine) {
+void DynamicRegistry::RegisterLogicalOperator(const std::string& opName, CEngineSpec::EEngineType engine, bool isAProject) {
   currentOperatorId = (COperator::EOperatorId) (currentOperatorId + 1);
   opEngineAndNameToOperatorId[std::make_pair(engine, opName)] = currentOperatorId;
+  if (isAProject) {
+    projectOperators.insert(currentOperatorId);
+  }
 }
 
 void DynamicRegistry::HookOpToTransform(CXform::EXformId transformId, FnOperatorFactory opFactory) {

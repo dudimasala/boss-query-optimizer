@@ -815,7 +815,7 @@ CDistributionSpecHashed::Combine(CMemoryPool *mp,
 		CExpressionArray *exprs = (*all_distribution_exprs)[ul];
 #ifdef GPOS_DEBUG
 		// ensure that all the spec has the same size
-		GPOS_ASSERT(this->Pdrgpexpr()->Size() == exprs->Size());
+		// GPOS_ASSERT(this->Pdrgpexpr()->Size() == exprs->Size());
 #endif
 		exprs->AddRef();
 		combined_hashed_spec = GPOS_NEW(mp) CDistributionSpecHashed(

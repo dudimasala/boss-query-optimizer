@@ -36,6 +36,8 @@
 #include "naucrates/statistics/CStatistics.h"
 #include "naucrates/traceflags/traceflags.h"
 
+#include "gpoptextender/DynamicRegistry/IDynamicRegistry.hpp"
+
 using namespace gpopt;
 
 // maximum number of equality predicates to be derived from existing equalities
@@ -1509,7 +1511,10 @@ CExpressionPreprocessor::PexprAddEqualityPreds(CMemoryPool *mp,
 
 	CExpression *pexprPred = NULL;
 	COperator *pop = pexpr->Pop();
-	if (CUtils::FLogicalDML(pop))
+
+	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
+	std::vector<COperator::EOperatorId> projectOperators = registry->GetProjectOperators();
+	if (CUtils::FLogicalDML(pop) || COperator::EopLogicalProject == pop->Eopid() || std::find(projectOperators.begin(), projectOperators.end(), pop->Eopid()) != projectOperators.end())
 	{
 		pexprPred = CUtils::PexprScalarConstBool(mp, true);
 	}
@@ -1598,6 +1603,9 @@ CExpressionPreprocessor::PexprScalarPredicates(
 			(pcrsNotNull->FMember(colref) ||
 			 ppc->Pcnstr()->FConstraint(colref)))
 		{
+			pexprScalar->Release();
+			continue;
+		} else if (CUtils::FScalarNotNull(pexprScalar)) {
 			pexprScalar->Release();
 			continue;
 		}

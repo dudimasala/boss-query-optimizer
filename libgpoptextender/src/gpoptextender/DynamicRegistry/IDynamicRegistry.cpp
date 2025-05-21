@@ -17,6 +17,15 @@ public:
     std::vector<gpopt::COperator*> GetRelevantOperatorsForTransform(CXform::EXformId transformId, void* opaqueArgs) override {
         return impl->GetRelevantOperatorsForTransform(transformId, opaqueArgs);
     }
+    std::vector<COperator::EOperatorId> GetProjectOperators() override {
+        std::vector<COperator::EOperatorId> projectOperators;
+        for (auto opId : impl->GetProjectOperators()) {
+            projectOperators.push_back(opId);
+        }
+        return projectOperators;
+    }
+
+    
 };
 
 // Export the C-linkage factory.
