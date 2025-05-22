@@ -2479,10 +2479,11 @@ CTestUtils::PqcGenerate(CMemoryPool *mp, CExpression *pexpr)
 	while (crsi.Advance())
 	{
 		CColRef *colref = crsi.Pcr();
-		if (1 != colref->Id() % GPOPT_TEST_REL_WIDTH)
-		{
-			pcrsOutput->Include(colref);
-		}
+		pcrsOutput->Include(colref);
+		// if (1 != colref->Id() % GPOPT_TEST_REL_WIDTH)
+		// {
+		// 	pcrsOutput->Include(colref);
+		// }
 	}
 	pcrs->Release();
 
