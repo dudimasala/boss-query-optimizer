@@ -103,7 +103,7 @@ CXformSelect2Filter::Transform(CXformContext *pxfctxt, CXformResult *pxfres,
 	orcaextender::DynamicOperatorArgs args;
   args.set("mp", mp);
 	
-	std::vector<COperator*> dynOperators = registry->GetRelevantOperatorsForTransform(Exfid(), &args);
+	std::vector<COperator*> dynOperators = registry->GetRelevantOperatorsForTransform(Exfid(), args);
 	for (size_t i = 0; i < dynOperators.size(); i++) {
 		pexprRelational->AddRef();
 		pexprScalar->AddRef();

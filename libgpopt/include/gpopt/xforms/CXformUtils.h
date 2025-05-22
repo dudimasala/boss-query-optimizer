@@ -808,7 +808,7 @@ CXformUtils::AddHashOrMergeJoinAlternative(CMemoryPool *mp,
 	args.set("pdrgpexprInnerKeys", pdrgpexprInner);
 	args.set("pdrgpexprOuterKeys", pdrgpexprOuter);
 	
-	std::vector<COperator*> dynOperators = registry->GetRelevantOperatorsForTransform(exfid, &args);
+	std::vector<COperator*> dynOperators = registry->GetRelevantOperatorsForTransform(exfid, args);
 	for (size_t i = 0; i < dynOperators.size(); i++) {
 		for (ULONG ul = 0; ul < 3; ul++)
 		{

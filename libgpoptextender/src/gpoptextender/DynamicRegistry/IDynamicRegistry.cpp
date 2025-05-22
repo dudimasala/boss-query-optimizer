@@ -14,8 +14,9 @@ public:
     GetRelevantTransformsForOperator(COperator::EOperatorId opId) override {
         return impl->GetRelevantTransformsForOperator(opId);
     }
-    std::vector<gpopt::COperator*> GetRelevantOperatorsForTransform(CXform::EXformId transformId, void* opaqueArgs) override {
-        return impl->GetRelevantOperatorsForTransform(transformId, opaqueArgs);
+    std::vector<gpopt::COperator*> GetRelevantOperatorsForTransform(CXform::EXformId transformId, DynamicOperatorArgs&
+     args) override {
+        return impl->GetRelevantOperatorsForTransform(transformId, args);
     }
     std::vector<COperator::EOperatorId> GetProjectOperators() override {
         std::vector<COperator::EOperatorId> projectOperators;
@@ -23,6 +24,10 @@ public:
             projectOperators.push_back(opId);
         }
         return projectOperators;
+    }
+
+    void AddTransformsToXFormSet(COperator::EOperatorId opId, CXformSet* xformSet) override {
+        impl->AddTransformsToXFormSet(opId, xformSet);
     }
 
     

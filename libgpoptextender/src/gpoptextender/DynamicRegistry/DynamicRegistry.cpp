@@ -48,10 +48,10 @@ void DynamicRegistry::HookTransformToOp(COperator::EOperatorId opId, CXform::EXf
   relevantTransforms[opId].push_back(transformId);
 }
 
-std::vector<COperator*> DynamicRegistry::GetRelevantOperatorsForTransform(CXform::EXformId transformId, void* opaqueArgs) {
+std::vector<COperator*> DynamicRegistry::GetRelevantOperatorsForTransform(CXform::EXformId transformId, DynamicOperatorArgs& args) {
   std::vector<COperator*> operators;
   for (auto& factory : opFactories[transformId]) {
-    operators.push_back(factory(opaqueArgs));
+    operators.push_back(factory(args));
   }
   return operators;
 }
@@ -106,4 +106,10 @@ CEngineSpec::EEngineType DynamicRegistry::GetEngineType(const std::string& engin
     }
   }
   return engineNameToEngineType[engineName];
+}
+
+void DynamicRegistry::AddTransformsToXFormSet(COperator::EOperatorId opId, CXformSet* xformSet) {
+  for (auto& transformId : relevantTransforms[opId]) {
+    xformSet->ExchangeSet(transformId);
+  }
 }

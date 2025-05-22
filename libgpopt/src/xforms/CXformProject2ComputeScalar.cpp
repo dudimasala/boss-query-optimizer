@@ -80,10 +80,9 @@ CXformProject2ComputeScalar::Transform(CXformContext *pxfctxt,
 
 	// dynamic
 	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
-	orcaextender::DynamicOperatorArgs args;
-  args.set("mp", mp);
+	orcaextender::CProjectArgs args = orcaextender::CProjectArgs(mp);
 	
-	std::vector<COperator*> dynOperators = registry->GetRelevantOperatorsForTransform(Exfid(), &args);
+	std::vector<COperator*> dynOperators = registry->GetRelevantOperatorsForTransform(Exfid(), args);
 	for (size_t i = 0; i < dynOperators.size(); i++) {
 		pexprRelational->AddRef();
 		pexprScalar->AddRef();

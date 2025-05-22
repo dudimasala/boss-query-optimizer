@@ -95,10 +95,7 @@ CLogicalInnerJoin::PxfsCandidates(CMemoryPool *mp) const
 	(void) xform_set->ExchangeSet(CXform::ExfInnerJoinAntiSemiJoinNotInSwap);
 
 	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
-	std::vector<CXform::EXformId> xformIds = registry->GetRelevantTransformsForOperator(Eopid());
-  for (size_t i = 0; i < xformIds.size(); i++) {
-    (void) xform_set->ExchangeSet(xformIds[i]);
-  }
+	registry->AddTransformsToXFormSet(Eopid(), xform_set);
 
 	return xform_set;
 }

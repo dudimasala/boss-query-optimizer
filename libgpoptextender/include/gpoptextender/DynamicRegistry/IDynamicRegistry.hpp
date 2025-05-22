@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include "gpopt/xforms/CXform.h"    // for CXform::EXformId
+#include "gpoptextender/DynamicRegistry/DynamicOperatorArgs.hpp"
 
 namespace orcaextender {
 using namespace gpos;
@@ -14,8 +15,9 @@ struct IDynamicRegistry {
     virtual ~IDynamicRegistry() {}
     virtual std::vector<CXform::EXformId>
         GetRelevantTransformsForOperator(COperator::EOperatorId opId) = 0;
-    virtual std::vector<gpopt::COperator*> GetRelevantOperatorsForTransform(CXform::EXformId transformId, void* opaqueArgs) = 0;
+    virtual std::vector<gpopt::COperator*> GetRelevantOperatorsForTransform(CXform::EXformId transformId, DynamicOperatorArgs& args) = 0;
     virtual std::vector<COperator::EOperatorId> GetProjectOperators() = 0;
+    virtual void AddTransformsToXFormSet(COperator::EOperatorId opId, CXformSet* xformSet) = 0;
 };
 
 // Factory function – C linkage keeps name-mangling simple.

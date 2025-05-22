@@ -3,6 +3,7 @@
 #include "gpoptextender/CostModel/BOSSCostModel.hpp"
 #include "gpopt/xforms/CXform.h"
 #include "gpopt/xforms/CXformFactory.h"
+#include "gpoptextender/DynamicRegistry/DynamicOperatorArgs.hpp"
 #include <unordered_set>
 
 namespace orcaextender {
@@ -13,7 +14,7 @@ using namespace gpmd;
 class DynamicRegistry {   
   private:
     typedef std::function<CCost(CMemoryPool*, CExpressionHandle&, const BOSSCostModel*, const ICostModel::SCostingInfo*)> FnCost;
-    typedef std::function<COperator*(void*)> FnOperatorFactory;
+    typedef std::function<COperator*(DynamicOperatorArgs&)> FnOperatorFactory;
 
     DynamicRegistry(BOSSCostModel* costModel);
     static DynamicRegistry* s_pInstance;
@@ -70,13 +71,15 @@ class DynamicRegistry {
 
 
     COperator::EOperatorId GetOperatorId(CEngineSpec::EEngineType engine, const std::string& opName, bool throwError = true);
-    std::vector<COperator*> GetRelevantOperatorsForTransform(CXform::EXformId transformId, void* args);
+    std::vector<COperator*> GetRelevantOperatorsForTransform(CXform::EXformId transformId, DynamicOperatorArgs& args);
     std::vector<CXform::EXformId> GetRelevantTransformsForOperator(COperator::EOperatorId opId);
     CXform::EXformId GetTransformId(const std::string& transformName, bool throwError = true);
     CEngineSpec::EEngineType GetEngineType(const std::string& engineName, bool throwError = true);
     std::unordered_map<std::string, std::vector<std::string>>& GetAllOperators() { return engineToOperatorNames; };
     std::unordered_set<COperator::EOperatorId> GetPassThroughOperators() { return passThroughOperators; };
     std::unordered_set<COperator::EOperatorId> GetProjectOperators() { return projectOperators; };
+
+    void AddTransformsToXFormSet(COperator::EOperatorId opId, CXformSet* xformSet);
 
 };
 }  // namespace orcaextender
