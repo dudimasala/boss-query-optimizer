@@ -3537,6 +3537,42 @@
         <dxl:UpperBound Closed="false" TypeMdid="0.23.1.0" Value="70"/>
       </dxl:StatsBucket>
     </dxl:ColumnStatistics>
+    <!-- <dxl:ColumnStatistics Mdid="1.55555.1.1.0" Name="n_nationkey" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
+      <dxl:StatsBucket Frequency="1.000000" DistinctValues="25.000000">
+        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="0"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="1000000"/>
+      </dxl:StatsBucket>
+    </dxl:ColumnStatistics>
+    <dxl:ColumnStatistics Mdid="1.77777.1.1.3" Name="s_nationkey" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
+      <dxl:StatsBucket Frequency="1.000000" DistinctValues="25.000000">
+        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="0"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="1000000"/>
+      </dxl:StatsBucket>
+    </dxl:ColumnStatistics>
+    <dxl:ColumnStatistics Mdid="1.33333.1.1.0" Name="o_orderkey" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
+      <dxl:StatsBucket Frequency="1.000000" DistinctValues="1500000.000000">
+        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="1"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="10000000"/>
+      </dxl:StatsBucket>
+    </dxl:ColumnStatistics>
+    <dxl:ColumnStatistics Mdid="1.11111.1.1.0" Name="l_orderkey" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
+      <dxl:StatsBucket Frequency="1.000000" DistinctValues="1500000.000000">
+        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="1"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="10000000"/>
+      </dxl:StatsBucket>
+    </dxl:ColumnStatistics>
+        <dxl:ColumnStatistics Mdid="1.66666.1.1.0" Name="p_partkey" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
+      <dxl:StatsBucket Frequency="1.000000" DistinctValues="200000.000000">
+        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="1"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="10000000"/>
+      </dxl:StatsBucket>
+    </dxl:ColumnStatistics>
+    <dxl:ColumnStatistics Mdid="1.88888.1.1.0" Name="ps_partkey" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
+      <dxl:StatsBucket Frequency="1.000000" DistinctValues="200000.000000">
+        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="1"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="10000000"/>
+      </dxl:StatsBucket>
+    </dxl:ColumnStatistics> -->
     <dxl:Relation Mdid="0.330308.1.1" Name="customer" IsTemporary="false" StorageType="Heap" DistributionPolicy="Hash" DistributionColumns="0" Keys="0">
       <dxl:Columns>
         <dxl:Column Name="cn" Attno="1" Mdid="0.23.1.0" Nullable="false" ColWidth="4">

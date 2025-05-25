@@ -41,7 +41,6 @@ class DynamicRegistry {
     std::unordered_map<std::pair<CEngineSpec::EEngineType, std::string>, COperator::EOperatorId, EngineStringPairHash> opEngineAndNameToOperatorId = {};
     std::unordered_map<std::string, CXform::EXformId> transformNameToTransformId = {};
     std::unordered_map<std::string, CEngineSpec::EEngineType> engineNameToEngineType = {};
-    std::unordered_set<COperator::EOperatorId> passThroughOperators = {};
     std::unordered_set<COperator::EOperatorId> projectOperators = {};
 
     std::unordered_map<COperator::EOperatorId, std::vector<CXform::EXformId>> relevantTransforms = {};
@@ -53,7 +52,7 @@ class DynamicRegistry {
 
     ~DynamicRegistry();
 
-    void RegisterPhysicalOperator(const std::string& opName, CEngineSpec::EEngineType engine, FnCost costFunc, bool isPassThrough = false);
+    void RegisterPhysicalOperator(const std::string& opName, CEngineSpec::EEngineType engine, FnCost costFunc);
     void RegisterLogicalOperator(const std::string& opName, CEngineSpec::EEngineType engine, bool isAProject = false);
     void RegisterTransform(const std::string& transformName, CXform* transform);
     void RegisterEngine(const std::string& engineName);
@@ -76,8 +75,8 @@ class DynamicRegistry {
     CXform::EXformId GetTransformId(const std::string& transformName, bool throwError = true);
     CEngineSpec::EEngineType GetEngineType(const std::string& engineName, bool throwError = true);
     std::unordered_map<std::string, std::vector<std::string>>& GetAllOperators() { return engineToOperatorNames; };
-    std::unordered_set<COperator::EOperatorId> GetPassThroughOperators() { return passThroughOperators; };
     std::unordered_set<COperator::EOperatorId> GetProjectOperators() { return projectOperators; };
+    ICostModelParams* GetCostModelParams(CEngineSpec::EEngineType engine) { return costModel->GetCostModelParams(engine); };
 
     void AddTransformsToXFormSet(COperator::EOperatorId opId, CXformSet* xformSet);
 
