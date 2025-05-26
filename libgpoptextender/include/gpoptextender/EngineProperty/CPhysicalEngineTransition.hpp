@@ -21,12 +21,16 @@ class CPhysicalEngineTransition : public CBasePhysicalUnaryOp
 private:
     // Target engine
     CEngineSpec *m_pes;
+    bool m_preserve_order;
+    bool m_preserve_distribution;
 
 public:
     // Ctor
-    CPhysicalEngineTransition(CMemoryPool *mp, CEngineSpec *pes)
+    CPhysicalEngineTransition(CMemoryPool *mp, CEngineSpec *pes, bool preserve_order, bool preserve_distribution)
         : CBasePhysicalUnaryOp(mp),
-          m_pes(pes)
+          m_pes(pes),
+          m_preserve_order(preserve_order),
+          m_preserve_distribution(preserve_distribution)
     {
     }
 
@@ -97,6 +101,9 @@ public:
 
 	virtual COrderSpec* PosDerive(CMemoryPool *mp, CExpressionHandle &exprhdl) const
 {
+	if (m_preserve_order) {
+		return PosDerivePassThruOuter(exprhdl);
+	}
 	// Return empty order spec to indicate no order is preserved
 	return GPOS_NEW(mp) COrderSpec(mp);
 }
@@ -104,6 +111,9 @@ public:
 virtual CDistributionSpec* PdsDerive(CMemoryPool *mp, CExpressionHandle &exprhdl) const
 {
 	// Return singleton distribution to indicate this is a property-breaking operator
+	if (m_preserve_distribution) {
+		return PdsDerivePassThruOuter(exprhdl);
+	}
 	return GPOS_NEW(mp) CDistributionSpecSingleton();
 }
 

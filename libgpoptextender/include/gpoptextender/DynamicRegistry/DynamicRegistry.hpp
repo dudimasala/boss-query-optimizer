@@ -47,6 +47,12 @@ class DynamicRegistry {
 			}
 	};
 
+  struct EnginePairHash {
+    std::size_t operator()(const std::pair<CEngineSpec::EEngineType, CEngineSpec::EEngineType>& p) const {
+      return std::hash<int>{}(static_cast<int>(p.first)) ^ (std::hash<int>{}(static_cast<int>(p.second)) << 1);
+    }
+  };
+
 
     std::unordered_map<std::pair<CEngineSpec::EEngineType, std::string>, COperator::EOperatorId, EngineStringPairHash> opEngineAndNameToOperatorId = {};
     std::unordered_map<std::string, CXform::EXformId> transformNameToTransformId = {};
@@ -56,6 +62,8 @@ class DynamicRegistry {
     std::unordered_map<COperator::EOperatorId, std::vector<CXform::EXformId>> relevantTransforms = {};
     std::unordered_map<CXform::EXformId, std::vector<FnOperatorFactory>> opFactories = {};
     std::unordered_map<std::string, std::vector<std::string>> engineToOperatorNames = {}; // for querying.
+    std::unordered_map<std::pair<CEngineSpec::EEngineType, CEngineSpec::EEngineType>, bool, EnginePairHash> enginePreserveOrder = {};
+    std::unordered_map<std::pair<CEngineSpec::EEngineType, CEngineSpec::EEngineType>, bool, EnginePairHash> enginePreserveDistribution = {};
   public:
     static DynamicRegistry* GetInstance();
     static void Init(CMemoryPool* mp, BOSSCostModel* costModel);
@@ -75,10 +83,19 @@ class DynamicRegistry {
       costModel->RegisterCostModelParams(engine, pcp);
     };
 
-    void RegisterEngineTransform(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to, FnCost fn_cost) {
+    void RegisterEngineTransform(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to, FnCost fn_cost, bool preserve_order = false, bool preserve_distribution = false) {
       costModel->RegisterEngineTransform(from, to, fn_cost);
+      enginePreserveOrder[std::make_pair(from, to)] = preserve_order;
+      enginePreserveDistribution[std::make_pair(from, to)] = preserve_distribution;
     };
 
+    bool GetEnginePreserveOrder(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to) {
+      return enginePreserveOrder[std::make_pair(from, to)];
+    }
+
+    bool GetEnginePreserveDistribution(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to) {
+      return enginePreserveDistribution[std::make_pair(from, to)];
+    }
 
     COperator::EOperatorId GetOperatorId(CEngineSpec::EEngineType engine, const std::string& opName, bool throwError = true);
     std::vector<COperator*> GetRelevantOperatorsForTransform(CXform::EXformId transformId, DynamicOperatorArgs& args);
