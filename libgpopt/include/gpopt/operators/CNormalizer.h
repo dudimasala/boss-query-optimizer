@@ -15,6 +15,7 @@
 #include "gpos/base.h"
 
 #include "gpopt/operators/CExpression.h"
+#include <vector>
 
 namespace gpopt
 {
@@ -30,7 +31,7 @@ using namespace gpos;
 //---------------------------------------------------------------------------
 class CNormalizer
 {
-private:
+public:
 	// definition of push through function
 	typedef void(FnPushThru)(CMemoryPool *mp, CExpression *pexprLogical,
 							 CExpression *pexprConj,
@@ -46,6 +47,8 @@ private:
 	//---------------------------------------------------------------------------
 	struct SPushThru
 	{
+		SPushThru(COperator::EOperatorId eopid, FnPushThru *pfnpt) : m_eopid(eopid), m_pfnpt(pfnpt) {}
+
 		// logical operator id
 		COperator::EOperatorId m_eopid;
 
@@ -54,8 +57,11 @@ private:
 
 	};	// struct SPushThru
 
+private:
 	// array of mappings
-	static const SPushThru m_rgpt[];
+	// static const SPushThru m_rgpt[];
+	static std::vector<SPushThru> m_rgpt;
+	static std::vector<SPushThru> CreatePushThruVector();
 
 	//  return true if second expression is a child of first expression
 	static BOOL FChild(CExpression *pexpr, CExpression *pexprChild);
@@ -182,6 +188,10 @@ public:
 	// combine consecutive projects if possible
 	static CExpression *PexprPullUpProjections(CMemoryPool *mp,
 											   CExpression *pexpr);
+
+	static void AddPushThru(SPushThru pushThru) {
+      m_rgpt.push_back(pushThru);
+  }
 
 };	// class CNormalizer
 }  // namespace gpopt

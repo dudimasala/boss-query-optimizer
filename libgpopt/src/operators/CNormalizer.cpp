@@ -22,34 +22,40 @@
 using namespace gpopt;
 
 
+std::vector<CNormalizer::SPushThru> CNormalizer::CreatePushThruVector() {
+    std::vector<CNormalizer::SPushThru> v;
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalSelect, PushThruSelect));
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalProject, PushThruUnaryWithScalarChild));
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalSequenceProject, PushThruSeqPrj));
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalGbAgg, PushThruUnaryWithScalarChild));
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalCTEAnchor, PushThruUnaryWithoutScalarChild));
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalUnion, PushThruSetOp));
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalUnionAll, PushThruSetOp));
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalIntersect, PushThruSetOp));
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalIntersectAll, PushThruSetOp));
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalDifference, PushThruSetOp));
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalDifferenceAll, PushThruSetOp));
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalInnerJoin, PushThruJoin));
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalNAryJoin, PushThruJoin));
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalInnerApply, PushThruJoin));
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalInnerCorrelatedApply, PushThruJoin));
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalLeftOuterJoin, PushThruJoin));
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalLeftOuterApply, PushThruJoin));
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalLeftOuterCorrelatedApply, PushThruJoin));
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalLeftSemiApply, PushThruJoin));
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalLeftSemiApplyIn, PushThruJoin));
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalLeftSemiCorrelatedApplyIn, PushThruJoin));
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalLeftAntiSemiApply, PushThruJoin));
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalLeftAntiSemiApplyNotIn, PushThruJoin));
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalLeftAntiSemiCorrelatedApplyNotIn, PushThruJoin));
+    v.push_back(CNormalizer::SPushThru(COperator::EopLogicalLeftSemiJoin, PushThruJoin));
+    
+    return v;
+}
+
+
 // initialization of push through handler
-const CNormalizer::SPushThru CNormalizer::m_rgpt[] = {
-	{COperator::EopLogicalSelect, PushThruSelect},
-	{COperator::EopLogicalProject, PushThruUnaryWithScalarChild},
-	{COperator::EopLogicalSequenceProject, PushThruSeqPrj},
-	{COperator::EopLogicalGbAgg, PushThruUnaryWithScalarChild},
-	{COperator::EopLogicalCTEAnchor, PushThruUnaryWithoutScalarChild},
-	{COperator::EopLogicalUnion, PushThruSetOp},
-	{COperator::EopLogicalUnionAll, PushThruSetOp},
-	{COperator::EopLogicalIntersect, PushThruSetOp},
-	{COperator::EopLogicalIntersectAll, PushThruSetOp},
-	{COperator::EopLogicalDifference, PushThruSetOp},
-	{COperator::EopLogicalDifferenceAll, PushThruSetOp},
-	{COperator::EopLogicalInnerJoin, PushThruJoin},
-	{COperator::EopLogicalNAryJoin, PushThruJoin},
-	{COperator::EopLogicalInnerApply, PushThruJoin},
-	{COperator::EopLogicalInnerCorrelatedApply, PushThruJoin},
-	{COperator::EopLogicalLeftOuterJoin, PushThruJoin},
-	{COperator::EopLogicalLeftOuterApply, PushThruJoin},
-	{COperator::EopLogicalLeftOuterCorrelatedApply, PushThruJoin},
-	{COperator::EopLogicalLeftSemiApply, PushThruJoin},
-	{COperator::EopLogicalLeftSemiApplyIn, PushThruJoin},
-	{COperator::EopLogicalLeftSemiCorrelatedApplyIn, PushThruJoin},
-	{COperator::EopLogicalLeftAntiSemiApply, PushThruJoin},
-	{COperator::EopLogicalLeftAntiSemiApplyNotIn, PushThruJoin},
-	{COperator::EopLogicalLeftAntiSemiCorrelatedApplyNotIn, PushThruJoin},
-	{COperator::EopLogicalLeftSemiJoin, PushThruJoin},
-};
+std::vector<CNormalizer::SPushThru> CNormalizer::m_rgpt = CreatePushThruVector();
 
 
 //---------------------------------------------------------------------------
@@ -1063,7 +1069,7 @@ CNormalizer::PushThru(CMemoryPool *mp, CExpression *pexprLogical,
 
 	FnPushThru *pfnpt = NULL;
 	COperator::EOperatorId op_id = pexprLogical->Pop()->Eopid();
-	const ULONG size = GPOS_ARRAY_SIZE(m_rgpt);
+	const ULONG size = m_rgpt.size();
 	// find the push thru function corresponding to the given operator
 	for (ULONG ul = 0; pfnpt == NULL && ul < size; ul++)
 	{

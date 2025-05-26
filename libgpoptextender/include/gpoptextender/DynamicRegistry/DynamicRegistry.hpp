@@ -5,6 +5,7 @@
 #include "gpopt/xforms/CXformFactory.h"
 #include "gpoptextender/DynamicRegistry/DynamicOperatorArgs.hpp"
 #include "gpoptextender/Translation/Converter.hpp"
+#include "gpopt/operators/CNormalizer.h"
 #include "BOSSToCExpression.hpp"
 #include "CExpressionToBOSS.hpp"
 #include "b2cDefaultTypes.hpp"
@@ -156,6 +157,11 @@ class DynamicRegistry {
     void RegisterCExpression2BOSSScalarTranslator(std::unique_ptr<cexpressiontoboss::translation::ScalarTranslatorBase<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>> translator, const std::string& converterName = DefaultTranslatorName) {
       cexpressiontoboss::CExpressionToBOSSConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>* typedConverter = GetCExpression2BOSSConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>(converterName);
       typedConverter->RegisterScalarTranslator(std::move(translator));
+    };
+
+    void RegisterNormalizerRule(COperator::EOperatorId opId, CNormalizer::FnPushThru pushThruFn) {
+      CNormalizer::SPushThru pushThru(opId, pushThruFn);
+      CNormalizer::AddPushThru(pushThru);
     };
 
 };
