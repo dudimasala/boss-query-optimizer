@@ -1,4 +1,6 @@
 #include "gpoptextender/DynamicRegistry/DynamicRegistry.hpp"
+
+
 using namespace orcaextender;
 
 DynamicRegistry* DynamicRegistry::s_pInstance = nullptr;
@@ -7,6 +9,8 @@ DynamicRegistry::DynamicRegistry(BOSSCostModel* costModel) : costModel(costModel
   currentOperatorId = COperator::EopDynamicStart;
   currentTransformId = CXform::ExfDynamicStart;
   currentEngineType = CEngineSpec::EetDynamicStart;
+  boss2cexpressionConverters[DefaultTranslatorName] = std::make_unique<bosstocexpression::BOSSToCExpressionConverter<bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::ColRefMap>>();
+  cexpression2bossConverters[DefaultTranslatorName] = std::make_unique<cexpressiontoboss::CExpressionToBOSSConverter<cexpressiontoboss::translation::EmptyStruct, cexpressiontoboss::translation::ProjectInfo, cexpressiontoboss::translation::ColSet, cexpressiontoboss::translation::EmptyStruct>>();
   // TODO: populate with default (orca) operators and transforms.
 }
 

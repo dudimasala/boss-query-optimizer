@@ -16,6 +16,9 @@ target_include_directories(gpoptextender
     "${PROJECT_SOURCE_DIR}/libgpopt/include"
     "${PROJECT_SOURCE_DIR}/libnaucrates/include"
     "${PROJECT_BINARY_DIR}/libgpos/include"
+    "${CMAKE_SOURCE_DIR}/integration/CExpressionToBOSS/include"
+    "${CMAKE_SOURCE_DIR}/integration/BOSSToCExpression/include"
+    ${CMAKE_SOURCE_DIR}/BOSS/Source
 )
 
 

@@ -15,8 +15,12 @@ class Engine {
       if (DynamicRegistry::GetInstance()->GetEngineType(m_engineName, false) == CEngineSpec::EEngineType::EetSentinel) {
         DynamicRegistry::GetInstance()->RegisterEngine(m_engineName); 
       }
-      m_engineType = DynamicRegistry::GetInstance()->GetEngineType(m_engineName);
+      m_engineType = DynamicRegistry::GetInstance()->GetEngineType(m_engineName, true);
     }
+
+    virtual void RegisterNewBOSS2CExpressionConverter() {};
+    virtual void RegisterNewCExpression2BOSSConverter() {};
+
 
     virtual void RegisterCostModelParams() = 0; // register cost constants.
     virtual void RegisterOperators() = 0; // register cost ops.
@@ -29,8 +33,27 @@ class Engine {
 
     virtual void RegisterEngineTransforms() = 0;
 
+    virtual void RegisterDefaultB2CTranslator(std::unique_ptr<bosstocexpression::TranslatorBase<bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::ColRefMap>> translator) {
+      DynamicRegistry::GetInstance()->RegisterBOSS2CExpressionTranslator(std::move(translator));
+    };
+
+    virtual void RegisterDefaultB2CScalarTranslator(std::unique_ptr<bosstocexpression::ScalarTranslatorBase<bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::ColRefMap>> translator) {
+      DynamicRegistry::GetInstance()->RegisterBOSS2CExpressionScalarTranslator(std::move(translator));
+    };
+
+    virtual void RegisterDefaultC2BTranslator(std::unique_ptr<cexpressiontoboss::translation::TranslatorBase<cexpressiontoboss::translation::EmptyStruct, cexpressiontoboss::translation::ProjectInfo, cexpressiontoboss::translation::ColSet, cexpressiontoboss::translation::EmptyStruct>> translator) {
+      DynamicRegistry::GetInstance()->RegisterCExpression2BOSSTranslator(std::move(translator));
+    };
+
+    virtual void RegisterDefaultC2BScalarTranslator(std::unique_ptr<cexpressiontoboss::translation::ScalarTranslatorBase<cexpressiontoboss::translation::EmptyStruct, cexpressiontoboss::translation::ProjectInfo, cexpressiontoboss::translation::ColSet, cexpressiontoboss::translation::EmptyStruct>> translator) {
+      DynamicRegistry::GetInstance()->RegisterCExpression2BOSSScalarTranslator(std::move(translator));
+    };
+
+
     virtual void Enforce() {
       UpdateEngineType();
+      RegisterNewBOSS2CExpressionConverter();
+      RegisterNewCExpression2BOSSConverter();
       RegisterCostModelParams();
       RemoveOperators();
       RemoveTransforms();

@@ -4,6 +4,11 @@
 #include "gpopt/xforms/CXform.h"
 #include "gpopt/xforms/CXformFactory.h"
 #include "gpoptextender/DynamicRegistry/DynamicOperatorArgs.hpp"
+#include "gpoptextender/Translation/Converter.hpp"
+#include "BOSSToCExpression.hpp"
+#include "CExpressionToBOSS.hpp"
+#include "b2cDefaultTypes.hpp"
+#include "c2bDefaultTypes.hpp"
 #include <unordered_set>
 
 namespace orcaextender {
@@ -23,6 +28,10 @@ class DynamicRegistry {
     CXform::EXformId currentTransformId;
     BOSSCostModel* costModel;
     CEngineSpec::EEngineType currentEngineType;
+
+
+    std::map<std::string, std::unique_ptr<Converter>> boss2cexpressionConverters;
+    std::map<std::string, std::unique_ptr<Converter>> cexpression2bossConverters;
 
 	// First, create a hash struct for the pair
 	struct EngineStringPairHash {
@@ -49,6 +58,7 @@ class DynamicRegistry {
   public:
     static DynamicRegistry* GetInstance();
     static void Init(CMemoryPool* mp, BOSSCostModel* costModel);
+    inline static const std::string& DefaultTranslatorName = "DEFAULT";
 
     ~DynamicRegistry();
 
@@ -79,6 +89,74 @@ class DynamicRegistry {
     ICostModelParams* GetCostModelParams(CEngineSpec::EEngineType engine) { return costModel->GetCostModelParams(engine); };
 
     void AddTransformsToXFormSet(COperator::EOperatorId opId, CXformSet* xformSet);
+
+    template <typename RetAuxType, typename InpAuxType, typename RetScalarAuxType, typename InpScalarAuxType>
+    void RegisterBOSS2CExpressionConverter(const std::string& converterName, bosstocexpression::BOSSToCExpressionConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>& converter) { 
+      if (converterName == DefaultTranslatorName) {
+        throw std::invalid_argument("Default translator name cannot be used for registering a converter.");
+      }
+      boss2cexpressionConverters[converterName] = converter; 
+    };
+
+    template <typename RetAuxType, typename InpAuxType, typename RetScalarAuxType, typename InpScalarAuxType>
+    void RegisterCExpression2BOSSConverter(const std::string& converterName, cexpressiontoboss::CExpressionToBOSSConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>& converter) { 
+      if (converterName == DefaultTranslatorName) {
+        throw std::invalid_argument("Default translator name cannot be used for registering a converter.");
+      }
+      cexpression2bossConverters[converterName] = converter; 
+    };
+
+    template <typename RetAuxType, typename InpAuxType, typename RetScalarAuxType, typename InpScalarAuxType>
+    cexpressiontoboss::CExpressionToBOSSConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>* GetCExpression2BOSSConverter(const std::string& converterName = DefaultTranslatorName) { 
+      cexpressiontoboss::CExpressionToBOSSConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>* typedConverter = dynamic_cast<cexpressiontoboss::CExpressionToBOSSConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>*>(cexpression2bossConverters[converterName].get());
+      if (typedConverter == nullptr) {
+        std::cerr << "typedConverter is nullptr" << std::endl;
+        throw std::invalid_argument("CExpression2BOSS converter is not of the correct type for converter name: " + converterName);
+      }
+      return typedConverter;
+    };
+
+    template <typename RetAuxType, typename InpAuxType, typename RetScalarAuxType, typename InpScalarAuxType>
+    bosstocexpression::BOSSToCExpressionConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>* GetBOSS2CExpressionConverter(const std::string& converterName = DefaultTranslatorName) { 
+      bosstocexpression::BOSSToCExpressionConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>* typedConverter = dynamic_cast<bosstocexpression::BOSSToCExpressionConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>*>(boss2cexpressionConverters[converterName].get());
+      if (typedConverter == nullptr) {
+        std::cerr << "typedConverter is nullptr" << std::endl;
+        throw std::invalid_argument("BOSS2CExpression converter is not of the correct type for converter name: " + converterName);
+      }
+      return typedConverter;
+    };
+
+    cexpressiontoboss::CExpressionToBOSSConverter<cexpressiontoboss::translation::EmptyStruct, cexpressiontoboss::translation::ProjectInfo, cexpressiontoboss::translation::ColSet, cexpressiontoboss::translation::EmptyStruct>* GetDefaultCExpression2BOSSConverter() { 
+      return GetCExpression2BOSSConverter<cexpressiontoboss::translation::EmptyStruct, cexpressiontoboss::translation::ProjectInfo, cexpressiontoboss::translation::ColSet, cexpressiontoboss::translation::EmptyStruct>(DefaultTranslatorName);
+    };
+
+    bosstocexpression::BOSSToCExpressionConverter<bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::ColRefMap>* GetDefaultBOSS2CExpressionConverter() { 
+      return GetBOSS2CExpressionConverter<bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::ColRefMap>(DefaultTranslatorName);
+    };
+
+    template <typename RetAuxType, typename InpAuxType, typename RetScalarAuxType, typename InpScalarAuxType>
+    void RegisterBOSS2CExpressionTranslator(std::unique_ptr<bosstocexpression::TranslatorBase<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>> translator, const std::string& converterName = DefaultTranslatorName) {
+      bosstocexpression::BOSSToCExpressionConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>* typedConverter = GetBOSS2CExpressionConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>(converterName);
+      typedConverter->RegisterTranslator(std::move(translator));
+    };
+
+    template <typename RetAuxType, typename InpAuxType, typename RetScalarAuxType, typename InpScalarAuxType>
+    void RegisterBOSS2CExpressionScalarTranslator(std::unique_ptr<bosstocexpression::ScalarTranslatorBase<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>> translator, const std::string& converterName = DefaultTranslatorName) {
+      bosstocexpression::BOSSToCExpressionConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>* typedConverter = GetBOSS2CExpressionConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>(converterName);
+      typedConverter->RegisterScalarTranslator(std::move(translator));
+    };
+
+    template <typename RetAuxType, typename InpAuxType, typename RetScalarAuxType, typename InpScalarAuxType>
+    void RegisterCExpression2BOSSTranslator(std::unique_ptr<cexpressiontoboss::translation::TranslatorBase<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>> translator, const std::string& converterName = DefaultTranslatorName) {
+      cexpressiontoboss::CExpressionToBOSSConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>* typedConverter = GetCExpression2BOSSConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>(converterName);
+      typedConverter->RegisterTranslator(std::move(translator));
+    };
+
+    template <typename RetAuxType, typename InpAuxType, typename RetScalarAuxType, typename InpScalarAuxType>
+    void RegisterCExpression2BOSSScalarTranslator(std::unique_ptr<cexpressiontoboss::translation::ScalarTranslatorBase<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>> translator, const std::string& converterName = DefaultTranslatorName) {
+      cexpressiontoboss::CExpressionToBOSSConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>* typedConverter = GetCExpression2BOSSConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>(converterName);
+      typedConverter->RegisterScalarTranslator(std::move(translator));
+    };
 
 };
 }  // namespace orcaextender
