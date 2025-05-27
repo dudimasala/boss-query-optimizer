@@ -1,3 +1,5 @@
+#pragma once
+
 #include "gpoptextender/DynamicRegistry/DynamicRegistry.hpp"
 
 namespace orcaextender {

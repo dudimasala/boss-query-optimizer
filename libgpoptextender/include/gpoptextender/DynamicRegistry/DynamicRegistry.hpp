@@ -105,6 +105,7 @@ class DynamicRegistry {
     std::unordered_map<std::string, std::vector<std::string>>& GetAllOperators() { return engineToOperatorNames; };
     std::unordered_set<COperator::EOperatorId> GetProjectOperators() { return projectOperators; };
     ICostModelParams* GetCostModelParams(CEngineSpec::EEngineType engine) { return costModel->GetCostModelParams(engine); };
+    BOSSCostModel* GetCostModel() { return costModel; };
 
     void AddTransformsToXFormSet(COperator::EOperatorId opId, CXformSet* xformSet);
 
