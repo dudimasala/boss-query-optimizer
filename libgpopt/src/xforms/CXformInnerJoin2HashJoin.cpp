@@ -57,6 +57,39 @@ CXformInnerJoin2HashJoin::CXformInnerJoin2HashJoin(CMemoryPool *mp)
 CXform::EXformPromise
 CXformInnerJoin2HashJoin::Exfp(CExpressionHandle &exprhdl) const
 {
+  // CExpression *pred = exprhdl.PexprScalarExactChild(2);
+	// if (pred->Pop()->Eopid() == COperator::EopScalarBoolOp) {
+	// 	if (pred->Arity() > 2) {
+	// 		return CXform::ExfpNone;
+	// 	} else {
+	// 		CExpression *left = (*pred)[0];
+	// 		CExpression *right = (*pred)[1];
+	// 		if (left->Pop()->Eopid() == COperator::EopScalarCmp && right->Pop()->Eopid() == COperator::EopScalarCmp) {
+	// 			CExpression *leftChild1 = (*left)[0];
+	// 			CExpression *leftChild2 = (*left)[1];
+	// 			CExpression *rightChild1 = (*right)[0];
+	// 			CExpression *rightChild2 = (*right)[1];
+	// 			if (leftChild1->Pop()->Eopid() == COperator::EopScalarIdent && leftChild2->Pop()->Eopid() == COperator::EopScalarIdent && rightChild1->Pop()->Eopid() == COperator::EopScalarIdent && rightChild2->Pop()->Eopid() == COperator::EopScalarIdent) {
+	// 				std::cout << "here" << std::endl;
+	// 				const CColRef *pcrLeft1 = CScalarIdent::PopConvert(leftChild1->Pop())->Pcr();
+	// 				const CColRef *pcrLeft2 = CScalarIdent::PopConvert(leftChild2->Pop())->Pcr();
+	// 				const CColRef *pcrRight1 = CScalarIdent::PopConvert(rightChild1->Pop())->Pcr();
+	// 				const CColRef *pcrRight2 = CScalarIdent::PopConvert(rightChild2->Pop())->Pcr();
+	// 				std::wcout << pcrLeft1->Name().Pstr()->GetBuffer() << std::endl;
+	// 				std::wcout << pcrRight1->Name().Pstr()->GetBuffer() << std::endl;
+	// 				std::wcout << pcrLeft2->Name().Pstr()->GetBuffer() << std::endl;
+	// 				std::wcout << pcrRight2->Name().Pstr()->GetBuffer() << std::endl;
+
+	// 				if (pcrLeft1->Name().Pstr()->GetBuffer()[0] != pcrRight1->Name().Pstr()->GetBuffer()[0] || pcrLeft2->Name().Pstr()->GetBuffer()[0] != pcrRight2->Name().Pstr()->GetBuffer()[0]) {
+	// 					std::cout << "here2" << std::endl;
+	// 					return CXform::ExfpNone;
+	// 				}
+	// 				std::cout << CXformUtils::ExfpLogicalJoin2PhysicalJoin(exprhdl) << std::endl;
+	// 			}
+	// 		}
+	// 	}
+	// }
+
 	return CXformUtils::ExfpLogicalJoin2PhysicalJoin(exprhdl);
 }
 

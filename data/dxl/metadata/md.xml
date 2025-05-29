@@ -1782,25 +1782,25 @@
         <dxl:Column Name="p_partkey" Attno="1" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="p_name" Attno="2" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="p_retailprice" Attno="2" Mdid="0.701.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="p_mfgr" Attno="3" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="p_name" Attno="3" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="p_brand" Attno="4" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="p_mfgr" Attno="4" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="p_type" Attno="5" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="p_brand" Attno="5" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="p_size" Attno="6" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="p_type" Attno="6" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="p_container" Attno="7" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="p_size" Attno="7" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="p_retailprice" Attno="8" Mdid="0.701.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="p_container" Attno="8" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
         <dxl:Column Name="p_comment" Attno="9" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
@@ -3603,6 +3603,20 @@
         <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="200001"/>
       </dxl:StatsBucket>
     </dxl:ColumnStatistics>
+    <!-- <dxl:ColumnStatistics Mdid="1.66666.1.1.1" Name="p_retailprice" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
+      <dxl:StatsBucket Frequency="0.3333" DistinctValues="100.000000">
+        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="1000"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="1100"/>
+      </dxl:StatsBucket> -->
+      <!-- <dxl:StatsBucket Frequency="0.050000" DistinctValues="20.000000">
+        <dxl:LowerBound Closed="true" TypeMdid="0.701.1.0" Value="AAAAAABoj0A=" DoubleValue="1005.000000"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.701.1.0" Value="AAAAAAAIkUA=" DoubleValue="1090.000000"/>
+      </dxl:StatsBucket>
+      <dxl:StatsBucket Frequency="0.150000" DistinctValues="1000.000000">
+        <dxl:LowerBound Closed="true" TypeMdid="0.701.1.0" Value="AAAAAAAIkUA=" DoubleValue="1090.000000"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.701.1.0" Value="AAAAAACIw0A=" DoubleValue="10000.000000"/>
+      </dxl:StatsBucket> -->
+    <!-- </dxl:ColumnStatistics> -->
     <dxl:ColumnStatistics Mdid="1.77777.1.1.0" Name="s_suppkey" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
       <dxl:StatsBucket Frequency="1.000000" DistinctValues="10000.000000">
         <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="0"/>
