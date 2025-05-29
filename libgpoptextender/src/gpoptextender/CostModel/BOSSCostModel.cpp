@@ -994,10 +994,10 @@ BOSSCostModel::CostHashJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 			(
 				// cost of building hash table
 				dRowsInner * (ulColsUsed * dHJHashTableColumnCostUnit +
-							  dWidthInner * dHJHashTableWidthCostUnit) * 10 +
+							  dWidthInner * dHJHashTableWidthCostUnit) +
 				// cost of feeding outer tuples
-				ulColsUsed * num_rows_outer * dJoinFeedingTupColumnCostUnit * 0 +
-				dWidthOuter * num_rows_outer * dJoinFeedingTupWidthCostUnit * 0 +
+				ulColsUsed * num_rows_outer * dJoinFeedingTupColumnCostUnit +
+				dWidthOuter * num_rows_outer * dJoinFeedingTupWidthCostUnit +
 				// cost of matching inner tuples
 				dWidthInner * dRowsInner * dHJHashingTupWidthCostUnit +
 				// cost of output tuples
