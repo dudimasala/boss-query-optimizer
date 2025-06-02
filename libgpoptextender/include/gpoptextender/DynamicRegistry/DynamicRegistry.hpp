@@ -35,6 +35,8 @@ class DynamicRegistry {
     std::map<std::string, std::unique_ptr<Converter>> boss2cexpressionConverters;
     std::map<std::string, std::unique_ptr<Converter>> cexpression2bossConverters;
 
+    std::string metadataFilePath;
+
 	// First, create a hash struct for the pair
 	struct EngineStringPairHash {
 			std::size_t operator()(const std::pair<CEngineSpec::EEngineType, std::string>& p) const {
@@ -189,6 +191,14 @@ class DynamicRegistry {
         rules.push_back(rule.second);
       }
       return rules;
+    }
+
+    void RegisterMetadataFilePath(const std::string& filePath) {
+      metadataFilePath = filePath;
+    }
+
+    std::string GetMetadataFilePath() {
+      return metadataFilePath;
     }
 
 

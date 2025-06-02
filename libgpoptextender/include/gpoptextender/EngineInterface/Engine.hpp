@@ -32,6 +32,7 @@ class Engine {
     virtual void RemoveTransforms() = 0; // remove transforms
 
     virtual void RegisterEngineTransforms() = 0;
+    virtual void RegisterMetadataFilePath() = 0;
 
     // helpers
     virtual void RegisterDefaultB2CTranslator(std::unique_ptr<bosstocexpression::TranslatorBase<bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::ColRefMap>> translator) {
@@ -53,6 +54,7 @@ class Engine {
 
     virtual void Load() {
       UpdateEngineType();
+      RegisterMetadataFilePath();
       RegisterNewBOSS2CExpressionConverter();
       RegisterNewCExpression2BOSSConverter();
       RegisterCostModelParams();

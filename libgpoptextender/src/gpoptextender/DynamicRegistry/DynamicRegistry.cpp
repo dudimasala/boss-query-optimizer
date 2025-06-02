@@ -5,7 +5,7 @@ using namespace orcaextender;
 
 DynamicRegistry* DynamicRegistry::s_pInstance = nullptr;
 
-DynamicRegistry::DynamicRegistry(BOSSCostModel* costModel) : costModel(costModel) {
+DynamicRegistry::DynamicRegistry(BOSSCostModel* costModel) : costModel(costModel), metadataFilePath("../query-explorer/data/dxl/metadata/md.xml") {
   currentOperatorId = COperator::EopDynamicStart;
   currentTransformId = CXform::ExfDynamicStart;
   currentEngineType = CEngineSpec::EetDynamicStart;
