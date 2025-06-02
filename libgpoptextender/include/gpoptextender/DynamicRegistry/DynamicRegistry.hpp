@@ -21,6 +21,7 @@ class DynamicRegistry {
   private:
     typedef std::function<CCost(CMemoryPool*, CExpressionHandle&, const BOSSCostModel*, const ICostModel::SCostingInfo*)> FnCost;
     typedef std::function<COperator*(DynamicOperatorArgs&)> FnOperatorFactory;
+    typedef CExpression *(*PreprocessingRule)(CMemoryPool *, CExpression *);
 
     DynamicRegistry(BOSSCostModel* costModel);
     static DynamicRegistry* s_pInstance;
@@ -57,6 +58,7 @@ class DynamicRegistry {
     std::unordered_map<std::pair<CEngineSpec::EEngineType, std::string>, COperator::EOperatorId, EngineStringPairHash> opEngineAndNameToOperatorId = {};
     std::unordered_map<std::string, CXform::EXformId> transformNameToTransformId = {};
     std::unordered_map<std::string, CEngineSpec::EEngineType> engineNameToEngineType = {};
+    std::unordered_map<std::string, PreprocessingRule> preprocessingRules = {};
     std::unordered_set<COperator::EOperatorId> projectOperators = {};
 
     std::unordered_map<COperator::EOperatorId, std::vector<CXform::EXformId>> relevantTransforms = {};
@@ -177,10 +179,18 @@ class DynamicRegistry {
       typedConverter->RegisterScalarTranslator(std::move(translator));
     };
 
-    void RegisterNormalizerRule(COperator::EOperatorId opId, CNormalizer::FnPushThru pushThruFn) {
-      CNormalizer::SPushThru pushThru(opId, pushThruFn);
-      CNormalizer::AddPushThru(pushThru);
+    void RegisterPreprocessingRule(const std::string& ruleName, PreprocessingRule preprocessingRule) {
+      preprocessingRules[ruleName] = preprocessingRule;
     };
+
+    std::vector<PreprocessingRule> GetPreprocessingRules() {
+      std::vector<PreprocessingRule> rules;
+      for (auto rule : preprocessingRules) {
+        rules.push_back(rule.second);
+      }
+      return rules;
+    }
+
 
 };
 }  // namespace orcaextender

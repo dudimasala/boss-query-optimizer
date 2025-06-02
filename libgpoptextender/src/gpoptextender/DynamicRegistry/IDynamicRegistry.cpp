@@ -38,6 +38,10 @@ public:
         return impl->GetEnginePreserveDistribution(from, to);
     }
 
+    std::vector<PreprocessingRule> GetPreprocessingRules() override {
+        return impl->GetPreprocessingRules();
+    }
+
     
 };
 

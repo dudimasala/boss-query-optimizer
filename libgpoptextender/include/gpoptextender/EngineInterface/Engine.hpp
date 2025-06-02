@@ -29,12 +29,11 @@ class Engine {
     virtual void RegisterTransforms() = 0; // register transforms. Note these are technically allowed to be cross-engine.
     virtual void RegisterTranslators() = 0; // orca to boss physical translators must also be dynamically extensible.
 
-    virtual void RemoveTranslators() = 0;
-    virtual void RemoveOperators() = 0; // remove cost models
     virtual void RemoveTransforms() = 0; // remove transforms
 
     virtual void RegisterEngineTransforms() = 0;
 
+    // helpers
     virtual void RegisterDefaultB2CTranslator(std::unique_ptr<bosstocexpression::TranslatorBase<bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::ColRefMap>> translator) {
       DynamicRegistry::GetInstance()->RegisterBOSS2CExpressionTranslator(std::move(translator));
     };
@@ -52,14 +51,12 @@ class Engine {
     };
 
 
-    virtual void Enforce() {
+    virtual void Load() {
       UpdateEngineType();
       RegisterNewBOSS2CExpressionConverter();
       RegisterNewCExpression2BOSSConverter();
       RegisterCostModelParams();
-      RemoveOperators();
       RemoveTransforms();
-      RemoveTranslators();
       RegisterOperators();
       RegisterTransforms();
       RegisterTranslators();
