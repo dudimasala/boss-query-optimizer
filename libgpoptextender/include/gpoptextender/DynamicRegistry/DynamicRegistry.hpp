@@ -30,12 +30,11 @@ class DynamicRegistry {
     CXform::EXformId currentTransformId;
     BOSSCostModel* costModel;
     CEngineSpec::EEngineType currentEngineType;
+    IMDId::EMDIdType currentMDIdType;
 
 
     std::map<std::string, std::unique_ptr<Converter>> boss2cexpressionConverters;
     std::map<std::string, std::unique_ptr<Converter>> cexpression2bossConverters;
-
-    std::string metadataFilePath;
 
 	// First, create a hash struct for the pair
 	struct EngineStringPairHash {
@@ -60,6 +59,7 @@ class DynamicRegistry {
     std::unordered_map<std::pair<CEngineSpec::EEngineType, std::string>, COperator::EOperatorId, EngineStringPairHash> opEngineAndNameToOperatorId = {};
     std::unordered_map<std::string, CXform::EXformId> transformNameToTransformId = {};
     std::unordered_map<std::string, CEngineSpec::EEngineType> engineNameToEngineType = {};
+    std::unordered_map<CEngineSpec::EEngineType, std::string> engineTypeToEngineName = {};
     std::unordered_map<std::string, PreprocessingRule> preprocessingRules = {};
     std::unordered_set<COperator::EOperatorId> projectOperators = {};
 
@@ -68,6 +68,7 @@ class DynamicRegistry {
     std::unordered_map<std::string, std::vector<std::string>> engineToOperatorNames = {}; // for querying.
     std::unordered_map<std::pair<CEngineSpec::EEngineType, CEngineSpec::EEngineType>, bool, EnginePairHash> enginePreserveOrder = {};
     std::unordered_map<std::pair<CEngineSpec::EEngineType, CEngineSpec::EEngineType>, bool, EnginePairHash> enginePreserveDistribution = {};
+    std::unordered_map<CEngineSpec::EEngineType, std::pair<IMDId::EMDIdType, std::string>> engineToMDIdType = {};
   public:
     static DynamicRegistry* GetInstance();
     static void Init(CMemoryPool* mp, BOSSCostModel* costModel);
@@ -193,12 +194,12 @@ class DynamicRegistry {
       return rules;
     }
 
-    void RegisterMetadataFilePath(const std::string& filePath) {
-      metadataFilePath = filePath;
-    }
-
-    std::string GetMetadataFilePath() {
-      return metadataFilePath;
+    void RegisterMetadataProvider(CEngineSpec::EEngineType engine, IMDProvider* pmdp) {
+      CMDAccessor *mda = COptCtxt::PoctxtFromTLS()->Pmda();
+      IMDId::EMDIdType mdIdType = engineToMDIdType[engine].first;
+      auto wstr = bosstocexpression::utils::StringToWString(engineToMDIdType[engine].second);
+      CSystemId sysid(mdIdType, wstr.c_str(),wstr.length());
+      mda->RegisterProvider(sysid, pmdp);
     }
 
 

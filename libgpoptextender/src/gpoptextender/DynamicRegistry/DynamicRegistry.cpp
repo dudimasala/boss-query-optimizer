@@ -5,10 +5,11 @@ using namespace orcaextender;
 
 DynamicRegistry* DynamicRegistry::s_pInstance = nullptr;
 
-DynamicRegistry::DynamicRegistry(BOSSCostModel* costModel) : costModel(costModel), metadataFilePath("../query-explorer/data/dxl/metadata/md.xml") {
+DynamicRegistry::DynamicRegistry(BOSSCostModel* costModel) : costModel(costModel) {
   currentOperatorId = COperator::EopDynamicStart;
   currentTransformId = CXform::ExfDynamicStart;
   currentEngineType = CEngineSpec::EetDynamicStart;
+  currentMDIdType = IMDId::EmdidDynamicStart;
   boss2cexpressionConverters[DefaultTranslatorName] = std::make_unique<bosstocexpression::BOSSToCExpressionConverter<bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::ColRefMap>>();
   cexpression2bossConverters[DefaultTranslatorName] = std::make_unique<cexpressiontoboss::CExpressionToBOSSConverter<cexpressiontoboss::translation::EmptyStruct, cexpressiontoboss::translation::ProjectInfo, cexpressiontoboss::translation::ColSet, cexpressiontoboss::translation::EmptyStruct>>();
   // TODO: populate with default (orca) operators and transforms.
@@ -31,6 +32,7 @@ void DynamicRegistry::RegisterPhysicalOperator(const std::string& opName, CEngin
   currentOperatorId = (COperator::EOperatorId) (currentOperatorId + 1);
   costModel->RegisterCostFunction(currentOperatorId, costFunc);
   opEngineAndNameToOperatorId[std::make_pair(engine, opName)] = currentOperatorId;
+  engineToOperatorNames[engineTypeToEngineName[engine]].push_back(opName);
 }
 
 void DynamicRegistry::RegisterLogicalOperator(const std::string& opName, CEngineSpec::EEngineType engine, bool isAProject) {
@@ -95,6 +97,9 @@ void DynamicRegistry::RegisterEngine(const std::string& engineName) {
   currentEngineType = (CEngineSpec::EEngineType) (currentEngineType + 1);
   engineToOperatorNames[engineName] = std::vector<std::string>();
   engineNameToEngineType[engineName] = currentEngineType;
+  engineTypeToEngineName[currentEngineType] = engineName;
+  currentMDIdType = (IMDId::EMDIdType) (currentMDIdType + 1);
+  engineToMDIdType[currentEngineType] = std::make_pair(currentMDIdType, engineName);
 }
 
 CEngineSpec::EEngineType DynamicRegistry::GetEngineType(const std::string& engineName, bool throwError) {
