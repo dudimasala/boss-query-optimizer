@@ -751,6 +751,8 @@ CDXLTokens::Init(CMemoryPool *mp)
 		{EdxltokenNLJIndexParamList, GPOS_WSZ_LIT("NLJIndexParamList")},
 		{EdxltokenNLJIndexParam, GPOS_WSZ_LIT("NLJIndexParam")},
 		{EdxltokenNLJIndexOuterRefAsParam, GPOS_WSZ_LIT("OuterRefAsParam")},
+		
+		{EdxltokenEngineType, GPOS_WSZ_LIT("EngineType")},
 	};
 
 	m_pstrmap = GPOS_NEW_ARRAY(m_mp, SStrMapElem, EdxltokenSentinel);

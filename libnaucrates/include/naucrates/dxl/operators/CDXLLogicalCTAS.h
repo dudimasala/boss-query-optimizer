@@ -46,6 +46,9 @@ private:
 	// table name
 	CMDName *m_mdname_rel;
 
+	// engine name
+	CMDName *m_engine_name;
+
 	// list of columns
 	CDXLColDescrArray *m_col_descr_array;
 
@@ -80,7 +83,7 @@ private:
 public:
 	// ctor
 	CDXLLogicalCTAS(CMemoryPool *mp, IMDId *mdid, CMDName *mdname_schema,
-					CMDName *mdname_rel, CDXLColDescrArray *dxl_col_descr_array,
+					CMDName *mdname_rel, CMDName *engine_name, CDXLColDescrArray *dxl_col_descr_array,
 					CDXLCtasStorageOptions *dxl_ctas_storage_option,
 					IMDRelation::Ereldistrpolicy rel_distr_policy,
 					ULongPtrArray *distr_column_pos_array, BOOL fTemporary,
@@ -117,6 +120,13 @@ public:
 	MdName() const
 	{
 		return m_mdname_rel;
+	}
+
+	// engine name
+	CMDName *
+	MdEngineName() const
+	{
+		return m_engine_name;
 	}
 
 	// column descriptors

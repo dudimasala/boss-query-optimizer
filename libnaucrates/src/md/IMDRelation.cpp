@@ -82,7 +82,6 @@ IMDRelation::GetStorageTypeStr(IMDRelation::Erelstoragetype rel_storage_type)
 //		IMDRelation::ColumnsToStr
 //
 //	@doc:
-//		Serialize an array of column ids into a comma-separated string
 //
 //---------------------------------------------------------------------------
 CWStringDynamic *

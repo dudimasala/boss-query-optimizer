@@ -26,7 +26,7 @@ using namespace gpmd;
 //
 //---------------------------------------------------------------------------
 CMDRelationExternalGPDB::CMDRelationExternalGPDB(
-	CMemoryPool *mp, IMDId *mdid, CMDName *mdname,
+	CMemoryPool *mp, IMDId *mdid, CMDName *mdname, CMDName *engine_name,
 	Ereldistrpolicy rel_distr_policy, CMDColumnArray *mdcol_array,
 	ULongPtrArray *distr_col_array, BOOL convert_hash_to_random,
 	ULongPtr2dArray *keyset_array, CMDIndexInfoArray *md_index_info_array,
@@ -35,6 +35,7 @@ CMDRelationExternalGPDB::CMDRelationExternalGPDB(
 	: m_mp(mp),
 	  m_mdid(mdid),
 	  m_mdname(mdname),
+	  m_engine_name(engine_name),
 	  m_rel_distr_policy(rel_distr_policy),
 	  m_md_col_array(mdcol_array),
 	  m_dropped_cols(0),
@@ -115,6 +116,7 @@ CMDRelationExternalGPDB::CMDRelationExternalGPDB(
 CMDRelationExternalGPDB::~CMDRelationExternalGPDB()
 {
 	GPOS_DELETE(m_mdname);
+	GPOS_DELETE(m_engine_name);
 	GPOS_DELETE(m_dxl_str);
 	m_mdid->Release();
 	m_md_col_array->Release();
@@ -157,6 +159,12 @@ CMDName
 CMDRelationExternalGPDB::Mdname() const
 {
 	return *m_mdname;
+}
+
+CMDName
+CMDRelationExternalGPDB::MdEngineName() const
+{
+	return *m_engine_name;
 }
 
 //---------------------------------------------------------------------------
@@ -531,6 +539,8 @@ CMDRelationExternalGPDB::Serialize(CXMLSerializer *xml_serializer) const
 					  CDXLTokens::GetDXLTokenStr(EdxltokenMdid));
 	xml_serializer->AddAttribute(CDXLTokens::GetDXLTokenStr(EdxltokenName),
 								 m_mdname->GetMDName());
+	xml_serializer->AddAttribute(CDXLTokens::GetDXLTokenStr(EdxltokenEngineType),
+								 m_engine_name->GetMDName());
 	xml_serializer->AddAttribute(
 		CDXLTokens::GetDXLTokenStr(EdxltokenRelDistrPolicy),
 		GetDistrPolicyStr(m_rel_distr_policy));

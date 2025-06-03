@@ -54,6 +54,9 @@ private:
 	// table name
 	CMDName *m_mdname;
 
+	// engine name
+	CMDName *m_engine_name;
+
 	// distribution policy
 	Ereldistrpolicy m_rel_distr_policy;
 
@@ -115,7 +118,7 @@ private:
 public:
 	// ctor
 	CMDRelationExternalGPDB(
-		CMemoryPool *mp, IMDId *mdid, CMDName *mdname,
+		CMemoryPool *mp, IMDId *mdid, CMDName *mdname, CMDName *engine_name,
 		Ereldistrpolicy rel_distr_policy, CMDColumnArray *mdcol_array,
 		ULongPtrArray *distr_col_array, BOOL convert_hash_to_random,
 		ULongPtr2dArray *keyset_array, CMDIndexInfoArray *md_index_info_array,
@@ -138,6 +141,9 @@ public:
 
 	// relation name
 	virtual CMDName Mdname() const;
+
+	// engine name
+	virtual CMDName MdEngineName() const;
 
 	// distribution policy (none, hash, random)
 	virtual Ereldistrpolicy GetRelDistribution() const;

@@ -39,6 +39,7 @@ CParseHandlerMDRelation::CParseHandlerMDRelation(
 	  m_mdid(NULL),
 	  m_mdname_schema(NULL),
 	  m_mdname(NULL),
+	  m_engine_name(NULL),
 	  m_is_temp_table(false),
 	  m_has_oids(false),
 	  m_rel_storage_type(IMDRelation::ErelstorageSentinel),
@@ -269,7 +270,7 @@ CParseHandlerMDRelation::EndElement(const XMLCh *const,	 // element_uri,
 	mdid_check_constraint_array->AddRef();
 
 	m_imd_obj = GPOS_NEW(m_mp) CMDRelationGPDB(
-		m_mp, m_mdid, m_mdname, m_is_temp_table, m_rel_storage_type,
+		m_mp, m_mdid, m_mdname, m_engine_name, m_is_temp_table, m_rel_storage_type,
 		m_rel_distr_policy, md_col_array, m_distr_col_array,
 		m_partition_cols_array, m_str_part_types_array, m_num_of_partitions,
 		m_convert_hash_to_random, m_key_sets_arrays, md_index_info_array,
@@ -301,6 +302,20 @@ CParseHandlerMDRelation::ParseRelationAttributes(const Attributes &attrs,
 			m_parse_handler_mgr->GetDXLMemoryManager(), xml_str_table_name);
 	m_mdname = GPOS_NEW(m_mp) CMDName(m_mp, str_table_name);
 	GPOS_DELETE(str_table_name);
+
+	const XMLCh *xml_str_engine_type = CDXLOperatorFactory::ExtractAttrValue(
+		attrs, EdxltokenEngineType, dxl_token_element, true);
+	if (NULL == xml_str_engine_type) {
+		const WCHAR* wstr = L"GPDB";
+		CWStringDynamic *str_engine_type = GPOS_NEW(m_mp) CWStringDynamic(m_mp, wstr);
+		m_engine_name = GPOS_NEW(m_mp) CMDName(m_mp, str_engine_type);
+		GPOS_DELETE(str_engine_type);
+	} else {
+		CWStringDynamic *str_engine_type = CDXLUtils::CreateDynamicStringFromXMLChArray(
+			m_parse_handler_mgr->GetDXLMemoryManager(), xml_str_engine_type);
+		m_engine_name = GPOS_NEW(m_mp) CMDName(m_mp, str_engine_type);
+		GPOS_DELETE(str_engine_type);
+	}
 
 	// parse metadata id info
 	m_mdid = CDXLOperatorFactory::ExtractConvertAttrValueToMdId(

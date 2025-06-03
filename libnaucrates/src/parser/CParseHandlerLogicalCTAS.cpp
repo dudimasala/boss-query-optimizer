@@ -37,6 +37,7 @@ CParseHandlerLogicalCTAS::CParseHandlerLogicalCTAS(
 	  m_mdid(NULL),
 	  m_mdname_schema(NULL),
 	  m_mdname(NULL),
+	  m_engine_name(NULL),
 	  m_distr_column_pos_array(NULL),
 	  m_src_colids_array(NULL),
 	  m_vartypemod_array(NULL),
@@ -80,6 +81,19 @@ CParseHandlerLogicalCTAS::StartElement(const XMLCh *const,	// element_uri,
 		attrs, EdxltokenName, EdxltokenLogicalCTAS);
 	m_mdname = CDXLUtils::CreateMDNameFromXMLChar(
 		m_parse_handler_mgr->GetDXLMemoryManager(), xml_str_table_name);
+
+	// parse engine name
+	const XMLCh *xml_str_engine_name = CDXLOperatorFactory::ExtractAttrValue(
+		attrs, EdxltokenEngineType, EdxltokenLogicalCTAS, true);
+	if (NULL == xml_str_engine_name) {
+		const WCHAR* wstr = L"GPDB";
+		CWStringDynamic *str_engine_type = GPOS_NEW(m_mp) CWStringDynamic(m_mp, wstr);
+		m_engine_name = GPOS_NEW(m_mp) CMDName(m_mp, str_engine_type);
+		GPOS_DELETE(str_engine_type);
+	} else {
+		m_engine_name = CDXLUtils::CreateMDNameFromXMLChar(
+			m_parse_handler_mgr->GetDXLMemoryManager(), xml_str_engine_name);
+	}
 
 	const XMLCh *xml_str_schema_name =
 		attrs.getValue(CDXLTokens::XmlstrToken(EdxltokenSchema));
@@ -206,7 +220,8 @@ CParseHandlerLogicalCTAS::EndElement(const XMLCh *const,  // element_uri,
 
 	m_dxl_node = GPOS_NEW(m_mp)
 		CDXLNode(m_mp, GPOS_NEW(m_mp) CDXLLogicalCTAS(
-						   m_mp, m_mdid, m_mdname_schema, m_mdname,
+						   m_mp, m_mdid, m_mdname_schema, m_mdname, 
+						   m_engine_name,
 						   dxl_column_descr_array, dxl_ctas_storage_opt,
 						   m_rel_distr_policy, m_distr_column_pos_array,
 						   m_is_temp_table, m_has_oids, m_rel_storage_type,

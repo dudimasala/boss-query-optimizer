@@ -31,6 +31,7 @@ using namespace gpdxl;
 //---------------------------------------------------------------------------
 CDXLLogicalCTAS::CDXLLogicalCTAS(
 	CMemoryPool *mp, IMDId *mdid, CMDName *mdname_schema, CMDName *mdname_rel,
+	CMDName *engine_name,
 	CDXLColDescrArray *dxl_col_descr_array,
 	CDXLCtasStorageOptions *dxl_ctas_storage_options,
 	IMDRelation::Ereldistrpolicy rel_distr_policy,
@@ -41,6 +42,7 @@ CDXLLogicalCTAS::CDXLLogicalCTAS(
 	  m_mdid(mdid),
 	  m_mdname_schema(mdname_schema),
 	  m_mdname_rel(mdname_rel),
+	  m_engine_name(engine_name),
 	  m_col_descr_array(dxl_col_descr_array),
 	  m_dxl_ctas_storage_option(dxl_ctas_storage_options),
 	  m_rel_distr_policy(rel_distr_policy),

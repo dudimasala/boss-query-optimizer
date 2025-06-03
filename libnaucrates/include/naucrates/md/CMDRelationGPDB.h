@@ -56,6 +56,9 @@ private:
 	// table name
 	CMDName *m_mdname;
 
+	// what engine is it on
+	CMDName *m_engine_name;
+
 	// is this a temporary relation
 	BOOL m_is_temp_table;
 
@@ -125,7 +128,7 @@ private:
 
 public:
 	// ctor
-	CMDRelationGPDB(CMemoryPool *mp, IMDId *mdid, CMDName *mdname,
+	CMDRelationGPDB(CMemoryPool *mp, IMDId *mdid, CMDName *mdname, CMDName *engine_type,
 					BOOL is_temp_table, Erelstoragetype rel_storage_type,
 					Ereldistrpolicy rel_distr_policy,
 					CMDColumnArray *mdcol_array, ULongPtrArray *distr_col_array,
@@ -152,6 +155,9 @@ public:
 
 	// relation name
 	virtual CMDName Mdname() const;
+
+	// engine name
+	virtual CMDName MdEngineName() const;
 
 	// is this a temp relation
 	virtual BOOL IsTemporary() const;
