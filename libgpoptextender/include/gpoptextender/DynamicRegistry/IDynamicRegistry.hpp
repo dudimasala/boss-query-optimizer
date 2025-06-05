@@ -22,6 +22,7 @@ struct IDynamicRegistry {
     virtual void AddTransformsToXFormSet(COperator::EOperatorId opId, CXformSet* xformSet) = 0;
     virtual bool GetEnginePreserveOrder(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to) = 0;
     virtual bool GetEnginePreserveDistribution(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to) = 0;
+    virtual bool GetEnginePreserveRewindability(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to) = 0;
     virtual std::vector<PreprocessingRule> GetPreprocessingRules() = 0;
 };
 

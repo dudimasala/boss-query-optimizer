@@ -23,14 +23,16 @@ private:
     CEngineSpec *m_pes;
     bool m_preserve_order;
     bool m_preserve_distribution;
+		bool m_preserve_rewindability;
 
 public:
     // Ctor
-    CPhysicalEngineTransition(CMemoryPool *mp, CEngineSpec *pes, bool preserve_order, bool preserve_distribution)
+    CPhysicalEngineTransition(CMemoryPool *mp, CEngineSpec *pes, bool preserve_order, bool preserve_distribution, bool preserve_rewindability)
         : CBasePhysicalUnaryOp(mp),
           m_pes(pes),
           m_preserve_order(preserve_order),
-          m_preserve_distribution(preserve_distribution)
+          m_preserve_distribution(preserve_distribution),
+					m_preserve_rewindability(preserve_rewindability)
     {
     }
 
@@ -41,20 +43,20 @@ public:
 
     // ident accessors
 	virtual EOperatorId
-	Eopid() const
+	Eopid() const override
 	{
 		return EopPhysicalEngineTransform;
 	}
 
     	// return a string for operator name
 	virtual const CHAR *
-	SzId() const
+	SzId() const override
 	{
 		return "CPhysicalEngineTransition";
 	}
 
     // match function
-	BOOL Matches(COperator *pop) const;
+	BOOL Matches(COperator *pop) const override;
 
 	CEngineSpec::EEngineType Eet() const {
 		return m_pes->Eet();
@@ -67,15 +69,15 @@ public:
     }
 
 
-		BOOL FInputOrderSensitive() const {
+		BOOL FInputOrderSensitive() const override {
 			return false;
 		}
 
 	virtual CEnfdProp::EPropEnforcingType EpetEngine(
-		CExpressionHandle &exprhdl, const CEnfdEngine *pee) const;
+		CExpressionHandle &exprhdl, const CEnfdEngine *pee) const override;
     
 	// debug print
-	virtual IOstream &OsPrint(IOstream &os) const;
+	virtual IOstream &OsPrint(IOstream &os) const override;
 
 	// conversion function
 	static CPhysicalEngineTransition *
@@ -87,19 +89,19 @@ public:
 		return dynamic_cast<CPhysicalEngineTransition *>(pop);
 	}
 
-	virtual CEngineSpec* PesDerive(CMemoryPool *mp, CExpressionHandle &exprhdl) const;
+	virtual CEngineSpec* PesDerive(CMemoryPool *mp, CExpressionHandle &exprhdl) const override;
 
-	virtual CEngineSpec* PesRequired(CMemoryPool *mp, CExpressionHandle &exprhdl, CEngineSpec *pesRequired, ULONG child_index, CDrvdPropArray *pdrgpdpCtxt, ULONG ulOptReq) const;  
+	virtual CEngineSpec* PesRequired(CMemoryPool *mp, CExpressionHandle &exprhdl, CEngineSpec *pesRequired, ULONG child_index, CDrvdPropArray *pdrgpdpCtxt, ULONG ulOptReq) const override;  
 
 	virtual COrderSpec* PosRequired(CMemoryPool *mp, CExpressionHandle &exprhdl,
 									COrderSpec *posRequired, ULONG child_index,
 									CDrvdPropArray *pdrgpdpCtxt,
-									ULONG ulOptReq) const
+									ULONG ulOptReq) const override
 {
 	return GPOS_NEW(mp) COrderSpec(mp);
 }
 
-	virtual COrderSpec* PosDerive(CMemoryPool *mp, CExpressionHandle &exprhdl) const
+	virtual COrderSpec* PosDerive(CMemoryPool *mp, CExpressionHandle &exprhdl) const override
 {
 	if (m_preserve_order) {
 		return PosDerivePassThruOuter(exprhdl);
@@ -108,7 +110,7 @@ public:
 	return GPOS_NEW(mp) COrderSpec(mp);
 }
 
-virtual CDistributionSpec* PdsDerive(CMemoryPool *mp, CExpressionHandle &exprhdl) const
+virtual CDistributionSpec* PdsDerive(CMemoryPool *mp, CExpressionHandle &exprhdl) const override
 {
 	// Return singleton distribution to indicate this is a property-breaking operator
 	if (m_preserve_distribution) {
@@ -117,15 +119,19 @@ virtual CDistributionSpec* PdsDerive(CMemoryPool *mp, CExpressionHandle &exprhdl
 	return GPOS_NEW(mp) CDistributionSpecSingleton();
 }
 
-virtual CDistributionSpec* PdsRequired(CMemoryPool *mp, CExpressionHandle &exprhdl, CDistributionSpec *pdsRequired, ULONG child_index, CDrvdPropArray *pdrgpdpCtxt, ULONG ulOptReq) const
+virtual CRewindabilitySpec* PrsDerive(CMemoryPool *mp, CExpressionHandle &exprhdl) const override;
+
+
+
+virtual CDistributionSpec* PdsRequired(CMemoryPool *mp, CExpressionHandle &exprhdl, CDistributionSpec *pdsRequired, ULONG child_index, CDrvdPropArray *pdrgpdpCtxt, ULONG ulOptReq) const override
 {
 	// Return ANY distribution since we don't care what distribution the child has
 	return GPOS_NEW(mp) CDistributionSpecAny(Eopid());
 }
 
-virtual CEnfdProp::EPropEnforcingType EpetDistribution(CExpressionHandle &exprhdl, const CEnfdDistribution *ped) const;
+virtual CEnfdProp::EPropEnforcingType EpetDistribution(CExpressionHandle &exprhdl, const CEnfdDistribution *ped) const override;
 
-virtual CEnfdProp::EPropEnforcingType EpetOrder(CExpressionHandle &exprhdl, const CEnfdOrder *peo) const;
+virtual CEnfdProp::EPropEnforcingType EpetOrder(CExpressionHandle &exprhdl, const CEnfdOrder *peo) const override;
 
 };
 

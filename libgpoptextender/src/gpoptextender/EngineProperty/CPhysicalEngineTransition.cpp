@@ -81,6 +81,16 @@ CEnfdProp::EPropEnforcingType CPhysicalEngineTransition::EpetDistribution(CExpre
 }
 
 
+CRewindabilitySpec* CPhysicalEngineTransition::PrsDerive(CMemoryPool *mp, CExpressionHandle &exprhdl) const
+{
+	// Return singleton distribution to indicate this is a property-breaking operator
+	if (m_preserve_rewindability) {
+		return PrsDerivePassThruOuter(mp, exprhdl);
+	}
+	CRewindabilitySpec *prs = exprhdl.Pdpplan(0 /*child_index*/)->Prs();
+	return GPOS_NEW(mp) CRewindabilitySpec(CRewindabilitySpec::ErtNone, prs->Emht());
+}
+
 
 
 

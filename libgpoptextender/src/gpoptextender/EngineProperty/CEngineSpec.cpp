@@ -36,10 +36,11 @@ void CEngineSpec::AppendEnforcers(CMemoryPool *mp, CExpressionHandle &exprhdl,
   orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
   bool preserve_order = registry->GetEnginePreserveOrder(pes->Eet(), Eet());
   bool preserve_distribution = registry->GetEnginePreserveDistribution(pes->Eet(), Eet());
+  bool preserve_rewindability = registry->GetEnginePreserveRewindability(pes->Eet(), Eet());
   pes->Release();
 
   CExpression *pexprEngineTransform = GPOS_NEW(mp) CExpression(
-    mp, GPOS_NEW(mp) CPhysicalEngineTransition(mp, this, preserve_order, preserve_distribution), pexpr);
+    mp, GPOS_NEW(mp) CPhysicalEngineTransition(mp, this, preserve_order, preserve_distribution, preserve_rewindability), pexpr);
   pdrgpexpr->Append(pexprEngineTransform);
 } 
 

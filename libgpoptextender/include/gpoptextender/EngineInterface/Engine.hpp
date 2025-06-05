@@ -36,23 +36,27 @@ class Engine {
 
     // helpers
     virtual void RegisterDefaultB2CTranslator(std::unique_ptr<bosstocexpression::TranslatorBase<bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::ColRefMap>> translator) {
-      DynamicRegistry::GetInstance()->RegisterBOSS2CExpressionTranslator(std::move(translator));
+      DynamicRegistry::GetInstance()->RegisterBOSS2CExpressionTranslator(std::move(translator), m_engineType);
     };
 
     virtual void RegisterDefaultB2CScalarTranslator(std::unique_ptr<bosstocexpression::ScalarTranslatorBase<bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::ColRefMap>> translator) {
-      DynamicRegistry::GetInstance()->RegisterBOSS2CExpressionScalarTranslator(std::move(translator));
+      DynamicRegistry::GetInstance()->RegisterBOSS2CExpressionScalarTranslator(std::move(translator), m_engineType);
     };
 
     virtual void RegisterDefaultC2BTranslator(std::unique_ptr<cexpressiontoboss::translation::TranslatorBase<cexpressiontoboss::translation::EmptyStruct, cexpressiontoboss::translation::ProjectInfo, cexpressiontoboss::translation::ColSet, cexpressiontoboss::translation::EmptyStruct>> translator) {
-      DynamicRegistry::GetInstance()->RegisterCExpression2BOSSTranslator(std::move(translator));
+      DynamicRegistry::GetInstance()->RegisterCExpression2BOSSTranslator(std::move(translator), m_engineType);
     };
 
     virtual void RegisterDefaultC2BScalarTranslator(std::unique_ptr<cexpressiontoboss::translation::ScalarTranslatorBase<cexpressiontoboss::translation::EmptyStruct, cexpressiontoboss::translation::ProjectInfo, cexpressiontoboss::translation::ColSet, cexpressiontoboss::translation::EmptyStruct>> translator) {
-      DynamicRegistry::GetInstance()->RegisterCExpression2BOSSScalarTranslator(std::move(translator));
+      DynamicRegistry::GetInstance()->RegisterCExpression2BOSSScalarTranslator(std::move(translator), m_engineType);
     };
 
+    virtual std::string GetEngineName() {
+      return m_engineName;
+    }
 
-    virtual void Load() {
+
+    virtual void Register() {
       UpdateEngineType();
       RegisterMetadataFilePath();
       RegisterNewBOSS2CExpressionConverter();

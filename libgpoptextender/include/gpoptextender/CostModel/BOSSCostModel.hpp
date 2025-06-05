@@ -68,10 +68,13 @@ public:
 	virtual ~BOSSCostModel();
 
 	void RegisterCostFunction(COperator::EOperatorId op_id, FnCost fn_cost);
+	void RemoveCostFunction(COperator::EOperatorId op_id);
 
 	void RegisterCostModelParams(CEngineSpec::EEngineType engine, ICostModelParams* pcp);
+	void RemoveCostModelParams(CEngineSpec::EEngineType engine);
 
 	void RegisterEngineTransform(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to, FnCost fn_cost);
+	void RemoveEngineTransform(CEngineSpec::EEngineType);
 
 	// number of segments
 	ULONG

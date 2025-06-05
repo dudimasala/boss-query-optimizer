@@ -38,6 +38,10 @@ public:
         return impl->GetEnginePreserveDistribution(from, to);
     }
 
+    bool GetEnginePreserveRewindability(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to) override {
+        return impl->GetEnginePreserveRewindability(from, to);
+    }
+
     std::vector<PreprocessingRule> GetPreprocessingRules() override {
         return impl->GetPreprocessingRules();
     }

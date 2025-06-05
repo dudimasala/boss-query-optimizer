@@ -6,5 +6,8 @@ namespace orcaextender {
     public:
       Converter() = default;
       virtual ~Converter() = default;
+
+      virtual void RemoveTranslator(ULONG translatorId) = 0;
+      virtual void RemoveScalarTranslator(ULONG translatorId) = 0;
   };
 }
