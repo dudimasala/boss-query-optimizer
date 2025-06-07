@@ -86,6 +86,7 @@ protected:
 	static ULONG m_aulOpIdCounter;
 
 public:
+  // using EOperatorId = int;
 	// identification
 	enum EOperatorId
 	{

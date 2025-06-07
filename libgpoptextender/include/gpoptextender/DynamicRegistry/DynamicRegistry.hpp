@@ -4,10 +4,11 @@
 #include "gpopt/xforms/CXform.h"
 #include "gpopt/xforms/CXformFactory.h"
 #include "gpoptextender/DynamicRegistry/DynamicOperatorArgs.hpp"
-#include "gpoptextender/Translation/Converter.hpp"
-#include "gpopt/operators/CNormalizer.h"
+#include "gpoptextender/Translation/B2CConverter.hpp"
+#include "gpoptextender/Translation/C2BConverter.hpp"
 #include "BOSSToCExpression.hpp"
 #include "CExpressionToBOSS.hpp"
+#include "gpopt/operators/CNormalizer.h"
 #include "b2cDefaultTypes.hpp"
 #include "c2bDefaultTypes.hpp"
 #include <unordered_set>
@@ -33,8 +34,8 @@ class DynamicRegistry {
     IMDId::EMDIdType currentMDIdType;
 
 
-    std::map<std::string, std::unique_ptr<Converter>> boss2cexpressionConverters;
-    std::map<std::string, std::unique_ptr<Converter>> cexpression2bossConverters;
+    std::map<std::string, std::unique_ptr<B2CConverter>> boss2cexpressionConverters;
+    std::map<std::string, std::unique_ptr<C2BConverter>> cexpression2bossConverters;
 
 	// First, create a hash struct for the pair
 	struct EngineStringPairHash {
@@ -199,6 +200,15 @@ class DynamicRegistry {
 
     bosstocexpression::BOSSToCExpressionConverter<bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::ColRefMap>* GetDefaultBOSS2CExpressionConverter() { 
       return GetBOSS2CExpressionConverter<bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::ColRefMap>(DefaultTranslatorName);
+    };
+
+
+    C2BConverter* GetErasedCExpression2BOSSConverter(const std::string& converterName = DefaultTranslatorName) {
+      return cexpression2bossConverters[converterName].get();
+    };
+
+    B2CConverter* GetErasedBOSS2CExpressionConverter(const std::string& converterName = DefaultTranslatorName) {
+      return boss2cexpressionConverters[converterName].get();
     };
 
     template <typename RetAuxType, typename InpAuxType, typename RetScalarAuxType, typename InpScalarAuxType>

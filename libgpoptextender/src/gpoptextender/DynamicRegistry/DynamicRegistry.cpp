@@ -1,5 +1,6 @@
 #include "gpoptextender/DynamicRegistry/DynamicRegistry.hpp"
-
+#include "BOSSToCExpressionDefault.hpp"
+#include "CExpressionToBOSSDefault.hpp"
 
 using namespace orcaextender;
 
@@ -10,8 +11,8 @@ DynamicRegistry::DynamicRegistry(BOSSCostModel* costModel) : costModel(costModel
   currentTransformId = CXform::ExfDynamicStart;
   currentEngineType = CEngineSpec::EetDynamicStart;
   currentMDIdType = IMDId::EmdidDynamicStart;
-  boss2cexpressionConverters[DefaultTranslatorName] = std::make_unique<bosstocexpression::BOSSToCExpressionConverter<bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::EmptyStruct, bosstocexpression::ColRefMap>>();
-  cexpression2bossConverters[DefaultTranslatorName] = std::make_unique<cexpressiontoboss::CExpressionToBOSSConverter<cexpressiontoboss::translation::EmptyStruct, cexpressiontoboss::translation::ProjectInfo, cexpressiontoboss::translation::ColSet, cexpressiontoboss::translation::EmptyStruct>>();
+  boss2cexpressionConverters[DefaultTranslatorName] = std::make_unique<bosstocexpression::BOSSToCExpressionDefaultConverter>();
+  cexpression2bossConverters[DefaultTranslatorName] = std::make_unique<cexpressiontoboss::CExpressionToBOSSDefaultConverter>();
   // TODO: populate with default (orca) operators and transforms.
 }
 
@@ -100,7 +101,7 @@ void DynamicRegistry::RegisterEngine(const std::string& engineName) {
   engineNameToEngineType[engineName] = currentEngineType;
   engineTypeToEngineName[currentEngineType] = engineName;
   currentMDIdType = (IMDId::EMDIdType) (currentMDIdType + 1);
-  engineToMDIdType[currentEngineType] = std::make_pair(currentMDIdType, engineName);
+  engineToMDIdType[currentEngineType] = std::make_pair(currentMDIdType, engineName); // no need to store engineName. Can be retrieved from engineType to engineName map.
 }
 
 CEngineSpec::EEngineType DynamicRegistry::GetEngineType(const std::string& engineName, bool throwError) {
