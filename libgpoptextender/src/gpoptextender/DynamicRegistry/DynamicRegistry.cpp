@@ -107,8 +107,6 @@ void DynamicRegistry::RegisterEngine(const std::string& engineName) {
 CEngineSpec::EEngineType DynamicRegistry::GetEngineType(const std::string& engineName, bool throwError) {
   if (engineNameToEngineType.find(engineName) == engineNameToEngineType.end()) {
     if (throwError) {
-      std::cout << "yoooghyrt" << std::endl;
-      std::cerr << "Engine " << engineName << " not found" << std::endl;
       throw std::runtime_error("Engine not found");
     } else {
       return CEngineSpec::EetSentinel;

@@ -8,9 +8,10 @@ class Engine {
     std::string m_engineName;
     CEngineSpec::EEngineType m_engineType;
     CMemoryPool *m_mp;
-    CMDAccessor *m_mda;
   public:
-    Engine(std::string engineName, CMemoryPool *mp, CMDAccessor *mda) : m_engineName(engineName), m_engineType(CEngineSpec::EEngineType::EetSentinel), m_mp(mp), m_mda(mda) {}
+    Engine(std::string engineName) : m_engineName(engineName), m_engineType(CEngineSpec::EEngineType::EetSentinel) {
+      m_mp = COptCtxt::PoctxtFromTLS()->Pmp();
+    }
     virtual ~Engine() {}
     
     virtual void UpdateEngineType() { 
@@ -58,6 +59,7 @@ class Engine {
 
     virtual void Register() {
       UpdateEngineType();
+      RegisterTranslators();
       RegisterMetadataFilePath();
       RegisterNewBOSS2CExpressionConverter();
       RegisterNewCExpression2BOSSConverter();
@@ -65,7 +67,6 @@ class Engine {
       RemoveTransforms();
       RegisterOperators();
       RegisterTransforms();
-      RegisterTranslators();
       RegisterEngineTransforms();
     }
 
