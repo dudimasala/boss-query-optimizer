@@ -81,8 +81,6 @@ CXformSelect2Filter::Transform(CXformContext *pxfctxt, CXformResult *pxfres,
 	GPOS_ASSERT(FPromising(pxfctxt->Pmp(), this, pexpr));
 	GPOS_ASSERT(FCheckPattern(pexpr));
 
-	CColRefSet *child = pexpr->DeriveOutputColumns();
-	std::cout << child->Size() << std::endl;
 
 	CMemoryPool *mp = pxfctxt->Pmp();
 

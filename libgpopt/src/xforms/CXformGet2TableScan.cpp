@@ -73,9 +73,6 @@ CXformGet2TableScan::Transform(CXformContext *pxfctxt, CXformResult *pxfres,
 	GPOS_ASSERT(FPromising(pxfctxt->Pmp(), this, pexpr));
 	GPOS_ASSERT(FCheckPattern(pexpr));
 
-	CColRefSet *child = pexpr->DeriveOutputColumns();
-	std::cout << child->Size() << std::endl;
-
 	CLogicalGet *popGet = CLogicalGet::PopConvert(pexpr->Pop());
 	CMemoryPool *mp = pxfctxt->Pmp();
 
