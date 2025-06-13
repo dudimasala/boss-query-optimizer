@@ -43,6 +43,9 @@ private:
 	// table name
 	CMDName *m_mdname;
 
+	// engine name
+	CMDName *m_engine_name;
+
 	// list of distribution column positions
 	ULongPtrArray *m_distr_column_pos_array;
 

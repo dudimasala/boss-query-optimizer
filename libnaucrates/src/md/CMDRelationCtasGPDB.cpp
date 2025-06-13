@@ -27,7 +27,7 @@ using namespace gpmd;
 //
 //---------------------------------------------------------------------------
 CMDRelationCtasGPDB::CMDRelationCtasGPDB(
-	CMemoryPool *mp, IMDId *mdid, CMDName *mdname_schema, CMDName *mdname,
+	CMemoryPool *mp, IMDId *mdid, CMDName *mdname_schema, CMDName *mdname, CMDName *engine_name,
 	BOOL fTemporary, BOOL fHasOids, Erelstoragetype rel_storage_type,
 	Ereldistrpolicy rel_distr_policy, CMDColumnArray *mdcol_array,
 	ULongPtrArray *distr_col_array, ULongPtr2dArray *keyset_array,
@@ -37,6 +37,7 @@ CMDRelationCtasGPDB::CMDRelationCtasGPDB(
 	  m_mdid(mdid),
 	  m_mdname_schema(mdname_schema),
 	  m_mdname(mdname),
+	  m_engine_name(engine_name),
 	  m_is_temp_table(fTemporary),
 	  m_has_oids(fHasOids),
 	  m_rel_storage_type(rel_storage_type),
@@ -97,6 +98,7 @@ CMDRelationCtasGPDB::CMDRelationCtasGPDB(
 CMDRelationCtasGPDB::~CMDRelationCtasGPDB()
 {
 	GPOS_DELETE(m_mdname_schema);
+	GPOS_DELETE(m_engine_name);
 	GPOS_DELETE(m_mdname);
 	GPOS_DELETE(m_dxl_str);
 	m_mdid->Release();
@@ -136,6 +138,12 @@ CMDName
 CMDRelationCtasGPDB::Mdname() const
 {
 	return *m_mdname;
+}
+
+CMDName
+CMDRelationCtasGPDB::MdEngineName() const
+{
+	return *m_engine_name;
 }
 
 //---------------------------------------------------------------------------
@@ -292,6 +300,8 @@ CMDRelationCtasGPDB::Serialize(CXMLSerializer *xml_serializer) const
 	}
 	xml_serializer->AddAttribute(CDXLTokens::GetDXLTokenStr(EdxltokenName),
 								 m_mdname->GetMDName());
+	xml_serializer->AddAttribute(CDXLTokens::GetDXLTokenStr(EdxltokenEngineType),
+								 m_engine_name->GetMDName());
 	xml_serializer->AddAttribute(
 		CDXLTokens::GetDXLTokenStr(EdxltokenRelTemporary), m_is_temp_table);
 	xml_serializer->AddAttribute(

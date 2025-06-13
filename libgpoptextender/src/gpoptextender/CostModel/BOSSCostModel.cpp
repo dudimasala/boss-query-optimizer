@@ -2004,9 +2004,30 @@ void BOSSCostModel::RegisterCostFunction(COperator::EOperatorId op_id, FnCost fn
 	m_cost_map[op_id] = fn_cost;
 }
 
+
+void BOSSCostModel::RemoveCostFunction(COperator::EOperatorId op_id) {
+	m_cost_map.erase(op_id);
+}
+
+
 void BOSSCostModel::RegisterCostModelParams(CEngineSpec::EEngineType engine, ICostModelParams* pcp)
 {
   m_cost_model_params_map[engine] = pcp;
+}
+
+void BOSSCostModel::RemoveCostModelParams(CEngineSpec::EEngineType engine) {
+	m_cost_model_params_map.erase(engine);
+}
+
+void BOSSCostModel::RemoveEngineTransform(CEngineSpec::EEngineType engine) {
+	for (auto it = m_engine_transform_map.begin(); it != m_engine_transform_map.end(); ) {
+		const std::pair<CEngineSpec::EEngineType, CEngineSpec::EEngineType> &key = it->first;
+		if (key.first == engine || key.second == engine) {
+				it = m_engine_transform_map.erase(it);
+		} else {
+				++it;
+		}
+	} 
 }
 
 CCost BOSSCostModel::CostEngineTransform(CMemoryPool *mp, CExpressionHandle &exprhdl,

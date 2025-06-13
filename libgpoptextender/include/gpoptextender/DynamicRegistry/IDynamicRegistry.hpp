@@ -10,6 +10,8 @@ using namespace gpos;
 using namespace gpopt;
 using namespace gpmd;
 
+typedef CExpression *(*PreprocessingRule)(CMemoryPool *, CExpression *);
+
 // Only exposes the one method you need, in C++98-compatible form:
 struct IDynamicRegistry {
     virtual ~IDynamicRegistry() {}
@@ -20,6 +22,8 @@ struct IDynamicRegistry {
     virtual void AddTransformsToXFormSet(COperator::EOperatorId opId, CXformSet* xformSet) = 0;
     virtual bool GetEnginePreserveOrder(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to) = 0;
     virtual bool GetEnginePreserveDistribution(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to) = 0;
+    virtual bool GetEnginePreserveRewindability(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to) = 0;
+    virtual std::vector<PreprocessingRule> GetPreprocessingRules() = 0;
 };
 
 // Factory function – C linkage keeps name-mangling simple.

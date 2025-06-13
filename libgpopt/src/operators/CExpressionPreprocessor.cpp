@@ -2686,6 +2686,18 @@ CExpressionPreprocessor::PexprPreprocess(
 	GPOS_CHECK_ABORT;
 	pexprWindowPreprocessed->Release();
 
+
+	// (27) dynamic preprocessing rules
+	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
+	std::vector<orcaextender::PreprocessingRule> preprocessingRules = registry->GetPreprocessingRules();
+	for (size_t i = 0; i < preprocessingRules.size(); i++) {
+		orcaextender::PreprocessingRule rule = preprocessingRules[i];
+		CExpression *pexprDynamic = rule(mp, pexprNoUnusedPrEl);
+		GPOS_CHECK_ABORT;
+		pexprNoUnusedPrEl->Release();
+		pexprNoUnusedPrEl = pexprDynamic;
+	}
+
 	// (17) normalize expression
 	CExpression *pexprNormalized1 =
 		CNormalizer::PexprNormalize(mp, pexprNoUnusedPrEl);

@@ -89,6 +89,9 @@ public:
 		return EmdtRel;
 	}
 
+	// engine name
+	virtual CMDName MdEngineName() const = 0;
+
 	// is this a temp relation
 	virtual BOOL IsTemporary() const = 0;
 

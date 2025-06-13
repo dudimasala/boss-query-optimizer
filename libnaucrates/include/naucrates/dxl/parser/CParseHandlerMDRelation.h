@@ -46,6 +46,9 @@ protected:
 	// table name
 	CMDName *m_mdname;
 
+	// engine name
+	CMDName *m_engine_name;
+
 	// is this a temporary relation
 	BOOL m_is_temp_table;
 

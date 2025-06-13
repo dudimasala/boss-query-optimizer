@@ -167,7 +167,7 @@ CParseHandlerMDRelationExternal::EndElement(
 	mdid_check_constraint_array->AddRef();
 
 	m_imd_obj = GPOS_NEW(m_mp) CMDRelationExternalGPDB(
-		m_mp, m_mdid, m_mdname, m_rel_distr_policy, md_col_array,
+		m_mp, m_mdid, m_mdname, m_engine_name, m_rel_distr_policy, md_col_array,
 		m_distr_col_array, m_convert_hash_to_random, m_key_sets_arrays,
 		md_index_info_array, mdid_triggers_array, mdid_check_constraint_array,
 		m_reject_limit, m_is_rej_limit_in_rows, m_mdid_fmt_err_table);

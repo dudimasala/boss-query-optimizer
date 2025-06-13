@@ -59,6 +59,9 @@ private:
 	// table name
 	CMDName *m_mdname;
 
+	// engine name
+	CMDName *m_engine_name;
+
 	// is this a temporary relation
 	BOOL m_is_temp_table;
 
@@ -105,7 +108,7 @@ private:
 public:
 	// ctor
 	CMDRelationCtasGPDB(CMemoryPool *mp, IMDId *mdid, CMDName *mdname_schema,
-						CMDName *mdname, BOOL fTemporary, BOOL fHasOids,
+						CMDName *mdname, CMDName *engine_name, BOOL fTemporary, BOOL fHasOids,
 						Erelstoragetype rel_storage_type,
 						Ereldistrpolicy rel_distr_policy,
 						CMDColumnArray *mdcol_array,
@@ -132,6 +135,9 @@ public:
 
 	// relation name
 	virtual CMDName Mdname() const;
+
+	// engine name
+	virtual CMDName MdEngineName() const;
 
 	// distribution policy (none, hash, random)
 	virtual Ereldistrpolicy GetRelDistribution() const;

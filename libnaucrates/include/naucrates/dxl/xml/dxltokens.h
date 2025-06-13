@@ -716,6 +716,8 @@ enum Edxltoken
 	EdxltokenCtasOptionType,
 	EdxltokenVarTypeModList,
 
+	EdxltokenEngineType,
+
 	EdxltokenSentinel
 };
 

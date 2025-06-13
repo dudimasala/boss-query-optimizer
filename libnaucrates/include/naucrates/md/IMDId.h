@@ -72,7 +72,9 @@ public:
 		EmdidCastFunc = 3,
 		EmdidScCmp = 4,
 		EmdidGPDBCtas = 5,
-		EmdidSentinel
+		EmdidSentinel,
+		EmdidDynamicStart = 1000,
+		EmdidDynamicEnd = 10000
 	};
 
 	// ctor

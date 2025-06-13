@@ -95,7 +95,6 @@ CXformFactory::Add(CXform *pxform)
 
 	GPOS_ASSERT_IMP(0 < exfid, ((m_rgpxf[exfid - 1] != NULL) || (exfid - 1 == CXform::ExfSentinel)) &&
 								   "Incorrect order of instantiation");
-
 	if (exfid >= m_rgpxf.size())
 	{
 		m_rgpxf.push_back(pxform);
