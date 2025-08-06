@@ -30,15 +30,15 @@ public:
         impl->AddTransformsToXFormSet(opId, xformSet);
     }
 
-    bool GetEnginePreserveOrder(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to) override {
+    bool GetEnginePreserveOrder(EEngineType from, EEngineType to) override {
         return impl->GetEnginePreserveOrder(from, to);
     }
 
-    bool GetEnginePreserveDistribution(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to) override {
+    bool GetEnginePreserveDistribution(EEngineType from, EEngineType to) override {
         return impl->GetEnginePreserveDistribution(from, to);
     }
 
-    bool GetEnginePreserveRewindability(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to) override {
+    bool GetEnginePreserveRewindability(EEngineType from, EEngineType to) override {
         return impl->GetEnginePreserveRewindability(from, to);
     }
 

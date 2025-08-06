@@ -2,6 +2,7 @@
 
 #include "gpos/base.h"
 
+#include "gpoptextender/EngineProperty/EEngineType.hpp"
 #include "gpopt/base/CPropSpec.h"
 
 namespace gpopt {
@@ -10,18 +11,6 @@ using namespace gpmd;
 // Engine specification base class
 class CEngineSpec : public CPropSpec
 {
-public:
-    // Engine types
-    enum EEngineType
-    {
-        EetGP,
-        EetGPU,
-        EetAny,  
-        EetSentinel,
-        EetDynamicStart = EetSentinel,
-        EetDynamicEnd = 10000
-    };
-
 private:
     // Private copy ctor
     CEngineSpec(const CEngineSpec &);
@@ -90,7 +79,6 @@ public:
 	}
 
     virtual IOstream &OsPrint(IOstream &os) const;
-
 };
 
 }

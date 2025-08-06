@@ -20,9 +20,9 @@ struct IDynamicRegistry {
     virtual std::vector<gpopt::COperator*> GetRelevantOperatorsForTransform(CXform::EXformId transformId, DynamicOperatorArgs& args) = 0;
     virtual std::vector<COperator::EOperatorId> GetProjectOperators() = 0;
     virtual void AddTransformsToXFormSet(COperator::EOperatorId opId, CXformSet* xformSet) = 0;
-    virtual bool GetEnginePreserveOrder(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to) = 0;
-    virtual bool GetEnginePreserveDistribution(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to) = 0;
-    virtual bool GetEnginePreserveRewindability(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to) = 0;
+    virtual bool GetEnginePreserveOrder(EEngineType from, EEngineType to) = 0;
+    virtual bool GetEnginePreserveDistribution(EEngineType from, EEngineType to) = 0;
+    virtual bool GetEnginePreserveRewindability(EEngineType from, EEngineType to) = 0;
     virtual std::vector<PreprocessingRule> GetPreprocessingRules() = 0;
 };
 

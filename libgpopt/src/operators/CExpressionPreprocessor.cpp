@@ -37,6 +37,7 @@
 #include "naucrates/traceflags/traceflags.h"
 
 #include "gpoptextender/DynamicRegistry/IDynamicRegistry.hpp"
+#include <algorithm>
 
 using namespace gpopt;
 

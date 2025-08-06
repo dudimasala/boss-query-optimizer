@@ -58,7 +58,7 @@ public:
     // match function
 	BOOL Matches(COperator *pop) const override;
 
-	CEngineSpec::EEngineType Eet() const {
+	EEngineType Eet() const {
 		return m_pes->Eet();
 	}
 

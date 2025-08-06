@@ -28,6 +28,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                         LINK_FLAGS "-undefined dynamic_lookup")
 endif()
 
+
 set_target_properties(gpdbcost PROPERTIES
                       SOVERSION ${GPORCA_ABI_VERSION}
                       VERSION ${GPORCA_VERSION_STRING})

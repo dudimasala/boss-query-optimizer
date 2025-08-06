@@ -1,4 +1,3 @@
-# Copyright (c) 2015, Pivotal Software, Inc. All Rights Reserved.
 
 file(GLOB_RECURSE hdrs ${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp)
 file(GLOB_RECURSE srcs ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)

@@ -30,7 +30,7 @@ class DynamicRegistry {
     COperator::EOperatorId currentOperatorId;
     CXform::EXformId currentTransformId;
     BOSSCostModel* costModel;
-    CEngineSpec::EEngineType currentEngineType;
+    EEngineType currentEngineType;
     IMDId::EMDIdType currentMDIdType;
 
 
@@ -42,7 +42,7 @@ class DynamicRegistry {
 
 	// First, create a hash struct for the pair
 	struct EngineStringPairHash {
-			std::size_t operator()(const std::pair<CEngineSpec::EEngineType, std::string>& p) const {
+			std::size_t operator()(const std::pair<EEngineType, std::string>& p) const {
 					// Combine the hashes of both enum values
 					// This is a simple but effective way to hash a pair
 					std::size_t h1 = std::hash<int>{}(static_cast<int>(p.first));
@@ -54,38 +54,38 @@ class DynamicRegistry {
 	};
 
   struct EnginePairHash {
-    std::size_t operator()(const std::pair<CEngineSpec::EEngineType, CEngineSpec::EEngineType>& p) const {
+    std::size_t operator()(const std::pair<EEngineType, EEngineType>& p) const {
       return std::hash<int>{}(static_cast<int>(p.first)) ^ (std::hash<int>{}(static_cast<int>(p.second)) << 1);
     }
   };
 
-  using PreserveMap  = std::unordered_map<std::pair<CEngineSpec::EEngineType, CEngineSpec::EEngineType>, bool, EnginePairHash>;
+  using PreserveMap  = std::unordered_map<std::pair<EEngineType, EEngineType>, bool, EnginePairHash>;
 
 
-    std::unordered_map<std::pair<CEngineSpec::EEngineType, std::string>, COperator::EOperatorId, EngineStringPairHash> opEngineAndNameToOperatorId = {};
+    std::unordered_map<std::pair<EEngineType, std::string>, COperator::EOperatorId, EngineStringPairHash> opEngineAndNameToOperatorId = {};
     std::unordered_map<std::string, CXform::EXformId> transformNameToTransformId = {};
-    std::unordered_map<std::string, CEngineSpec::EEngineType> engineNameToEngineType = {};
-    std::unordered_map<CEngineSpec::EEngineType, std::string> engineTypeToEngineName = {};
+    std::unordered_map<std::string, EEngineType> engineNameToEngineType = {};
+    std::unordered_map<EEngineType, std::string> engineTypeToEngineName = {};
     std::unordered_map<std::string, PreprocessingRule> preprocessingRules = {};
     std::unordered_set<COperator::EOperatorId> projectOperators = {};
 
     std::unordered_map<COperator::EOperatorId, std::vector<CXform::EXformId>> relevantTransforms = {};
     std::unordered_map<CXform::EXformId, std::vector<std::pair<COperator::EOperatorId, FnOperatorFactory>>> opFactories = {};
-    std::unordered_map<std::pair<CEngineSpec::EEngineType, CEngineSpec::EEngineType>, bool, EnginePairHash> enginePreserveOrder = {};
-    std::unordered_map<std::pair<CEngineSpec::EEngineType, CEngineSpec::EEngineType>, bool, EnginePairHash> enginePreserveDistribution = {};
-    std::unordered_map<std::pair<CEngineSpec::EEngineType, CEngineSpec::EEngineType>, bool, EnginePairHash> enginePreserveRewindability = {};
-    std::unordered_map<CEngineSpec::EEngineType, std::pair<IMDId::EMDIdType, std::string>> engineToMDIdType = {};
+    std::unordered_map<std::pair<EEngineType, EEngineType>, bool, EnginePairHash> enginePreserveOrder = {};
+    std::unordered_map<std::pair<EEngineType, EEngineType>, bool, EnginePairHash> enginePreserveDistribution = {};
+    std::unordered_map<std::pair<EEngineType, EEngineType>, bool, EnginePairHash> enginePreserveRewindability = {};
+    std::unordered_map<EEngineType, std::pair<IMDId::EMDIdType, std::string>> engineToMDIdType = {};
 
-    std::unordered_map<CEngineSpec::EEngineType, std::vector<std::string>> engineToPhysicalOps;
-    std::unordered_map<CEngineSpec::EEngineType, std::vector<std::string>> engineToLogicalOps; 
-    std::unordered_map<CEngineSpec::EEngineType, std::vector<std::string>> engineToTransforms;
-    // std::unordered_map<CEngineSpec::EEngineType, std::vector<std::string>> engineTob2cConverters;
-    // std::unordered_map<CEngineSpec::EEngineType, std::vector<std::string>> engineToc2bConverters;
-    std::unordered_map<CEngineSpec::EEngineType, std::vector<std::string>> engineToPreprocessingRules;
-    std::unordered_map<CEngineSpec::EEngineType, std::vector<std::pair<std::string, ULONG>>> engineToB2CTranslators;
-    std::unordered_map<CEngineSpec::EEngineType, std::vector<std::pair<std::string, ULONG>>> engineToC2BTranslators;
-    std::unordered_map<CEngineSpec::EEngineType, std::vector<std::pair<std::string, ULONG>>> engineToB2CScalarTranslators;
-    std::unordered_map<CEngineSpec::EEngineType, std::vector<std::pair<std::string, ULONG>>> engineToC2BScalarTranslators;
+    std::unordered_map<EEngineType, std::vector<std::string>> engineToPhysicalOps;
+    std::unordered_map<EEngineType, std::vector<std::string>> engineToLogicalOps; 
+    std::unordered_map<EEngineType, std::vector<std::string>> engineToTransforms;
+    // std::unordered_map<EEngineType, std::vector<std::string>> engineTob2cConverters;
+    // std::unordered_map<EEngineType, std::vector<std::string>> engineToc2bConverters;
+    std::unordered_map<EEngineType, std::vector<std::string>> engineToPreprocessingRules;
+    std::unordered_map<EEngineType, std::vector<std::pair<std::string, ULONG>>> engineToB2CTranslators;
+    std::unordered_map<EEngineType, std::vector<std::pair<std::string, ULONG>>> engineToC2BTranslators;
+    std::unordered_map<EEngineType, std::vector<std::pair<std::string, ULONG>>> engineToB2CScalarTranslators;
+    std::unordered_map<EEngineType, std::vector<std::pair<std::string, ULONG>>> engineToC2BScalarTranslators;
     
 
 
@@ -97,8 +97,8 @@ class DynamicRegistry {
       projectOperators.erase(opId);
     }
 
-    void RemoveEngine(CEngineSpec::EEngineType);
-    void removeEngineFromMap(PreserveMap &m, CEngineSpec::EEngineType engineId);
+    void RemoveEngine(EEngineType);
+    void removeEngineFromMap(PreserveMap &m, EEngineType engineId);
 
 
   public:
@@ -108,9 +108,9 @@ class DynamicRegistry {
 
     ~DynamicRegistry();
 
-    void RegisterPhysicalOperator(const std::string& opName, CEngineSpec::EEngineType engine, FnCost costFunc);
-    void RegisterLogicalOperator(const std::string& opName, CEngineSpec::EEngineType engine, bool isAProject = false);
-    void RegisterTransform(const std::string& transformName, CEngineSpec::EEngineType engine, CXform* transform);
+    void RegisterPhysicalOperator(const std::string& opName, EEngineType engine, FnCost costFunc);
+    void RegisterLogicalOperator(const std::string& opName, EEngineType engine, bool isAProject = false);
+    void RegisterTransform(const std::string& transformName, EEngineType engine, CXform* transform);
     void RemoveTransform(CXform::EXformId xformId) {
       GPOPT_DISABLE_XFORM(xformId);
     }
@@ -120,34 +120,34 @@ class DynamicRegistry {
     void HookOpToTransform(CXform::EXformId transformId, COperator::EOperatorId opId, FnOperatorFactory opFactory);
     void HookTransformToOp(COperator::EOperatorId opId, CXform::EXformId transformId);
 
-    void RegisterCostModelParams(CEngineSpec::EEngineType engine, ICostModelParams* pcp) {
+    void RegisterCostModelParams(EEngineType engine, ICostModelParams* pcp) {
       costModel->RegisterCostModelParams(engine, pcp);
     };
 
-    void RegisterEngineTransform(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to, FnCost fn_cost, bool preserve_order = false, bool preserve_distribution = false, bool preserve_rewindability = false) {
+    void RegisterEngineTransform(EEngineType from, EEngineType to, FnCost fn_cost, bool preserve_order = false, bool preserve_distribution = false, bool preserve_rewindability = false) {
       costModel->RegisterEngineTransform(from, to, fn_cost);
       enginePreserveOrder[std::make_pair(from, to)] = preserve_order;
       enginePreserveDistribution[std::make_pair(from, to)] = preserve_distribution;
       enginePreserveRewindability[std::make_pair(from, to)] = preserve_distribution;
     };
 
-    bool GetEnginePreserveOrder(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to) {
+    bool GetEnginePreserveOrder(EEngineType from, EEngineType to) {
       return enginePreserveOrder[std::make_pair(from, to)];
     }
 
-    bool GetEnginePreserveDistribution(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to) {
+    bool GetEnginePreserveDistribution(EEngineType from, EEngineType to) {
       return enginePreserveDistribution[std::make_pair(from, to)];
     }
 
-    bool GetEnginePreserveRewindability(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to) {
+    bool GetEnginePreserveRewindability(EEngineType from, EEngineType to) {
       return enginePreserveRewindability[std::make_pair(from, to)];
     }
 
-    COperator::EOperatorId GetOperatorId(CEngineSpec::EEngineType engine, const std::string& opName, bool throwError = true);
+    COperator::EOperatorId GetOperatorId(EEngineType engine, const std::string& opName, bool throwError = true);
     std::vector<COperator*> GetRelevantOperatorsForTransform(CXform::EXformId transformId, DynamicOperatorArgs& args);
     std::vector<CXform::EXformId> GetRelevantTransformsForOperator(COperator::EOperatorId opId);
     CXform::EXformId GetTransformId(const std::string& transformName, bool throwError = true);
-    CEngineSpec::EEngineType GetEngineType(const std::string& engineName, bool throwError = true);
+    EEngineType GetEngineType(const std::string& engineName, bool throwError = true);
     std::unordered_map<std::string, std::vector<std::string>> GetAllOperators() { 
       std::unordered_map<std::string, std::vector<std::string>> engineNameToOperatorNames;
       for (auto& [engine, opNames] : engineToPhysicalOps) {
@@ -156,7 +156,7 @@ class DynamicRegistry {
       return engineNameToOperatorNames; 
     };
     std::unordered_set<COperator::EOperatorId> GetProjectOperators() { return projectOperators; };
-    ICostModelParams* GetCostModelParams(CEngineSpec::EEngineType engine) { return costModel->GetCostModelParams(engine); };
+    ICostModelParams* GetCostModelParams(EEngineType engine) { return costModel->GetCostModelParams(engine); };
     BOSSCostModel* GetCostModel() { return costModel; };
 
     void AddTransformsToXFormSet(COperator::EOperatorId opId, CXformSet* xformSet);
@@ -229,34 +229,34 @@ class DynamicRegistry {
     }
 
     template <typename RetAuxType, typename InpAuxType, typename RetScalarAuxType, typename InpScalarAuxType>
-    void RegisterBOSS2CExpressionTranslator(std::unique_ptr<bosstocexpression::TranslatorBase<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>> translator, CEngineSpec::EEngineType engineType, const std::string& converterName = DefaultTranslatorName) {
+    void RegisterBOSS2CExpressionTranslator(std::unique_ptr<bosstocexpression::TranslatorBase<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>> translator, EEngineType engineType, const std::string& converterName = DefaultTranslatorName) {
       bosstocexpression::BOSSToCExpressionConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>* typedConverter = GetBOSS2CExpressionConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>(converterName);
       ULONG id = typedConverter->RegisterTranslator(std::move(translator));
       engineToB2CTranslators[engineType].push_back(std::make_pair(converterName, id));
     };
 
     template <typename RetAuxType, typename InpAuxType, typename RetScalarAuxType, typename InpScalarAuxType>
-    void RegisterBOSS2CExpressionScalarTranslator(std::unique_ptr<bosstocexpression::ScalarTranslatorBase<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>> translator, CEngineSpec::EEngineType engineType, const std::string& converterName = DefaultTranslatorName) {
+    void RegisterBOSS2CExpressionScalarTranslator(std::unique_ptr<bosstocexpression::ScalarTranslatorBase<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>> translator, EEngineType engineType, const std::string& converterName = DefaultTranslatorName) {
       bosstocexpression::BOSSToCExpressionConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>* typedConverter = GetBOSS2CExpressionConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>(converterName);
       ULONG id = typedConverter->RegisterScalarTranslator(std::move(translator));
       engineToB2CScalarTranslators[engineType].push_back(std::make_pair(converterName, id));
     };
 
     template <typename RetAuxType, typename InpAuxType, typename RetScalarAuxType, typename InpScalarAuxType>
-    void RegisterCExpression2BOSSTranslator(std::unique_ptr<cexpressiontoboss::translation::TranslatorBase<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>> translator, CEngineSpec::EEngineType engineType, const std::string& converterName = DefaultTranslatorName) {
+    void RegisterCExpression2BOSSTranslator(std::unique_ptr<cexpressiontoboss::translation::TranslatorBase<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>> translator, EEngineType engineType, const std::string& converterName = DefaultTranslatorName) {
       cexpressiontoboss::CExpressionToBOSSConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>* typedConverter = GetCExpression2BOSSConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>(converterName);
       ULONG id = typedConverter->RegisterTranslator(std::move(translator));
       engineToC2BTranslators[engineType].push_back(std::make_pair(converterName, id));
     };
 
     template <typename RetAuxType, typename InpAuxType, typename RetScalarAuxType, typename InpScalarAuxType>
-    void RegisterCExpression2BOSSScalarTranslator(std::unique_ptr<cexpressiontoboss::translation::ScalarTranslatorBase<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>> translator, CEngineSpec::EEngineType engineType, const std::string& converterName = DefaultTranslatorName) {
+    void RegisterCExpression2BOSSScalarTranslator(std::unique_ptr<cexpressiontoboss::translation::ScalarTranslatorBase<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>> translator, EEngineType engineType, const std::string& converterName = DefaultTranslatorName) {
       cexpressiontoboss::CExpressionToBOSSConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>* typedConverter = GetCExpression2BOSSConverter<RetAuxType, InpAuxType, RetScalarAuxType, InpScalarAuxType>(converterName);
       ULONG id = typedConverter->RegisterScalarTranslator(std::move(translator));
       engineToC2BScalarTranslators[engineType].push_back(std::make_pair(converterName, id));
     };
 
-    void RegisterPreprocessingRule(const std::string& ruleName, PreprocessingRule preprocessingRule, CEngineSpec::EEngineType engineType) {
+    void RegisterPreprocessingRule(const std::string& ruleName, PreprocessingRule preprocessingRule, EEngineType engineType) {
       preprocessingRules[ruleName] = preprocessingRule;
       engineToPreprocessingRules[engineType].push_back(ruleName);
     };
@@ -273,7 +273,7 @@ class DynamicRegistry {
       return rules;
     }
 
-    void RegisterMetadataProvider(CEngineSpec::EEngineType engine, IMDProvider* pmdp) {
+    void RegisterMetadataProvider(EEngineType engine, IMDProvider* pmdp) {
       CMDAccessor *mda = COptCtxt::PoctxtFromTLS()->Pmda();
       IMDId::EMDIdType mdIdType = engineToMDIdType[engine].first;
       auto wstr = bosstocexpression::utils::StringToWString(engineToMDIdType[engine].second);
@@ -283,7 +283,7 @@ class DynamicRegistry {
 
 
     void RemoveEngine(std::string& engineName) {
-      CEngineSpec::EEngineType engineType = engineNameToEngineType[engineName];
+      EEngineType engineType = engineNameToEngineType[engineName];
       RemoveEngine(engineType);
       engineNameToEngineType.erase(engineName);
     }
