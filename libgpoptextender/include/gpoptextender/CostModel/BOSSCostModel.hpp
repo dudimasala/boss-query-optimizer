@@ -123,7 +123,7 @@ public:
 
 	// helper function to return cost of producing output tuples from Scan operator
 	static CCost CostScanOutput(CMemoryPool *mp, DOUBLE rows, DOUBLE width,
-								DOUBLE num_rebinds, ICostModelParams *pcp);
+								DOUBLE num_rebinds, ICostModelParams *pcp, EEngineType engine);
 
 	// helper function to return cost of a plan rooted by unary operator
 	static CCost CostUnary(CMemoryPool *mp, CExpressionHandle &exprhdl,

@@ -198,7 +198,7 @@ BOSSCostModel::CostTupleProcessing(DOUBLE rows, DOUBLE width,
 CCost
 BOSSCostModel::CostScanOutput(CMemoryPool *,  // mp
 							   DOUBLE rows, DOUBLE width, DOUBLE num_rebinds,
-							   ICostModelParams *pcp)
+							   ICostModelParams *pcp, EEngineType engine)
 {
 	GPOS_ASSERT(NULL != pcp);
 
@@ -206,7 +206,7 @@ BOSSCostModel::CostScanOutput(CMemoryPool *,  // mp
 		pcp->PcpLookup(CCostModelParamsGPDB::EcpOutputTupCostUnit)->Get();
 	GPOS_ASSERT(0 < dOutputTupCostUnit);
 
-	return CCost(num_rebinds * (rows * width * dOutputTupCostUnit));
+	return CCost(num_rebinds * (rows * width * dOutputTupCostUnit), engine);
 }
 
 
@@ -367,11 +367,11 @@ BOSSCostModel::CostChildren(CMemoryPool *mp, CExpressionHandle &exprhdl,
 			if (CUtils::FPhysicalScan(scanOp))
 			{
 				// Note: We assume that width and rebinds are the same for scan, partition selector and filter
-				// fine to do this since cost of a scan would be on 1 engine (so adding CCost + scalar CDouble)
+				// no transition so scan is the same engine as the parent.
+				EEngineType engine = GetEngineType(mp, exprhdl);
 				dCostChild = dCostChild +
 							 CostScanOutput(mp, dScanRows, pci->GetWidth()[ul],
-											pci->PdRebinds()[ul], pcp)
-								 .Get();
+											pci->PdRebinds()[ul], pcp, engine);
 			}
 		}
 

@@ -56,9 +56,12 @@ class Engine {
       return m_engineName;
     }
 
+    virtual void ConfigureCostModel() {}
+
 
     virtual void Register() {
       UpdateEngineType();
+      ConfigureCostModel();
       RegisterTranslators();
       RegisterMetadataFilePath();
       RegisterNewBOSS2CExpressionConverter();

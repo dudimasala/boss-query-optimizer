@@ -287,5 +287,9 @@ class DynamicRegistry {
       RemoveEngine(engineType);
       engineNameToEngineType.erase(engineName);
     }
+
+    void UseMaxCostModel(bool shouldUse) {
+      gpopt::useMaxCosting = shouldUse;
+    }
 };
 }  // namespace orcaextender

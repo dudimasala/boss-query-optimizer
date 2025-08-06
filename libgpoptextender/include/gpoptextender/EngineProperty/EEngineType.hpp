@@ -6,6 +6,8 @@
 namespace gpopt {
 using namespace gpos;
 
+extern bool useMaxCosting;
+
 enum EEngineType
   {
       EetGP,
