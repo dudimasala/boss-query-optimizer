@@ -631,8 +631,8 @@ CCostContext::CostCompute(CMemoryPool *mp, CCostArray *pdrgpcostChildren)
 			GPOPT_DEFAULT_REBINDS == (ULONG)(dRebindsChild) &&
 				"invalid number of rebinds when there are no outer references");
 
-		DOUBLE dCostChild = (*pdrgpcostChildren)[ul]->Get();
-		ci.SetChildCost(ul, dCostChild);
+		CCost *dCostChild = (*pdrgpcostChildren)[ul];
+		ci.SetChildCost(ul, CCost(*dCostChild));
 	}
 
 	// compute cost using the underlying cost model

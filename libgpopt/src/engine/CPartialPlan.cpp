@@ -113,7 +113,7 @@ CPartialPlan::ExtractChildrenCostingInfo(CMemoryPool *mp, ICostModel *pcm,
 				child_stats->Width(mp, prppChild->PcrsRequired()).Get();
 			pci->SetChildWidth(ulIndex, dWidthChild);
 			pci->SetChildRebinds(ulIndex, child_stats->NumRebinds().Get());
-			pci->SetChildCost(ulIndex, m_pccChild->Cost().Get());
+			pci->SetChildCost(ulIndex, CCost(m_pccChild->Cost()));
 
 			// continue with next child
 			ulIndex++;
@@ -133,8 +133,8 @@ CPartialPlan::ExtractChildrenCostingInfo(CMemoryPool *mp, ICostModel *pcm,
 		pci->SetChildWidth(ulIndex, dWidthChild);
 
 		// use child group's cost lower bound as the child cost
-		DOUBLE dCostChild = pgroupChild->CostLowerBound(mp, prppChild).Get();
-		pci->SetChildCost(ulIndex, dCostChild);
+		CCost dCostChild = pgroupChild->CostLowerBound(mp, prppChild);
+		pci->SetChildCost(ulIndex, CCost(dCostChild));
 
 		// advance to next child
 		ulIndex++;

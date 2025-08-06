@@ -7,6 +7,7 @@
 //
 //	@doc:
 //		Interface for the underlying cost model
+// edited
 //---------------------------------------------------------------------------
 
 
@@ -136,7 +137,8 @@ public:
 		DOUBLE *m_pdRebindsChildren;
 
 		// computed cost of child operators
-		DOUBLE *m_pdCostChildren;
+		CCost *m_pdCostChildren;
+		DOUBLE *m_pdDoubleCostChildren;
 
 		// stats of the children
 		CCostingStats **m_pdrgstatsChildren;
@@ -153,6 +155,7 @@ public:
 			  m_pdWidthChildren(NULL),
 			  m_pdRebindsChildren(NULL),
 			  m_pdCostChildren(NULL),
+				m_pdDoubleCostChildren(NULL),
 			  m_pdrgstatsChildren(NULL)
 		{
 			GPOS_ASSERT(NULL != pcstats);
@@ -161,7 +164,8 @@ public:
 				m_pdRowsChildren = GPOS_NEW_ARRAY(mp, DOUBLE, ulChildren);
 				m_pdWidthChildren = GPOS_NEW_ARRAY(mp, DOUBLE, ulChildren);
 				m_pdRebindsChildren = GPOS_NEW_ARRAY(mp, DOUBLE, ulChildren);
-				m_pdCostChildren = GPOS_NEW_ARRAY(mp, DOUBLE, ulChildren);
+				m_pdCostChildren = GPOS_NEW_ARRAY(mp, CCost, ulChildren);
+				m_pdDoubleCostChildren = GPOS_NEW_ARRAY(mp, DOUBLE, ulChildren);
 				m_pdrgstatsChildren =
 					GPOS_NEW_ARRAY(mp, CCostingStats *, ulChildren);
 
@@ -179,6 +183,7 @@ public:
 			GPOS_DELETE_ARRAY(m_pdWidthChildren);
 			GPOS_DELETE_ARRAY(m_pdRebindsChildren);
 			GPOS_DELETE_ARRAY(m_pdCostChildren);
+			GPOS_DELETE_ARRAY(m_pdDoubleCostChildren);
 
 			for (ULONG ul = 0; ul < m_ulChildren; ul++)
 			{
@@ -296,20 +301,27 @@ public:
 		}
 
 		// children cost accessor
-		DOUBLE *
+		CCost *
 		PdCost() const
 		{
 			return m_pdCostChildren;
 		}
 
+		DOUBLE *
+		PdDoubleCost() const
+		{
+			return m_pdDoubleCostChildren;
+		}
+
 		// child cost setter
 		void
-		SetChildCost(ULONG ulPos, DOUBLE dCostChild)
+		SetChildCost(ULONG ulPos, CCost dCostChild)
 		{
 			GPOS_ASSERT(0 <= dCostChild);
 			GPOS_ASSERT(ulPos < m_ulChildren);
 
 			m_pdCostChildren[ulPos] = dCostChild;
+			m_pdDoubleCostChildren[ulPos] = dCostChild.Get();
 		}
 
 		// child stats setter

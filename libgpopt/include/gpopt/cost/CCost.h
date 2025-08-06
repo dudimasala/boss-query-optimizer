@@ -27,6 +27,8 @@ class CCost;
 class CEngineSpec;
 typedef CDynamicPtrArray<CCost, gpos::CleanupDelete> CCostArray;
 
+// TODO make all req ops commutative with CDouble
+
 // typedef CHashMap<EEngineType, CDouble, EngineTypeHashValue,
 // 					EngineTypeEquals, CleanupNULL<EEngineType>,
 // 					CleanupDelete<CDouble>>
@@ -45,7 +47,14 @@ class CCost : public CDouble
 {
 public:
 	std::map<EEngineType, CDouble> engineCostMap; 
+
+	CCost() : CDouble(0.0) 
+	{
+		engineCostMap.insert(std::make_pair(EetAny, CDouble(0.0)));
+	}
+
 	// ctor. Maintain original ctors for compatibility with the original system.
+
 	explicit CCost(DOUBLE d) : CDouble(d)
 	{
 		engineCostMap.insert(std::make_pair(EetAny, CDouble(d)));
@@ -117,6 +126,19 @@ public:
 			return CCost(merged);
 	}
 
+	CCost
+	operator+(const CDouble &cost) const
+	{
+    std::map<EEngineType, CDouble> merged = engineCostMap;
+
+    for (auto &kv : merged)
+    {
+        kv.second = kv.second + cost;
+    }
+
+    return CCost(merged);
+	}
+
 	// multiplication operator
 	CCost
 	operator*(const CCost &cost) const
@@ -136,9 +158,26 @@ public:
 	}
 
 
+	CCost
+	operator*(const CDouble &cost) const
+	{
+    std::map<EEngineType, CDouble> merged = engineCostMap;
+
+    for (auto &kv : merged)
+    {
+        kv.second = kv.second * cost;
+    }
+
+    return CCost(merged);
+	}
+
+
+
 	BOOL
 	operator<(const CCost &cost) const
 	{
+		BOOL t = false;
+
 		for (const auto & [key, lhsVal] : engineCostMap) {
 			auto it = cost.engineCostMap.find(key);
 			if (it == cost.engineCostMap.end()) {
@@ -146,18 +185,39 @@ public:
 			}
 
 			const CDouble & rhsVal = it->second;
-			if (!(lhsVal < rhsVal)) {
+			if (lhsVal < rhsVal) {
+				t = true;
+			} else if (!(lhsVal <= rhsVal)) {
 				return false;
 			}
 		}
 
-		return true;
+		return t;
+	}
+
+
+	BOOL
+	operator<(const CDouble &cost) const
+	{
+		BOOL t = false;
+
+		for (const auto & [key, lhsVal] : engineCostMap) {
+			if (lhsVal < cost) {
+				t = true;
+			} else if (!(lhsVal <= cost)) {
+				return false;
+			}
+		}
+
+		return t;
 	}
 
 	// comparison operator
 	BOOL
 	operator>(const CCost &cost) const
 	{
+		BOOL t = false;
+
 		for (const auto & [key, lhsVal] : engineCostMap) {
 			auto it = cost.engineCostMap.find(key);
 			if (it == cost.engineCostMap.end()) {
@@ -165,12 +225,30 @@ public:
 			}
 
 			const CDouble & rhsVal = it->second;
-			if (!(lhsVal > rhsVal)) {
+			if (lhsVal > rhsVal) {
+				t = true;
+			} else if (!(lhsVal >= rhsVal)) {
 				return false;
 			}
 		}
 
-		return true;
+		return t;
+	}
+
+
+	BOOL
+	operator>(const CDouble &cost) const
+	{
+		BOOL t = false;
+		for (const auto & [key, lhsVal] : engineCostMap) {
+			if (lhsVal > cost) {
+				t = true;
+			} else if (!(lhsVal >= cost)) {
+				return false;
+			}
+		}
+
+		return t;
 	}
 
 	// d'tor

@@ -176,7 +176,7 @@ BOSSCostModel::CostTupleProcessing(DOUBLE rows, DOUBLE width,
 									ICostModelParams *pcp)
 {
 	GPOS_ASSERT(NULL != pcp);
-
+	// no need for engine here - that's added in the calling function
 	const CDouble dTupDefaultProcCostUnit =
 		pcp->PcpLookup(CCostModelParamsGPDB::EcpTupDefaultProcCostUnit)->Get();
 	GPOS_ASSERT(0 < dTupDefaultProcCostUnit);
@@ -234,7 +234,7 @@ BOSSCostModel::CostUnary(CMemoryPool *mp, CExpressionHandle &exprhdl, const BOSS
   ICostModelParams *pcp = pcmgpdb->GetCostModelParams(engine);
 
 	CCost costLocal =
-		CCost(num_rebinds * CostTupleProcessing(rows, width, pcp).Get());
+		CCost(num_rebinds * CostTupleProcessing(rows, width, pcp).Get(), engine);
 	CCost costChild = CostChildren(mp, exprhdl, pci, pcp);
 
 	return costLocal + costChild;
@@ -256,6 +256,8 @@ BOSSCostModel::CostSpooling(CMemoryPool *mp, CExpressionHandle &exprhdl,
 	GPOS_ASSERT(NULL != pci);
 	GPOS_ASSERT(NULL != pcp);
 
+	EEngineType engine = GetEngineType(mp, exprhdl);
+
 	const CDouble dMaterializeCostUnit =
 		pcp->PcpLookup(CCostModelParamsGPDB::EcpMaterializeCostUnit)->Get();
 	GPOS_ASSERT(0 < dMaterializeCostUnit);
@@ -266,7 +268,7 @@ BOSSCostModel::CostSpooling(CMemoryPool *mp, CExpressionHandle &exprhdl,
 
 	// materialization cost is correlated with the number of rows and width of returning tuples.
 	CCost costLocal =
-		CCost(num_rebinds * (width * rows * dMaterializeCostUnit));
+		CCost(num_rebinds * (width * rows * dMaterializeCostUnit), engine);
 	CCost costChild = CostChildren(mp, exprhdl, pci, pcp);
 
 	return costLocal + costChild;
@@ -309,15 +311,15 @@ BOSSCostModel::CostChildren(CMemoryPool *mp, CExpressionHandle &exprhdl,
 	GPOS_ASSERT(NULL != pci);
 	GPOS_ASSERT(NULL != pcp);
 
-	DOUBLE *pdCost = pci->PdCost();
+	CCost *pdCost = pci->PdCost();
 	const ULONG size = pci->ChildCount();
 	BOOL fFilterParent =
 		(COperator::EopPhysicalFilter == exprhdl.Pop()->Eopid());
 
-	DOUBLE res = 0.0;
+	CCost res(0.0);
 	for (ULONG ul = 0; ul < size; ul++)
 	{
-		DOUBLE dCostChild = pdCost[ul];
+		CCost dCostChild = pdCost[ul];
 		COperator *popChild = exprhdl.Pop(ul);
 		if (NULL != popChild &&
 			(CUtils::FPhysicalScan(popChild) ||
@@ -351,7 +353,7 @@ BOSSCostModel::CostChildren(CMemoryPool *mp, CExpressionHandle &exprhdl,
 						// the complete tree (filter + part sel + scan).
 						// See method CTranslatorExprToDXL::PdxlnPartitionSelectorWithInlinedCondition()
 						// for how we inline the predicate into the dynamic table scan.
-						dCostChild = grandchildContext->Cost().Get();
+						dCostChild = grandchildContext->Cost();
 						dScanRows = pci->Rows();
 					}
 				}
@@ -365,6 +367,7 @@ BOSSCostModel::CostChildren(CMemoryPool *mp, CExpressionHandle &exprhdl,
 			if (CUtils::FPhysicalScan(scanOp))
 			{
 				// Note: We assume that width and rebinds are the same for scan, partition selector and filter
+				// fine to do this since cost of a scan would be on 1 engine (so adding CCost + scalar CDouble)
 				dCostChild = dCostChild +
 							 CostScanOutput(mp, dScanRows, pci->GetWidth()[ul],
 											pci->PdRebinds()[ul], pcp)
@@ -393,19 +396,19 @@ BOSSCostModel::CostMaxChild(CMemoryPool *, CExpressionHandle &,
 {
 	GPOS_ASSERT(NULL != pci);
 
-	DOUBLE *pdCost = pci->PdCost();
+	CCost *pdCost = pci->PdCost();
 	const ULONG size = pci->ChildCount();
 
-	DOUBLE res = 0.0;
+	CCost res = CCost(0.0);
 	for (ULONG ul = 0; ul < size; ul++)
 	{
 		if (pdCost[ul] > res)
 		{
-			res = pdCost[ul];
+			res = CCost(pdCost[ul]);
 		}
 	}
 
-	return CCost(res);
+	return res;
 }
 
 //---------------------------------------------------------------------------
@@ -457,7 +460,7 @@ BOSSCostModel::CostCTEProducer(CMemoryPool *mp, CExpressionHandle &exprhdl,
 	GPOS_ASSERT(0 < dMaterializeCostUnit);
 
 	CCost costSpooling = CCost(pci->NumRebinds() * (pci->Rows() * pci->Width() *
-													dMaterializeCostUnit));
+													dMaterializeCostUnit), engine);
 
 	return cost + costSpooling;
 }
@@ -500,7 +503,7 @@ BOSSCostModel::CostCTEConsumer(CMemoryPool *mp,	// mp
 
 	return CCost(pci->NumRebinds() *
 				 (dInitScan + pci->Rows() * pci->Width() *
-								  (dTableScanCostUnit + dOutputTupCostUnit)));
+								  (dTableScanCostUnit + dOutputTupCostUnit)), engine);
 }
 
 
@@ -527,7 +530,7 @@ BOSSCostModel::CostConstTableGet(CMemoryPool *mp,  // mp
 	return CCost(pci->NumRebinds() *
 				 CostTupleProcessing(pci->Rows(), pci->Width(),
 									 pcmgpdb->GetCostModelParams(engine))
-					 .Get());
+					 .Get(), engine);
 }
 
 
@@ -559,7 +562,7 @@ BOSSCostModel::CostDML(CMemoryPool *mp, CExpressionHandle &exprhdl,
 	const DOUBLE dWidthOuter = pci->GetWidth()[0];
 
 	CCost costLocal = CCost(pci->NumRebinds() * (num_rows_outer * dWidthOuter) /
-							dTupUpdateBandwidth);
+							dTupUpdateBandwidth, engine);
 	CCost costChild =
 		CostChildren(mp, exprhdl, pci, pcmgpdb->GetCostModelParams(engine));
 
@@ -605,7 +608,7 @@ BOSSCostModel::CostScalarAgg(CMemoryPool *mp, CExpressionHandle &exprhdl,
 	// operators, thus we ignore this part of cost for all.
 	CCost costLocal = CCost(pci->NumRebinds() *
 							(num_rows_outer * dWidthOuter * ulAggCols *
-							 ulAggFunctions * dHashAggInputTupWidthCostUnit));
+							 ulAggFunctions * dHashAggInputTupWidthCostUnit), engine);
 
 	CCost costChild =
 		CostChildren(mp, exprhdl, pci, pcmgpdb->GetCostModelParams(engine));
@@ -654,7 +657,7 @@ BOSSCostModel::CostStreamAgg(CMemoryPool *mp, CExpressionHandle &exprhdl,
 	CCost costLocal =
 		CCost(pci->NumRebinds() *
 			  (num_rows_outer * dWidthOuter * dTupDefaultProcCostUnit +
-			   pci->Rows() * pci->Width() * dHashAggOutputTupWidthCostUnit));
+			   pci->Rows() * pci->Width() * dHashAggOutputTupWidthCostUnit), engine);
 	CCost costChild =
 		CostChildren(mp, exprhdl, pci, pcmgpdb->GetCostModelParams(engine));
 	return costLocal + costChild;
@@ -680,10 +683,11 @@ BOSSCostModel::CostSequence(CMemoryPool *mp, CExpressionHandle &exprhdl,
 
 	EEngineType engine = GetEngineType(mp, exprhdl);
 
+	// TODO
 	CCost costLocal = CCost(pci->NumRebinds() *
 							CostTupleProcessing(pci->Rows(), pci->Width(),
 												pcmgpdb->GetCostModelParams(engine))
-								.Get());
+								.Get(), engine);
 	CCost costChild =
 		CostChildren(mp, exprhdl, pci, pcmgpdb->GetCostModelParams(engine));
 
@@ -722,7 +726,7 @@ BOSSCostModel::CostSort(CMemoryPool *mp, CExpressionHandle &exprhdl,
 
 	// sort cost is correlated with the number of rows and width of input tuples. We use n*log(n) for sorting complexity.
 	CCost costLocal =
-		CCost(num_rebinds * (rows * rows.Log2() * width * dSortTupWidthCost));
+		CCost(num_rebinds * (rows * rows.Log2() * width * dSortTupWidthCost), engine);
 	CCost costChild =
 		CostChildren(mp, exprhdl, pci, pcmgpdb->GetCostModelParams(engine));
 
@@ -748,11 +752,11 @@ BOSSCostModel::CostTVF(CMemoryPool *mp,	// mp
 	GPOS_ASSERT(COperator::EopPhysicalTVF == exprhdl.Pop()->Eopid());
 
 	EEngineType engine = GetEngineType(mp, exprhdl);
-
+	// TODO
 	return CCost(pci->NumRebinds() *
 				 CostTupleProcessing(pci->Rows(), pci->Width(),
 									 pcmgpdb->GetCostModelParams(engine))
-					 .Get());
+					 .Get(), engine);
 }
 
 
@@ -780,10 +784,11 @@ BOSSCostModel::CostUnionAll(CMemoryPool *mp, CExpressionHandle &exprhdl,
 		return CostMaxChild(mp, exprhdl, pci, pcmgpdb->GetCostModelParams(engine));
 	}
 
+	// TODO
 	CCost costLocal = CCost(pci->NumRebinds() *
 							CostTupleProcessing(pci->Rows(), pci->Width(),
 												pcmgpdb->GetCostModelParams(engine))
-								.Get());
+								.Get(), engine);
 	CCost costChild =
 		CostChildren(mp, exprhdl, pci, pcmgpdb->GetCostModelParams(engine));
 
@@ -866,7 +871,7 @@ BOSSCostModel::CostHashAgg(CMemoryPool *mp, CExpressionHandle &exprhdl,
 			  (num_rows_outer * ulGrpCols * dHashAggInputTupColumnCostUnit +
 			   num_rows_outer * ulGrpCols * pci->Width() *
 				   dHashAggInputTupWidthCostUnit +
-			   rows * pci->Width() * dHashAggOutputTupWidthCostUnit));
+			   rows * pci->Width() * dHashAggOutputTupWidthCostUnit), engine);
 	CCost costChild =
 		CostChildren(mp, exprhdl, pci, pcmgpdb->GetCostModelParams(engine));
 	return costLocal + costChild;
@@ -976,7 +981,7 @@ BOSSCostModel::CostHashJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 	// TODO 2014-03-14
 	// currently, we hard coded a spilling memory threshold for judging whether hash join spills or not
 	// In the future, we should calculate it based on the number of memory-intensive operators and statement memory available
-	CCost costLocal(0);
+	CCost costLocal(0, engine);
 
 	// inner tuples fit in memory
 	if (dRowsInner * dWidthInner <= dHJSpillingMemThreshold)
@@ -1000,7 +1005,7 @@ BOSSCostModel::CostHashJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 				// cost of matching inner tuples
 				dWidthInner * dRowsInner * dHJHashingTupWidthCostUnit +
 				// cost of output tuples
-				pci->Rows() * pci->Width() * dJoinOutputTupCostUnit));
+				pci->Rows() * pci->Width() * dJoinOutputTupCostUnit), engine);
 	}
 	else
 	{
@@ -1016,7 +1021,7 @@ BOSSCostModel::CostHashJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 			 ulColsUsed * num_rows_outer * dHJFeedingTupColumnSpillingCostUnit +
 			 dWidthOuter * num_rows_outer * dHJFeedingTupWidthSpillingCostUnit +
 			 dWidthInner * dRowsInner * dHJHashingTupWidthSpillingCostUnit +
-			 pci->Rows() * pci->Width() * dJoinOutputTupCostUnit));
+			 pci->Rows() * pci->Width() * dJoinOutputTupCostUnit), engine);
 	}
 	CCost costChild =
 		CostChildren(mp, exprhdl, pci, pcmgpdb->GetCostModelParams(engine));
@@ -1068,7 +1073,8 @@ BOSSCostModel::CostHashJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 	// which are not necessarily a good idea. So we maintain a upper limit of skew.
 	skew_ratio =
 		CDouble(std::min(dPenalizeHJSkewUpperLimit.Get(), skew_ratio.Get()));
-	return costChild + CCost(costLocal.Get() * skew_ratio);
+
+	return costChild + (costLocal * skew_ratio);
 }
 
 //---------------------------------------------------------------------------
@@ -1142,7 +1148,7 @@ BOSSCostModel::CostMergeJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 			// cost of extracting matched inner side
 			pci->Rows() * dWidthInner * dOutputTupCostUnit +
 			// cost of output tuples
-			pci->Rows() * pci->Width() * dJoinOutputTupCostUnit));
+			pci->Rows() * pci->Width() * dJoinOutputTupCostUnit), engine);
 
 	CCost costChild =
 		CostChildren(mp, exprhdl, pci, pcmgpdb->GetCostModelParams(engine));
@@ -1209,7 +1215,7 @@ BOSSCostModel::CostIndexNLJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 				  ulColsUsed * num_rows_outer * dJoinFeedingTupColumnCostUnit +
 				  dWidthOuter * num_rows_outer * dJoinFeedingTupWidthCostUnit +
 				  // cost of output tuples
-				  pci->Rows() * pci->Width() * dJoinOutputTupCostUnit));
+				  pci->Rows() * pci->Width() * dJoinOutputTupCostUnit), engine);
 
 	CCost costChild =
 		CostChildren(mp, exprhdl, pci, pcmgpdb->GetCostModelParams(engine));
@@ -1231,7 +1237,7 @@ BOSSCostModel::CostIndexNLJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 		ulPenalizationFactor = risk;
 	}
 
-	return CCost(ulPenalizationFactor * (costLocal + costChild));
+	return (costLocal + costChild) * ulPenalizationFactor;
 }
 
 
@@ -1331,12 +1337,12 @@ BOSSCostModel::CostNLJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 			// cost of extracting matched inner side
 			+ pci->Rows() * dWidthInner * dOutputTupCostUnit +
 			// cost of output tuples
-			pci->Rows() * pci->Width() * dJoinOutputTupCostUnit));
+			pci->Rows() * pci->Width() * dJoinOutputTupCostUnit), engine);
 
 	CCost costChild =
 		CostChildren(mp, exprhdl, pci, pcmgpdb->GetCostModelParams(engine));
 
-	CCost costTotal = CCost(costLocal + costChild);
+	CCost costTotal = costLocal + costChild;
 
 	// amplify NLJ cost based on NLJ factor and stats estimation risk
 	// we don't want to penalize index join compared to nested loop join, so we make sure
@@ -1357,7 +1363,7 @@ BOSSCostModel::CostNLJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 		}
 	}
 
-	return CCost(costTotal * dPenalization);
+	return costTotal * dPenalization;
 }
 
 
@@ -1401,7 +1407,7 @@ BOSSCostModel::CostMotion(CMemoryPool *mp, CExpressionHandle &exprhdl,
 	CDouble dRecvCostUnit(0);
 	CDouble recvCost(0);
 
-	CCost costLocal(0);
+	CCost costLocal(0, engine);
 	if (COperator::EopPhysicalMotionBroadcast == op_id)
 	{
 		// broadcast cost is amplified by the number of segments
@@ -1468,7 +1474,7 @@ BOSSCostModel::CostMotion(CMemoryPool *mp, CExpressionHandle &exprhdl,
 
 	costLocal =
 		CCost(pci->NumRebinds() *
-			  (num_rows_outer * dWidthOuter * dSendCostUnit + recvCost));
+			  (num_rows_outer * dWidthOuter * dSendCostUnit + recvCost), engine);
 
 
 	if (COperator::EopPhysicalMotionBroadcast == op_id)
@@ -1481,7 +1487,7 @@ BOSSCostModel::CostMotion(CMemoryPool *mp, CExpressionHandle &exprhdl,
 		if (num_rows_outer > broadcast_threshold)
 		{
 			DOUBLE ulPenalizationFactor = 100000000000000.0;
-			costLocal = CCost(ulPenalizationFactor);
+			costLocal = CCost(ulPenalizationFactor, engine);
 		}
 	}
 
@@ -1534,7 +1540,7 @@ BOSSCostModel::CostSequenceProject(CMemoryPool *mp, CExpressionHandle &exprhdl,
 	// we process (sorted window of) input tuples to compute window function values
 	CCost costLocal =
 		CCost(pci->NumRebinds() * (ulSortCols * num_rows_outer * dWidthOuter *
-								   dTupDefaultProcCostUnit));
+								   dTupDefaultProcCostUnit), engine);
 	CCost costChild =
 		CostChildren(mp, exprhdl, pci, pcmgpdb->GetCostModelParams(engine));
 
@@ -1611,7 +1617,7 @@ BOSSCostModel::CostIndexScan(CMemoryPool *mp,  // mp
 	CDouble dCostPerIndexRow = ulIndexKeys * dIndexFilterCostUnit +
 							   dTableWidth * dIndexScanTupCostUnit;
 	return CCost(pci->NumRebinds() *
-				 (dRowsIndex * dCostPerIndexRow + dIndexScanTupRandomFactor));
+				 (dRowsIndex * dCostPerIndexRow + dIndexScanTupRandomFactor), engine);
 }
 
 
@@ -1628,7 +1634,7 @@ BOSSCostModel::CostBitmapTableScan(CMemoryPool *mp, CExpressionHandle &exprhdl,
 
 	EEngineType engine = GetEngineType(mp, exprhdl);
 
-	CCost result(0.0);
+	CCost result(0.0, engine);
 	CExpression *pexprIndexCond =
 		exprhdl.PexprScalarRepChild(1 /*child_index*/);
 	CColRefSet *pcrsUsed = pexprIndexCond->DeriveUsedColumns();
@@ -1700,7 +1706,7 @@ BOSSCostModel::CostBitmapTableScan(CMemoryPool *mp, CExpressionHandle &exprhdl,
 				pci->NumRebinds() *
 					(rows * width * dIndexFilterCostUnit + dInitRebind) +
 				// init cost
-				dInitScan);
+				dInitScan, engine);
 	}
 	else
 	{
@@ -1810,7 +1816,7 @@ BOSSCostModel::CostBitmapTableScan(CMemoryPool *mp, CExpressionHandle &exprhdl,
 			result = CCost(pci->NumRebinds() *
 							   (dSizeCost + dNDV * c3_dBitmapPageCost +
 								dInitRebind + bitmapUnionCost) +
-						   c5_dInitScan);
+						   c5_dInitScan, engine);
 		}
 	}
 
@@ -1846,7 +1852,7 @@ BOSSCostModel::CostBitmapSmallNDV(const BOSSCostModel *pcmgpdb,
 	}
 
 	return CCost(pci->NumRebinds() *
-				 (dBitmapIO * dSize + dBitmapPageCost * effectiveNDV));
+				 (dBitmapIO * dSize + dBitmapPageCost * effectiveNDV), engine);
 }
 
 
@@ -1868,7 +1874,7 @@ BOSSCostModel::CostBitmapLargeNDV(const BOSSCostModel *pcmgpdb,
 			->Get();
 
 	return CCost(pci->NumRebinds() *
-				 (dBitmapIO * dSize + dBitmapPageCost * dNDV));
+				 (dBitmapIO * dSize + dBitmapPageCost * dNDV), engine);
 }
 
 //---------------------------------------------------------------------------
@@ -1920,10 +1926,10 @@ BOSSCostModel::CostScan(CMemoryPool *mp,	 // mp
 			// we add Scan output tuple cost in the parent operator and not here
 			return CCost(
 				pci->NumRebinds() *
-				(dInitScan + pci->Rows() * dTableWidth * dTableScanCostUnit));
+				(dInitScan + pci->Rows() * dTableWidth * dTableScanCostUnit), engine);
 		default:
 			GPOS_ASSERT(!"invalid index scan");
-			return CCost(0);
+			return CCost(0, engine);
 	}
 }
 
@@ -1957,9 +1963,9 @@ BOSSCostModel::CostFilter(CMemoryPool *mp, CExpressionHandle &exprhdl,
 	GPOS_ASSERT(0 < dFilterColCostUnit);
 
 	// filter cost is correlated with the input rows and the number of filter columns.
-	CCost costLocal = CCost(dInput * ulFilterCols * dFilterColCostUnit);
+	CCost costLocal = CCost(dInput * ulFilterCols * dFilterColCostUnit, engine);
 
-	costLocal = CCost(costLocal.Get() * pci->NumRebinds());
+	costLocal = CCost(costLocal.Get() * pci->NumRebinds(), engine);
 	CCost costChild =
 		CostChildren(mp, exprhdl, pci, pcmgpdb->GetCostModelParams(engine));
 

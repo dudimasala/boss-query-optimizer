@@ -7,6 +7,7 @@
 //
 //	@doc:
 //		Implementation of GPDB cost model
+// edited because of ICostModel.h change. Still semantically the same.
 //---------------------------------------------------------------------------
 
 #include "gpdbcost/CCostModelGPDB.h"
@@ -297,7 +298,7 @@ CCostModelGPDB::CostChildren(CMemoryPool *mp, CExpressionHandle &exprhdl,
 	GPOS_ASSERT(NULL != pci);
 	GPOS_ASSERT(NULL != pcp);
 
-	DOUBLE *pdCost = pci->PdCost();
+	DOUBLE *pdCost = pci->PdDoubleCost();
 	const ULONG size = pci->ChildCount();
 	BOOL fFilterParent =
 		(COperator::EopPhysicalFilter == exprhdl.Pop()->Eopid());
@@ -381,7 +382,7 @@ CCostModelGPDB::CostMaxChild(CMemoryPool *, CExpressionHandle &,
 {
 	GPOS_ASSERT(NULL != pci);
 
-	DOUBLE *pdCost = pci->PdCost();
+	DOUBLE *pdCost = pci->PdDoubleCost();
 	const ULONG size = pci->ChildCount();
 
 	DOUBLE res = 0.0;
