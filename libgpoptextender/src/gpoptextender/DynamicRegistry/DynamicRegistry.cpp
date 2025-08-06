@@ -9,7 +9,7 @@ DynamicRegistry* DynamicRegistry::s_pInstance = nullptr;
 DynamicRegistry::DynamicRegistry(BOSSCostModel* costModel) : costModel(costModel) {
   currentOperatorId = COperator::EopDynamicStart;
   currentTransformId = CXform::ExfDynamicStart;
-  currentEngineType = CEngineSpec::EetDynamicStart;
+  currentEngineType = EEngineType::EetDynamicStart;
   currentMDIdType = IMDId::EmdidDynamicStart;
   boss2cexpressionConverters[DefaultTranslatorName] = std::make_unique<bosstocexpression::BOSSToCExpressionDefaultConverter>();
   cexpression2bossConverters[DefaultTranslatorName] = std::make_unique<cexpressiontoboss::CExpressionToBOSSDefaultConverter>();
@@ -29,14 +29,14 @@ void DynamicRegistry::Init(CMemoryPool* mp, BOSSCostModel* costModel) {
 }
 
 
-void DynamicRegistry::RegisterPhysicalOperator(const std::string& opName, CEngineSpec::EEngineType engine, FnCost costFunc) {
+void DynamicRegistry::RegisterPhysicalOperator(const std::string& opName, EEngineType engine, FnCost costFunc) {
   currentOperatorId = (COperator::EOperatorId) (currentOperatorId + 1);
   costModel->RegisterCostFunction(currentOperatorId, costFunc);
   opEngineAndNameToOperatorId[std::make_pair(engine, opName)] = currentOperatorId;
   engineToPhysicalOps[engine].push_back(opName);
 }
 
-void DynamicRegistry::RegisterLogicalOperator(const std::string& opName, CEngineSpec::EEngineType engine, bool isAProject) {
+void DynamicRegistry::RegisterLogicalOperator(const std::string& opName, EEngineType engine, bool isAProject) {
   currentOperatorId = (COperator::EOperatorId) (currentOperatorId + 1);
   opEngineAndNameToOperatorId[std::make_pair(engine, opName)] = currentOperatorId;
   if (isAProject) {
@@ -61,7 +61,7 @@ std::vector<COperator*> DynamicRegistry::GetRelevantOperatorsForTransform(CXform
   return operators;
 }
 
-COperator::EOperatorId DynamicRegistry::GetOperatorId(CEngineSpec::EEngineType engine, const std::string& opName, bool throwError) {
+COperator::EOperatorId DynamicRegistry::GetOperatorId(EEngineType engine, const std::string& opName, bool throwError) {
   if (opEngineAndNameToOperatorId.find(std::make_pair(engine, opName)) == opEngineAndNameToOperatorId.end()) {
     if (throwError) {
       std::cerr << "Operator " << opName << " not found" << std::endl;
@@ -73,7 +73,7 @@ COperator::EOperatorId DynamicRegistry::GetOperatorId(CEngineSpec::EEngineType e
   return opEngineAndNameToOperatorId[std::make_pair(engine, opName)];
 }
 
-void DynamicRegistry::RegisterTransform(const std::string& transformName, CEngineSpec::EEngineType engine, CXform* transform) {
+void DynamicRegistry::RegisterTransform(const std::string& transformName, EEngineType engine, CXform* transform) {
   currentTransformId = (CXform::EXformId) (currentTransformId + 1);
   transformNameToTransformId[transformName] = currentTransformId;
   CXformFactory::Pxff()->Add(transform);
@@ -97,19 +97,19 @@ std::vector<CXform::EXformId> DynamicRegistry::GetRelevantTransformsForOperator(
 }
 
 void DynamicRegistry::RegisterEngine(const std::string& engineName) {
-  currentEngineType = (CEngineSpec::EEngineType) (currentEngineType + 1);
+  currentEngineType = (EEngineType) (currentEngineType + 1);
   engineNameToEngineType[engineName] = currentEngineType;
   engineTypeToEngineName[currentEngineType] = engineName;
   currentMDIdType = (IMDId::EMDIdType) (currentMDIdType + 1);
   engineToMDIdType[currentEngineType] = std::make_pair(currentMDIdType, engineName); // no need to store engineName. Can be retrieved from engineType to engineName map.
 }
 
-CEngineSpec::EEngineType DynamicRegistry::GetEngineType(const std::string& engineName, bool throwError) {
+EEngineType DynamicRegistry::GetEngineType(const std::string& engineName, bool throwError) {
   if (engineNameToEngineType.find(engineName) == engineNameToEngineType.end()) {
     if (throwError) {
       throw std::runtime_error("Engine not found");
     } else {
-      return CEngineSpec::EetSentinel;
+      return EEngineType::EetSentinel;
     }
   }
   return engineNameToEngineType[engineName];
@@ -122,10 +122,10 @@ void DynamicRegistry::AddTransformsToXFormSet(COperator::EOperatorId opId, CXfor
 }
 
 
-// using PreserveMap  = std::unordered_map<std::pair<CEngineSpec::EEngineType, CEngineSpec::EEngineType>, bool, EnginePairHash>;
-void DynamicRegistry::removeEngineFromMap(PreserveMap &m, CEngineSpec::EEngineType engineId) {
+// using PreserveMap  = std::unordered_map<std::pair<EEngineType, EEngineType>, bool, EnginePairHash>;
+void DynamicRegistry::removeEngineFromMap(PreserveMap &m, EEngineType engineId) {
     for (auto it = m.begin(); it != m.end(); ) {
-        const std::pair<CEngineSpec::EEngineType, CEngineSpec::EEngineType> &key = it->first;
+        const std::pair<EEngineType, EEngineType> &key = it->first;
         if (key.first == engineId || key.second == engineId) {
             it = m.erase(it);
         } else {
@@ -136,7 +136,7 @@ void DynamicRegistry::removeEngineFromMap(PreserveMap &m, CEngineSpec::EEngineTy
 
 
 
-void DynamicRegistry::RemoveEngine(CEngineSpec::EEngineType engine) {
+void DynamicRegistry::RemoveEngine(EEngineType engine) {
   // remove Engine related 
   engineTypeToEngineName.erase(engine);
   engineToMDIdType.erase(engine);

@@ -50,7 +50,7 @@ CEngineSpec* CPhysicalEngineTransition::PesDerive(CMemoryPool *mp, CExpressionHa
 
 CEngineSpec* CPhysicalEngineTransition::PesRequired(CMemoryPool *mp, CExpressionHandle &exprhdl, CEngineSpec *pesRequired, ULONG child_index, CDrvdPropArray *pdrgpdpCtxt, ULONG ulOptReq) const
 {
-	return GPOS_NEW(mp) CEngineSpec(CEngineSpec::EetAny);
+	return GPOS_NEW(mp) CEngineSpec(EetAny);
 }
 
 

@@ -7,6 +7,7 @@
 //
 //	@doc:
 //		Cost type
+// edited
 //---------------------------------------------------------------------------
 #ifndef GPNAUCRATES_CCost_H
 #define GPNAUCRATES_CCost_H
@@ -14,13 +15,22 @@
 #include "gpos/base.h"
 #include "gpos/common/CDouble.h"
 #include "gpos/common/CDynamicPtrArray.h"
+// TODO: remove reliance on <map> and use CHashMap - would need to route mp through to every CCost instantiation
+#include <map>
+#include "gpoptextender/EngineProperty/EEngineType.hpp"
 
 namespace gpopt
 {
 using namespace gpos;
 
 class CCost;
-typedef CDynamicPtrArray<CCost, CleanupDelete> CCostArray;
+class CEngineSpec;
+typedef CDynamicPtrArray<CCost, gpos::CleanupDelete> CCostArray;
+
+// typedef CHashMap<EEngineType, CDouble, EngineTypeHashValue,
+// 					EngineTypeEquals, CleanupNULL<EEngineType>,
+// 					CleanupDelete<CDouble>>
+// 	EngineTypeToCostMap;
 
 //---------------------------------------------------------------------------
 //	@class:
@@ -30,21 +40,54 @@ typedef CDynamicPtrArray<CCost, CleanupDelete> CCostArray;
 //		Cost for comparing two plans
 //
 //---------------------------------------------------------------------------
+// returns the max of the engines now.
 class CCost : public CDouble
 {
 public:
+	std::map<EEngineType, CDouble> engineCostMap; 
 	// ctor
 	explicit CCost(DOUBLE d) : CDouble(d)
 	{
+		engineCostMap.insert(std::make_pair(EetGP, CDouble(d)));
+	}
+
+	explicit CCost(DOUBLE d, EEngineType t) : CDouble(d)
+	{
+		engineCostMap.insert(std::make_pair(t, CDouble(d)));
 	}
 
 	// ctor
 	explicit CCost(CDouble d) : CDouble(d.Get())
 	{
+		engineCostMap.insert(std::make_pair(EetGP, CDouble(d.Get())));
+		// engineCostMap[EEngineType::EetGP] = CDouble(d.Get());
+	}
+
+	explicit CCost(CDouble d, EEngineType t) : CDouble(d)
+	{
+		engineCostMap.insert(std::make_pair(t, CDouble(d.Get())));
+		// engineCostMap[t] = CDouble(d.Get());
 	}
 
 	// ctor
-	CCost(const CCost &cost) : CDouble(cost.Get())
+	CCost(const CCost &cost) : CDouble(cost.Get()), engineCostMap(cost.engineCostMap)
+	{}
+
+	inline CDouble maxCostInMap(const std::map<EEngineType, CDouble>& costs)
+	{
+			CDouble maxCost(0.0);
+			for (std::map<EEngineType, CDouble>::const_iterator it = costs.begin();
+					it != costs.end();
+					++it)
+			{
+					if (it->second.Get() > maxCost.Get()) {
+							maxCost = it->second;
+					}
+			}
+			return maxCost;
+	}
+
+	CCost(std::map<EEngineType, CDouble>& costs) : CDouble(maxCostInMap(costs)), engineCostMap(costs)
 	{
 	}
 
@@ -52,37 +95,84 @@ public:
 	CCost &
 	operator=(const CCost &cost)
 	{
-		*(CDouble *) (this) = (CDouble) cost;
-		return (*this);
+		CDouble::operator=(cost);
+		engineCostMap = cost.engineCostMap;
+		return *this;
 	}
 
 	// addition operator
 	CCost
 	operator+(const CCost &cost) const
 	{
-		CDouble d = (CDouble)(*this) + (CDouble) cost;
-		return CCost(d);
+			// copy our own costs
+			std::map<EEngineType, CDouble> merged = engineCostMap;
+
+			for (const auto& [key, val] : cost.engineCostMap) {
+					auto it = merged.find(key);
+					if (it == merged.end()) {
+            auto p = merged.insert(std::make_pair(key, CDouble(0.0)));
+            it = p.first;
+					}
+					it->second = it->second + val;
+			}
+
+			return CCost(merged);
 	}
 
 	// multiplication operator
 	CCost
 	operator*(const CCost &cost) const
 	{
-		return CCost((CDouble)(*this) * (CDouble) cost);
+			std::map<EEngineType, CDouble> merged = engineCostMap;
+
+			for (const auto& [key, val] : cost.engineCostMap) {
+					auto it = merged.find(key);
+					if (it == merged.end()) {
+            auto p = merged.insert(std::make_pair(key, CDouble(1.0)));
+            it = p.first;
+					}
+					it->second = it->second * val;
+			}
+
+			return CCost(merged);
 	}
 
-	// comparison operator
+
 	BOOL
 	operator<(const CCost &cost) const
 	{
-		return (CDouble)(*this) < (CDouble) cost;
+		for (const auto & [key, lhsVal] : engineCostMap) {
+			auto it = cost.engineCostMap.find(key);
+			if (it == cost.engineCostMap.end()) {
+				return false;
+			}
+
+			const CDouble & rhsVal = it->second;
+			if (!(lhsVal < rhsVal)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	// comparison operator
 	BOOL
 	operator>(const CCost &cost) const
 	{
-		return (CDouble) cost < (CDouble)(*this);
+		for (const auto & [key, lhsVal] : engineCostMap) {
+			auto it = cost.engineCostMap.find(key);
+			if (it == cost.engineCostMap.end()) {
+				continue;
+			}
+
+			const CDouble & rhsVal = it->second;
+			if (!(lhsVal > rhsVal)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	// d'tor

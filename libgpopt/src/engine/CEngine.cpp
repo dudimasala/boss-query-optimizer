@@ -2099,7 +2099,7 @@ CEngine::FCheckEnfdProps(CMemoryPool *mp, CGroupExpression *pgexpr,
 		prpp->Pepp()->PppsRequired()->FPartPropagationReqd();
 
 	BOOL fEngineReqd = !GPOS_FTRACE(EopttraceDisableEngineEnforcement) &&
-					   CEngineSpec::EetAny != prpp->Pee()->PesRequired()->Eet();
+					   EetAny != prpp->Pee()->PesRequired()->Eet();
 
 	// Determine if adding an enforcer to the group is required, optional,
 	// unnecessary or prohibited over the group expression and given the current
@@ -2353,7 +2353,7 @@ CEngine::FCheckReqdProps(CExpressionHandle &exprhdl, CReqdPropPlan *prpp,
 	}
 
 	// COME BACK TO HERE LATER
-	BOOL fEngineReqd = CEngineSpec::EetAny != prpp->Pee()->PesRequired()->Eet();
+	BOOL fEngineReqd = EetAny != prpp->Pee()->PesRequired()->Eet();
 	if (!fEngineReqd && COperator::EopPhysicalEngineTransform == op_id)
 	{
 		return false;

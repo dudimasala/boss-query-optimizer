@@ -6,16 +6,16 @@ namespace orcaextender {
 class Engine {
   protected:
     std::string m_engineName;
-    CEngineSpec::EEngineType m_engineType;
+    EEngineType m_engineType;
     CMemoryPool *m_mp;
   public:
-    Engine(std::string engineName) : m_engineName(engineName), m_engineType(CEngineSpec::EEngineType::EetSentinel) {
+    Engine(std::string engineName) : m_engineName(engineName), m_engineType(EEngineType::EetSentinel) {
       m_mp = COptCtxt::PoctxtFromTLS()->Pmp();
     }
     virtual ~Engine() {}
     
     virtual void UpdateEngineType() { 
-      if (DynamicRegistry::GetInstance()->GetEngineType(m_engineName, false) == CEngineSpec::EEngineType::EetSentinel) {
+      if (DynamicRegistry::GetInstance()->GetEngineType(m_engineName, false) == EEngineType::EetSentinel) {
         DynamicRegistry::GetInstance()->RegisterEngine(m_engineName); 
       }
       m_engineType = DynamicRegistry::GetInstance()->GetEngineType(m_engineName, true);

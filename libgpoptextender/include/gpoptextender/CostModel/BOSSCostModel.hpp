@@ -39,14 +39,14 @@ private:
 	ULONG m_num_of_segments;
 
 	// Maps engines to cost model params (so can change params at runtime).
-	std::unordered_map<CEngineSpec::EEngineType, ICostModelParams*> m_cost_model_params_map;
+	std::unordered_map<EEngineType, ICostModelParams*> m_cost_model_params_map;
 
 	// array of mappings
 	static std::unordered_map<COperator::EOperatorId, FnCost> m_cost_map;
 
 	// First, create a hash struct for the pair
 	struct EngineTransformPairHash {
-			std::size_t operator()(const std::pair<CEngineSpec::EEngineType, CEngineSpec::EEngineType>& p) const {
+			std::size_t operator()(const std::pair<EEngineType, EEngineType>& p) const {
 					// Combine the hashes of both enum values
 					// This is a simple but effective way to hash a pair
 					std::size_t h1 = std::hash<int>{}(static_cast<int>(p.first));
@@ -58,7 +58,7 @@ private:
 	};
 	
 	// array of engine transform mappings
-	static std::unordered_map<std::pair<CEngineSpec::EEngineType, CEngineSpec::EEngineType>, FnCost, EngineTransformPairHash> m_engine_transform_map;
+	static std::unordered_map<std::pair<EEngineType, EEngineType>, FnCost, EngineTransformPairHash> m_engine_transform_map;
 
 public:
 	// ctor
@@ -70,11 +70,11 @@ public:
 	void RegisterCostFunction(COperator::EOperatorId op_id, FnCost fn_cost);
 	void RemoveCostFunction(COperator::EOperatorId op_id);
 
-	void RegisterCostModelParams(CEngineSpec::EEngineType engine, ICostModelParams* pcp);
-	void RemoveCostModelParams(CEngineSpec::EEngineType engine);
+	void RegisterCostModelParams(EEngineType engine, ICostModelParams* pcp);
+	void RemoveCostModelParams(EEngineType engine);
 
-	void RegisterEngineTransform(CEngineSpec::EEngineType from, CEngineSpec::EEngineType to, FnCost fn_cost);
-	void RemoveEngineTransform(CEngineSpec::EEngineType);
+	void RegisterEngineTransform(EEngineType from, EEngineType to, FnCost fn_cost);
+	void RemoveEngineTransform(EEngineType);
 
 	// number of segments
 	ULONG
@@ -90,11 +90,11 @@ public:
 	virtual ICostModelParams *
 	GetCostModelParams() const
 	{
-		return m_cost_model_params_map.at(CEngineSpec::EEngineType::EetGP);
+		return m_cost_model_params_map.at(EEngineType::EetGP);
 	}
 
 	// in use - real implementation
-	ICostModelParams *GetCostModelParams(CEngineSpec::EEngineType engine) const
+	ICostModelParams *GetCostModelParams(EEngineType engine) const
 	{
 		if (m_cost_model_params_map.find(engine) == m_cost_model_params_map.end())
 		{
@@ -255,18 +255,18 @@ public:
 
 	// cost of bitmap scan when the NDV is small
 	static CCost CostBitmapSmallNDV(const BOSSCostModel *pcmgpdb,
-									const SCostingInfo *pci, CDouble dNDV, CEngineSpec::EEngineType engine);
+									const SCostingInfo *pci, CDouble dNDV, EEngineType engine);
 
 	// cost of bitmap scan when the NDV is large
 	static CCost CostBitmapLargeNDV(const BOSSCostModel *pcmgpdb,
-									const SCostingInfo *pci, CDouble dNDV, CEngineSpec::EEngineType engine);
+									const SCostingInfo *pci, CDouble dNDV, EEngineType engine);
 
 	// cost of engine transform
 	static CCost CostEngineTransform(CMemoryPool *mp, CExpressionHandle &exprhdl,
 									 const BOSSCostModel *pcmgpdb,
 									 const SCostingInfo *pci);
 	
-	static CEngineSpec::EEngineType GetEngineType(CMemoryPool *mp,CExpressionHandle &exprhdl);
+	static EEngineType GetEngineType(CMemoryPool *mp,CExpressionHandle &exprhdl);
 
 
 };	// class BOSSCostModel

@@ -2509,7 +2509,7 @@ CTestUtils::PqcGenerate(CMemoryPool *mp, CExpression *pexpr)
 	CRewindabilitySpec *prs = GPOS_NEW(mp) CRewindabilitySpec(
 		CRewindabilitySpec::ErtNone, CRewindabilitySpec::EmhtNoMotion);
 
-	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpec(CEngineSpec::EetAny);
+	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpec(EetAny);
 
 	CEnfdOrder *peo = GPOS_NEW(mp) CEnfdOrder(pos, CEnfdOrder::EomSatisfy);
 
