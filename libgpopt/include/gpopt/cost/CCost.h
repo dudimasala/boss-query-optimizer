@@ -45,10 +45,10 @@ class CCost : public CDouble
 {
 public:
 	std::map<EEngineType, CDouble> engineCostMap; 
-	// ctor
+	// ctor. Maintain original ctors for compatibility with the original system.
 	explicit CCost(DOUBLE d) : CDouble(d)
 	{
-		engineCostMap.insert(std::make_pair(EetGP, CDouble(d)));
+		engineCostMap.insert(std::make_pair(EetAny, CDouble(d)));
 	}
 
 	explicit CCost(DOUBLE d, EEngineType t) : CDouble(d)
@@ -59,14 +59,12 @@ public:
 	// ctor
 	explicit CCost(CDouble d) : CDouble(d.Get())
 	{
-		engineCostMap.insert(std::make_pair(EetGP, CDouble(d.Get())));
-		// engineCostMap[EEngineType::EetGP] = CDouble(d.Get());
+		engineCostMap.insert(std::make_pair(EetAny, CDouble(d.Get())));
 	}
 
 	explicit CCost(CDouble d, EEngineType t) : CDouble(d)
 	{
 		engineCostMap.insert(std::make_pair(t, CDouble(d.Get())));
-		// engineCostMap[t] = CDouble(d.Get());
 	}
 
 	// ctor
