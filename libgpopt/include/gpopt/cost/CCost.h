@@ -175,6 +175,8 @@ public:
 	}
 
 
+	// we implement comparisons like this so branches don't get wrongly pruned in FSafeToPrune().
+	// Note this is fine because FBetterThan() converts to doubles before doing the comparison.
 	BOOL
 	operator<(const CCost &cost) const
 	{
