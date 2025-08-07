@@ -12,6 +12,7 @@
 #include "b2cDefaultTypes.hpp"
 #include "c2bDefaultTypes.hpp"
 #include <unordered_set>
+#include <unordered_map>
 
 namespace orcaextender {
 using namespace gpos;
@@ -33,6 +34,8 @@ class DynamicRegistry {
     EEngineType currentEngineType;
     IMDId::EMDIdType currentMDIdType;
 
+    bool usingDefaultOps = false;
+
 
     std::map<std::string, std::unique_ptr<B2CConverter>> boss2cexpressionConverters;
     std::map<std::string, std::unique_ptr<C2BConverter>> cexpression2bossConverters;
@@ -40,32 +43,32 @@ class DynamicRegistry {
     std::string defaultB2CConverterName = DefaultTranslatorName;
     std::string defaultC2BConverterName = DefaultTranslatorName;
 
-	// First, create a hash struct for the pair
-	struct EngineStringPairHash {
-			std::size_t operator()(const std::pair<EEngineType, std::string>& p) const {
-					// Combine the hashes of both enum values
-					// This is a simple but effective way to hash a pair
-					std::size_t h1 = std::hash<int>{}(static_cast<int>(p.first));
-					std::size_t h2 = std::hash<std::string>{}(p.second);
-					
-					// Combine the hashes - a common technique is to shift one and XOR
-					return h1 ^ (h2 << 1);
-			}
-	};
+    // First, create a hash struct for the pair
+    struct EngineStringPairHash {
+        std::size_t operator()(const std::pair<EEngineType, std::string>& p) const {
+            // Combine the hashes of both enum values
+            // This is a simple but effective way to hash a pair
+            std::size_t h1 = std::hash<int>{}(static_cast<int>(p.first));
+            std::size_t h2 = std::hash<std::string>{}(p.second);
+            
+            // Combine the hashes - a common technique is to shift one and XOR
+            return h1 ^ (h2 << 1);
+        }
+    };
 
-  struct EnginePairHash {
-    std::size_t operator()(const std::pair<EEngineType, EEngineType>& p) const {
-      return std::hash<int>{}(static_cast<int>(p.first)) ^ (std::hash<int>{}(static_cast<int>(p.second)) << 1);
-    }
-  };
+    struct EnginePairHash {
+      std::size_t operator()(const std::pair<EEngineType, EEngineType>& p) const {
+        return std::hash<int>{}(static_cast<int>(p.first)) ^ (std::hash<int>{}(static_cast<int>(p.second)) << 1);
+      }
+    };
 
-  using PreserveMap  = std::unordered_map<std::pair<EEngineType, EEngineType>, bool, EnginePairHash>;
+    using PreserveMap  = std::unordered_map<std::pair<EEngineType, EEngineType>, bool, EnginePairHash>;
 
 
     std::unordered_map<std::pair<EEngineType, std::string>, COperator::EOperatorId, EngineStringPairHash> opEngineAndNameToOperatorId = {};
     std::unordered_map<std::string, CXform::EXformId> transformNameToTransformId = {};
-    std::unordered_map<std::string, EEngineType> engineNameToEngineType = {};
-    std::unordered_map<EEngineType, std::string> engineTypeToEngineName = {};
+    std::unordered_map<std::string, EEngineType> engineNameToEngineType = {{"GP", EetGP}};
+    std::unordered_map<EEngineType, std::string> engineTypeToEngineName = {{EetGP, "GP"}};
     std::unordered_map<std::string, PreprocessingRule> preprocessingRules = {};
     std::unordered_set<COperator::EOperatorId> projectOperators = {};
 
@@ -86,6 +89,141 @@ class DynamicRegistry {
     std::unordered_map<EEngineType, std::vector<std::pair<std::string, ULONG>>> engineToC2BTranslators;
     std::unordered_map<EEngineType, std::vector<std::pair<std::string, ULONG>>> engineToB2CScalarTranslators;
     std::unordered_map<EEngineType, std::vector<std::pair<std::string, ULONG>>> engineToC2BScalarTranslators;
+
+    std::unordered_map<COperator::EOperatorId, EEngineType> defaultEngineTypes = {
+      {COperator::EOperatorId::EopPhysicalTableScan, EetGP},
+      {COperator::EOperatorId::EopPhysicalExternalScan, EetGP},
+      {COperator::EOperatorId::EopPhysicalIndexScan, EetGP},
+      {COperator::EOperatorId::EopPhysicalBitmapTableScan, EetGP},
+      {COperator::EOperatorId::EopPhysicalFilter, EetGP},
+      {COperator::EOperatorId::EopPhysicalInnerNLJoin, EetGP},
+      {COperator::EOperatorId::EopPhysicalInnerIndexNLJoin, EetGP},
+      {COperator::EOperatorId::EopPhysicalCorrelatedInnerNLJoin, EetGP},
+      {COperator::EOperatorId::EopPhysicalLeftOuterNLJoin, EetGP},
+      {COperator::EOperatorId::EopPhysicalLeftOuterIndexNLJoin, EetGP},
+      {COperator::EOperatorId::EopPhysicalCorrelatedLeftOuterNLJoin, EetGP},
+      {COperator::EOperatorId::EopPhysicalLeftSemiNLJoin, EetGP},
+      {COperator::EOperatorId::EopPhysicalCorrelatedLeftSemiNLJoin, EetGP},
+      {COperator::EOperatorId::EopPhysicalCorrelatedInLeftSemiNLJoin, EetGP},
+      {COperator::EOperatorId::EopPhysicalLeftAntiSemiNLJoin, EetGP},
+      {COperator::EOperatorId::EopPhysicalCorrelatedLeftAntiSemiNLJoin, EetGP},
+      {COperator::EOperatorId::EopPhysicalLeftAntiSemiNLJoinNotIn, EetGP},
+      {COperator::EOperatorId::EopPhysicalCorrelatedNotInLeftAntiSemiNLJoin, EetGP},
+      {COperator::EOperatorId::EopPhysicalFullMergeJoin, EetGP},
+      {COperator::EOperatorId::EopPhysicalDynamicTableScan, EetGP},
+      {COperator::EOperatorId::EopPhysicalSequence, EetGP},
+      {COperator::EOperatorId::EopPhysicalTVF, EetGP},
+      {COperator::EOperatorId::EopPhysicalCTEProducer, EetGP},
+      {COperator::EOperatorId::EopPhysicalCTEConsumer, EetGP},
+      {COperator::EOperatorId::EopPhysicalSequenceProject, EetGP},
+      {COperator::EOperatorId::EopPhysicalDynamicIndexScan, EetGP},
+
+      {COperator::EOperatorId::EopPhysicalInnerHashJoin, EetGP},
+      {COperator::EOperatorId::EopPhysicalLeftOuterHashJoin, EetGP},
+      {COperator::EOperatorId::EopPhysicalLeftSemiHashJoin, EetGP},
+      {COperator::EOperatorId::EopPhysicalLeftAntiSemiHashJoin, EetGP},
+      {COperator::EOperatorId::EopPhysicalLeftAntiSemiHashJoinNotIn, EetGP},
+
+      {COperator::EOperatorId::EopPhysicalMotionGather, EetGP},
+      {COperator::EOperatorId::EopPhysicalMotionBroadcast, EetGP},
+      {COperator::EOperatorId::EopPhysicalMotionHashDistribute, EetGP},
+      {COperator::EOperatorId::EopPhysicalMotionRoutedDistribute, EetGP},
+      {COperator::EOperatorId::EopPhysicalMotionRandom, EetGP},
+
+      {COperator::EOperatorId::EopPhysicalHashAgg, EetGP},
+      {COperator::EOperatorId::EopPhysicalHashAggDeduplicate, EetGP},
+      {COperator::EOperatorId::EopPhysicalStreamAgg, EetGP},
+      {COperator::EOperatorId::EopPhysicalStreamAggDeduplicate, EetGP},
+      {COperator::EOperatorId::EopPhysicalScalarAgg, EetGP},
+
+      {COperator::EOperatorId::EopPhysicalSerialUnionAll, EetGP},
+      {COperator::EOperatorId::EopPhysicalParallelUnionAll, EetGP},
+
+      {COperator::EOperatorId::EopPhysicalSort, EetGP},
+      {COperator::EOperatorId::EopPhysicalLimit, EetGP},
+      {COperator::EOperatorId::EopPhysicalComputeScalar, EetGP},
+      {COperator::EOperatorId::EopPhysicalSpool, EetGP},
+      {COperator::EOperatorId::EopPhysicalPartitionSelector, EetGP},
+      {COperator::EOperatorId::EopPhysicalPartitionSelectorDML, EetGP},
+
+      {COperator::EOperatorId::EopPhysicalConstTableGet, EetGP},
+
+      {COperator::EOperatorId::EopPhysicalDML, EetGP},
+      {COperator::EOperatorId::EopPhysicalSplit, EetGP},
+      {COperator::EOperatorId::EopPhysicalRowTrigger, EetGP},
+
+      {COperator::EOperatorId::EopPhysicalAssert, EetGP},
+      {COperator::EOperatorId::EopPhysicalDynamicBitmapTableScan, EetGP},
+    };
+
+    std::unordered_map<COperator::EOperatorId, std::string> opIdToString = {
+        { COperator::EOperatorId::EopPhysicalTableScan,               "PhysicalTableScan" },
+        { COperator::EOperatorId::EopPhysicalExternalScan,            "PhysicalExternalScan" },
+        { COperator::EOperatorId::EopPhysicalIndexScan,               "PhysicalIndexScan" },
+        { COperator::EOperatorId::EopPhysicalBitmapTableScan,         "PhysicalBitmapTableScan" },
+        { COperator::EOperatorId::EopPhysicalFilter,                  "PhysicalFilter" },
+        { COperator::EOperatorId::EopPhysicalInnerNLJoin,             "PhysicalInnerNLJoin" },
+        { COperator::EOperatorId::EopPhysicalInnerIndexNLJoin,        "PhysicalInnerIndexNLJoin" },
+        { COperator::EOperatorId::EopPhysicalCorrelatedInnerNLJoin,   "PhysicalCorrelatedInnerNLJoin" },
+        { COperator::EOperatorId::EopPhysicalLeftOuterNLJoin,         "PhysicalLeftOuterNLJoin" },
+        { COperator::EOperatorId::EopPhysicalLeftOuterIndexNLJoin,    "PhysicalLeftOuterIndexNLJoin" },
+        { COperator::EOperatorId::EopPhysicalCorrelatedLeftOuterNLJoin,"PhysicalCorrelatedLeftOuterNLJoin"},
+        { COperator::EOperatorId::EopPhysicalLeftSemiNLJoin,          "PhysicalLeftSemiNLJoin" },
+        { COperator::EOperatorId::EopPhysicalCorrelatedLeftSemiNLJoin,"PhysicalCorrelatedLeftSemiNLJoin"},
+        { COperator::EOperatorId::EopPhysicalCorrelatedInLeftSemiNLJoin,"PhysicalCorrelatedInLeftSemiNLJoin"},
+        { COperator::EOperatorId::EopPhysicalLeftAntiSemiNLJoin,      "PhysicalLeftAntiSemiNLJoin" },
+        { COperator::EOperatorId::EopPhysicalCorrelatedLeftAntiSemiNLJoin,"PhysicalCorrelatedLeftAntiSemiNLJoin"},
+        { COperator::EOperatorId::EopPhysicalLeftAntiSemiNLJoinNotIn, "PhysicalLeftAntiSemiNLJoinNotIn" },
+        { COperator::EOperatorId::EopPhysicalCorrelatedNotInLeftAntiSemiNLJoin,"PhysicalCorrelatedNotInLeftAntiSemiNLJoin"},
+        { COperator::EOperatorId::EopPhysicalFullMergeJoin,           "PhysicalFullMergeJoin" },
+        { COperator::EOperatorId::EopPhysicalDynamicTableScan,        "PhysicalDynamicTableScan" },
+        { COperator::EOperatorId::EopPhysicalSequence,                "PhysicalSequence" },
+        { COperator::EOperatorId::EopPhysicalTVF,                     "PhysicalTVF" },
+        { COperator::EOperatorId::EopPhysicalCTEProducer,             "PhysicalCTEProducer" },
+        { COperator::EOperatorId::EopPhysicalCTEConsumer,             "PhysicalCTEConsumer" },
+        { COperator::EOperatorId::EopPhysicalSequenceProject,         "PhysicalSequenceProject" },
+        { COperator::EOperatorId::EopPhysicalDynamicIndexScan,        "PhysicalDynamicIndexScan" },
+
+        { COperator::EOperatorId::EopPhysicalInnerHashJoin,           "PhysicalInnerHashJoin" },
+        { COperator::EOperatorId::EopPhysicalLeftOuterHashJoin,       "PhysicalLeftOuterHashJoin" },
+        { COperator::EOperatorId::EopPhysicalLeftSemiHashJoin,        "PhysicalLeftSemiHashJoin" },
+        { COperator::EOperatorId::EopPhysicalLeftAntiSemiHashJoin,    "PhysicalLeftAntiSemiHashJoin" },
+        { COperator::EOperatorId::EopPhysicalLeftAntiSemiHashJoinNotIn,"PhysicalLeftAntiSemiHashJoinNotIn"},
+
+        { COperator::EOperatorId::EopPhysicalMotionGather,            "PhysicalMotionGather" },
+        { COperator::EOperatorId::EopPhysicalMotionBroadcast,         "PhysicalMotionBroadcast" },
+        { COperator::EOperatorId::EopPhysicalMotionHashDistribute,    "PhysicalMotionHashDistribute" },
+        { COperator::EOperatorId::EopPhysicalMotionRoutedDistribute,  "PhysicalMotionRoutedDistribute" },
+        { COperator::EOperatorId::EopPhysicalMotionRandom,            "PhysicalMotionRandom" },
+
+        { COperator::EOperatorId::EopPhysicalHashAgg,                 "PhysicalHashAgg" },
+        { COperator::EOperatorId::EopPhysicalHashAggDeduplicate,      "PhysicalHashAggDeduplicate" },
+        { COperator::EOperatorId::EopPhysicalStreamAgg,               "PhysicalStreamAgg" },
+        { COperator::EOperatorId::EopPhysicalStreamAggDeduplicate,    "PhysicalStreamAggDeduplicate" },
+        { COperator::EOperatorId::EopPhysicalScalarAgg,               "PhysicalScalarAgg" },
+
+        { COperator::EOperatorId::EopPhysicalSerialUnionAll,          "PhysicalSerialUnionAll" },
+        { COperator::EOperatorId::EopPhysicalParallelUnionAll,        "PhysicalParallelUnionAll" },
+
+        { COperator::EOperatorId::EopPhysicalSort,                    "PhysicalSort" },
+        { COperator::EOperatorId::EopPhysicalLimit,                   "PhysicalLimit" },
+        { COperator::EOperatorId::EopPhysicalComputeScalar,           "PhysicalComputeScalar" },
+        { COperator::EOperatorId::EopPhysicalSpool,                   "PhysicalSpool" },
+        { COperator::EOperatorId::EopPhysicalPartitionSelector,       "PhysicalPartitionSelector" },
+        { COperator::EOperatorId::EopPhysicalPartitionSelectorDML,    "PhysicalPartitionSelectorDML" },
+
+        { COperator::EOperatorId::EopPhysicalConstTableGet,           "PhysicalConstTableGet" },
+
+        { COperator::EOperatorId::EopPhysicalDML,                     "PhysicalDML" },
+        { COperator::EOperatorId::EopPhysicalSplit,                   "PhysicalSplit" },
+        { COperator::EOperatorId::EopPhysicalRowTrigger,              "PhysicalRowTrigger" },
+
+        { COperator::EOperatorId::EopPhysicalAssert,                  "PhysicalAssert" },
+        { COperator::EOperatorId::EopPhysicalDynamicBitmapTableScan,  "PhysicalDynamicBitmapTableScan" },
+    };
+
+
+
     
 
 
@@ -152,6 +290,20 @@ class DynamicRegistry {
       std::unordered_map<std::string, std::vector<std::string>> engineNameToOperatorNames;
       for (auto& [engine, opNames] : engineToPhysicalOps) {
         engineNameToOperatorNames[engineTypeToEngineName[engine]] = opNames;
+      }
+
+      if (usingDefaultOps)
+      {
+        for (auto& kv : defaultEngineTypes)
+        {
+          COperator::EOperatorId opId    = kv.first;
+          EEngineType engine  = kv.second;
+          const std::string engName = engineTypeToEngineName.at(engine);
+          auto itOp = opIdToString.find(opId);
+          const std::string opName = itOp->second;
+            (itOp != opIdToString.end() ? itOp->second : "UnknownOp");
+          engineNameToOperatorNames[engName].push_back(opName);
+        }
       }
       return engineNameToOperatorNames; 
     };
@@ -287,6 +439,38 @@ class DynamicRegistry {
       RemoveEngine(engineType);
       engineNameToEngineType.erase(engineName);
     }
+
+    // registers all the transforms for default Orca ops
+    void UseDefaultCPUTransforms() {
+      usingDefaultOps = true;
+      CXformFactory::Pxff()->Instantiate();
+    }
+
+    // assign all the DEFAULT ORCA CPU ops to the specified engine
+    void UseDefaultCPUOps(EEngineType engine) {
+      for (auto it = defaultEngineTypes.begin(); it != defaultEngineTypes.end(); ++it) {
+        it->second = engine;
+      }
+    }
+
+    // assign an engine to a specific default op.
+    void AssignEngineToDefaultOp(COperator::EOperatorId opId, EEngineType engineType) {
+      auto it = defaultEngineTypes.find(opId);
+      if (it == defaultEngineTypes.end()) {
+          throw std::out_of_range("AssignEngineToDefaultOp: operator ID not found in defaultEngineTypes");
+      }
+      it->second = engineType;
+    }
+    
+    EEngineType GetEngineForDefaultOp(COperator::EOperatorId opId) {
+      return defaultEngineTypes[opId];
+    }
+
+    // in case you want to change the cost function but don't want to unregister & reregister the operator
+    void RegisterCostFunctionForOperator(COperator::EOperatorId opId, FnCost costFunc) {
+      costModel->RegisterCostFunction(opId, costFunc);
+    }
+
 
     void UseMaxCostModel(bool shouldUse) {
       gpopt::useMaxCosting = shouldUse;

@@ -28,6 +28,7 @@
 #include "gpopt/operators/CExpressionHandle.h"
 #include "gpopt/operators/CScalarIdent.h"
 
+#include "gpoptextender/DynamicRegistry/IDynamicRegistry.hpp"
 #include "gpoptextender/EngineProperty/CEngineSpec.hpp"
 
 using namespace gpopt;
@@ -45,7 +46,7 @@ CPhysical::CPhysical(CMemoryPool *mp)
 	  m_phmrcr(NULL),
 	  m_pdrgpulpOptReqsExpanded(NULL),
 	  m_ulTotalOptRequests(
-		  1)  // by default, an operator creates a single request for each property
+		  1) // by default, an operator creates a single request for each property
 {
 	GPOS_ASSERT(NULL != mp);
 
@@ -1091,7 +1092,8 @@ CPhysical::EpetEngine(CExpressionHandle &exprhdl,
 CEngineSpec *
 CPhysical::PesDerive(CMemoryPool *mp, CExpressionHandle &exprhdl) const
 {
-	return GPOS_NEW(mp) CEngineSpec();
+	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
+	return GPOS_NEW(mp) CEngineSpec(registry->GetEngineForDefaultOp(Eopid()));
 }
 
 CEngineSpec *
@@ -1102,7 +1104,8 @@ CPhysical::PesRequired(CMemoryPool *mp,
 					   CDrvdPropArray *pdrgpdpCtxt,
 					   ULONG ulOptReq) const
 {
-	return GPOS_NEW(mp) CEngineSpec();
+	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
+	return GPOS_NEW(mp) CEngineSpec(registry->GetEngineForDefaultOp(Eopid()));
 }
 
 

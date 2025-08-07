@@ -230,7 +230,7 @@ CQueryContext::PqcGenerate(CMemoryPool *mp, CExpression *pexpr,
 	CRewindabilitySpec *prs = GPOS_NEW(mp) CRewindabilitySpec(
 		CRewindabilitySpec::ErtNone, CRewindabilitySpec::EmhtNoMotion);
 	
-	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpec();
+	CEngineSpec *pes = GPOS_NEW(mp) CEngineSpec(EetGP);
 	// Ensure order, distribution and rewindability meet 'satisfy' matching at the top level
 	CEnfdOrder *peo = GPOS_NEW(mp) CEnfdOrder(pos, CEnfdOrder::EomSatisfy);
 	CEnfdDistribution *ped =

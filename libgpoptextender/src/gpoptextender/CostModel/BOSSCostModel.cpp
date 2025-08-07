@@ -2059,7 +2059,7 @@ CCost BOSSCostModel::CostEngineTransform(CMemoryPool *mp, CExpressionHandle &exp
 	return cost;
 }
 
-EEngineType BOSSCostModel::GetEngineType(CMemoryPool *mp,CExpressionHandle &exprhdl)
+EEngineType BOSSCostModel::GetEngineType(CMemoryPool *mp, CExpressionHandle &exprhdl)
 {
   CPhysical *pop = CPhysical::PopConvert(exprhdl.Pop());
 	CEngineSpec* pes = pop->PesDerive(mp, exprhdl);

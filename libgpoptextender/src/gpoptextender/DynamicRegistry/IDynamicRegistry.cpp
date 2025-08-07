@@ -46,6 +46,10 @@ public:
         return impl->GetPreprocessingRules();
     }
 
+    EEngineType GetEngineForDefaultOp(COperator::EOperatorId opId) override {
+        return impl->GetEngineForDefaultOp(opId);
+    }
+
     
 };
 

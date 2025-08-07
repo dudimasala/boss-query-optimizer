@@ -17,11 +17,7 @@ private:
     EEngineType m_eet;
 
 public:
-    // Ctor
-    CEngineSpec() : m_eet(EetGP)
-    {
-    }
-
+    // ctor
     CEngineSpec(EEngineType eet) : m_eet(eet) {}
 
     // Dtor

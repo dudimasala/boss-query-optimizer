@@ -388,7 +388,7 @@ CXformFactory::Init()
 	GPOS_CATCH_END;
 
 	// instantiating the factory
-	m_pxff->Instantiate();
+	// m_pxff->Instantiate();
 
 	return eres;
 }

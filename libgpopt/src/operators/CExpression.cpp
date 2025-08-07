@@ -1169,12 +1169,20 @@ CExpression::OsPrintExpression(IOstream &os, const CPrintPrefix *ppfx,
 	if (m_pop->FPhysical())
 	{
 		os << "   cost:" << m_cost;
+		CPhysical *physOp = CPhysical::PopConvert(m_pop);
+		CExpressionHandle exprhdl(m_mp);
+		CExpression *exp = const_cast<CExpression *>(this);
+		(void)physOp;
+		exprhdl.Attach(exp);
+		// exprhdl.DerivePlanPropsForCostContext();
+		os << "   engine: " << physOp->PesDerive(m_mp, exprhdl)->Eet();
 	}
 	if (gpos::ulong_max != m_ulOriginGrpId)
 	{
 		os << "   origin: [Grp:" << m_ulOriginGrpId
 		   << ", GrpExpr:" << m_ulOriginGrpExprId << "]";
 	}
+
 	os << std::endl;
 
 	CPrintPrefix pfx(ppfx, szChildPrefix);

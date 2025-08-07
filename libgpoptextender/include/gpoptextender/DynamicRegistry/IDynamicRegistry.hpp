@@ -24,6 +24,7 @@ struct IDynamicRegistry {
     virtual bool GetEnginePreserveDistribution(EEngineType from, EEngineType to) = 0;
     virtual bool GetEnginePreserveRewindability(EEngineType from, EEngineType to) = 0;
     virtual std::vector<PreprocessingRule> GetPreprocessingRules() = 0;
+    virtual EEngineType GetEngineForDefaultOp(COperator::EOperatorId opId) = 0;
 };
 
 // Factory function – C linkage keeps name-mangling simple.
