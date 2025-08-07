@@ -1071,7 +1071,7 @@ CDXLUtils::SerializeSamplePlans(CMemoryPool *mp,
 									enumerator_cfg->UllPlanSample(ul) + 1);
 		xml_serializer.AddAttribute(
 			CDXLTokens::GetDXLTokenStr(EdxltokenRelativeCost),
-			enumerator_cfg->CostPlanSample(ul) / enumerator_cfg->CostBest());
+			CDouble((enumerator_cfg->CostPlanSample(ul) / enumerator_cfg->CostBest()).Get()));
 		xml_serializer.CloseElement(
 			CDXLTokens::GetDXLTokenStr(EdxltokenNamespacePrefix),
 			CDXLTokens::GetDXLTokenStr(EdxltokenSamplePlan));

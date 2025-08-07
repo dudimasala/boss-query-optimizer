@@ -187,7 +187,7 @@ void
 CEnumeratorConfig::InitCostDistrSize()
 {
 	//  bound estimated distribution using relative cost of most expensive plan
-	DOUBLE dMax = log2(CDouble((m_costMax / CostBest())).Get());
+	DOUBLE dMax = log2(CDouble((m_costMax / CostBest()).Get()).Get());
 
 	// fix number of points in estimated distribution to 100
 	m_dStep = CDouble(dMax / 100.0);
@@ -279,7 +279,7 @@ CEnumeratorConfig::FitCostDistribution()
 	for (ULONG ul = 0; ul < ulCreatedSamples; ul++)
 	{
 		pdObervationX[ul] =
-			log2(CDouble((CostPlanSample(ul) / CostBest())).Get());
+			log2(CDouble((CostPlanSample(ul) / CostBest()).Get()).Get());
 		pdObervationY[ul] = 1.0;
 	}
 

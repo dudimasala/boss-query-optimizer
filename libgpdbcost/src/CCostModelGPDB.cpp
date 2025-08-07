@@ -1205,7 +1205,7 @@ CCostModelGPDB::CostIndexNLJoin(CMemoryPool *mp, CExpressionHandle &exprhdl,
 		ulPenalizationFactor = risk;
 	}
 
-	return CCost(ulPenalizationFactor * (costLocal + costChild));
+	return CCost((costLocal + costChild) * ulPenalizationFactor);
 }
 
 
