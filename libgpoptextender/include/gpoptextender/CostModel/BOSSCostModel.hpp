@@ -134,6 +134,10 @@ public:
 	static CCost CostSpooling(CMemoryPool *mp, CExpressionHandle &exprhdl,
 							  const SCostingInfo *pci, ICostModelParams *pcp);
 
+
+	static CCost CostChildrenWithEngine(CMemoryPool *mp, CExpressionHandle &exprhdl,
+							  const SCostingInfo *pci, ICostModelParams *pcp, EEngineType engine);
+	
 	// add up children cost
 	static CCost CostChildren(CMemoryPool *mp, CExpressionHandle &exprhdl,
 							  const SCostingInfo *pci, ICostModelParams *pcp);

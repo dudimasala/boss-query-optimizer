@@ -296,18 +296,10 @@ BOSSCostModel::FUnary(COperator::EOperatorId op_id)
 }
 
 
-//---------------------------------------------------------------------------
-//	@function:
-//		CCostModelGPDB::CostChildren
-//
-//	@doc:
-//		Add up children costs
-//
-//---------------------------------------------------------------------------
+
 CCost
-BOSSCostModel::CostChildren(CMemoryPool *mp, CExpressionHandle &exprhdl,
-							 const SCostingInfo *pci, ICostModelParams *pcp)
-{
+BOSSCostModel::CostChildrenWithEngine(CMemoryPool *mp, CExpressionHandle &exprhdl,
+							 const SCostingInfo *pci, ICostModelParams *pcp, EEngineType engine) {
 	GPOS_ASSERT(NULL != pci);
 	GPOS_ASSERT(NULL != pcp);
 
@@ -368,7 +360,6 @@ BOSSCostModel::CostChildren(CMemoryPool *mp, CExpressionHandle &exprhdl,
 			{
 				// Note: We assume that width and rebinds are the same for scan, partition selector and filter
 				// no transition so scan is the same engine as the parent.
-				EEngineType engine = GetEngineType(mp, exprhdl);
 				dCostChild = dCostChild +
 							 CostScanOutput(mp, dScanRows, pci->GetWidth()[ul],
 											pci->PdRebinds()[ul], pcp, engine);
@@ -379,6 +370,24 @@ BOSSCostModel::CostChildren(CMemoryPool *mp, CExpressionHandle &exprhdl,
 	}
 
 	return CCost(res);
+}
+
+
+
+
+//---------------------------------------------------------------------------
+//	@function:
+//		CCostModelGPDB::CostChildren
+//
+//	@doc:
+//		Add up children costs
+//
+//---------------------------------------------------------------------------
+CCost
+BOSSCostModel::CostChildren(CMemoryPool *mp, CExpressionHandle &exprhdl,
+							 const SCostingInfo *pci, ICostModelParams *pcp)
+{
+	return CostChildrenWithEngine(mp, exprhdl, pci, pcp, GetEngineType(mp, exprhdl));
 }
 
 //---------------------------------------------------------------------------

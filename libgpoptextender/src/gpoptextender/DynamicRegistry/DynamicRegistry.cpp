@@ -61,6 +61,7 @@ std::vector<COperator*> DynamicRegistry::GetRelevantOperatorsForTransform(CXform
   return operators;
 }
 
+// probably shoudln't need engine to be passed in here.
 COperator::EOperatorId DynamicRegistry::GetOperatorId(EEngineType engine, const std::string& opName, bool throwError) {
   if (opEngineAndNameToOperatorId.find(std::make_pair(engine, opName)) == opEngineAndNameToOperatorId.end()) {
     if (throwError) {
