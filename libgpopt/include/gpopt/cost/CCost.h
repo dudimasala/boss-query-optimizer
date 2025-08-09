@@ -119,6 +119,16 @@ public:
 		return dCost.Get();
 	}
 
+	inline DOUBLE
+	CostSum() const
+	{
+		DOUBLE cost = 0.0;
+		for (const auto& [_, val] : engineCostMap) {
+			cost = cost + val.Get();
+		}
+		return cost;
+	}
+
 
 	// assignment
 	CCost &

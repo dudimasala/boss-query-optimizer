@@ -444,6 +444,20 @@ CCostContext::FBetterThan(const CCostContext *pcc) const
 		return false;
 	}
 
+	if (gpopt::useMaxCosting) {
+		// if the maxes are the same. break tie by choosing lowest sum.
+		DOUBLE sumDiff = (Cost().CostSum() - pcc->Cost().CostSum());
+		if (sumDiff < 0.0) {
+			return true;
+		}
+
+		if (sumDiff > 0.0) {
+			return false;
+		}
+	}
+
+
+
 	// otherwise, we need to break tie in cost values
 
 	// RULE 1: a partitioned plan is better than a non-partitioned
