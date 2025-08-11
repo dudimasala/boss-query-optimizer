@@ -93,6 +93,9 @@ class DynamicRegistry {
     std::unordered_map<EEngineType, std::vector<std::pair<std::string, ULONG>>> engineToB2CScalarTranslators;
     std::unordered_map<EEngineType, std::vector<std::pair<std::string, ULONG>>> engineToC2BScalarTranslators;
 
+    // metadata handling. Might want to migrate from md files. - would allow for interesting extensions.
+    std::unordered_map<std::string, int> OIDs;
+
     std::unordered_map<COperator::EOperatorId, EEngineType> defaultEngineTypes = {
       {COperator::EOperatorId::EopPhysicalTableScan, EetGP},
       {COperator::EOperatorId::EopPhysicalExternalScan, EetGP},
@@ -481,6 +484,14 @@ class DynamicRegistry {
 
     void DangerousAddAuxiliaryState(std::string key, std::any value) {
       auxiliaryMap[key] = value;
+    }
+
+    void RegisterOID(std::string name, int OID) {
+      OIDs[name] = OID;
+    }
+
+    int GetOID(std::string name) {
+      return OIDs[name];
     }
 
     std::any GetAuxiliaryState(std::string key) {
