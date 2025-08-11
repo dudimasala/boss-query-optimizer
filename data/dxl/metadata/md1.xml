@@ -3580,15 +3580,15 @@
       </dxl:StatsBucket>
     </dxl:ColumnStatistics>  
     <dxl:ColumnStatistics Mdid="1.11111.1.1.7" Name="l_discount" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
-      <dxl:StatsBucket Frequency="0.450000" DistinctValues="90000.000000">
+      <dxl:StatsBucket Frequency="0.454621" DistinctValues="2726519.000000">
         <dxl:LowerBound Closed="true" TypeMdid="0.701.1.0" Value="AAAAAAAAAAA=" DoubleValue="0.000000"/>
         <dxl:UpperBound Closed="true" TypeMdid="0.701.1.0" Value="eAskKH6MqT8=" DoubleValue="0.049900"/>
       </dxl:StatsBucket>
-      <dxl:StatsBucket Frequency="0.100000" DistinctValues="20000.000000">
+      <dxl:StatsBucket Frequency="0.272725" DistinctValues="1637557.000000">
         <dxl:LowerBound Closed="false" TypeMdid="0.701.1.0" Value="eAskKH6MqT8=" DoubleValue="0.049900"/>
         <dxl:UpperBound Closed="false" TypeMdid="0.701.1.0" Value="B5lk5CzssT8=" DoubleValue="0.070010"/>
       </dxl:StatsBucket>
-      <dxl:StatsBucket Frequency="0.450000" DistinctValues="90000.000000">
+      <dxl:StatsBucket Frequency="0.272654" DistinctValues="1635924.000000">
         <dxl:LowerBound Closed="true" TypeMdid="0.701.1.0" Value="B5lk5CzssT8=" DoubleValue="0.070010"/>
         <dxl:UpperBound Closed="true" TypeMdid="0.701.1.0" Value="AAAAAAAA8D8=" DoubleValue="1.000000"/>
       </dxl:StatsBucket>
@@ -3683,15 +3683,15 @@
       </dxl:StatsBucket>
     </dxl:ColumnStatistics>
     <dxl:ColumnStatistics Mdid="1.66666.1.1.1" Name="p_retailprice" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
-      <dxl:StatsBucket Frequency="0.462975" DistinctValues="90000.000000">
+      <dxl:StatsBucket Frequency="0.028700" DistinctValues="5720.000000">
         <dxl:LowerBound Closed="true" TypeMdid="0.701.1.0" Value="AAAAAAAgjEA=" DoubleValue="900.000000"/>
         <dxl:UpperBound Closed="true" TypeMdid="0.701.1.0" Value="ZmZmZmZwj0A=" DoubleValue="1006.050000"/>
       </dxl:StatsBucket>
-      <dxl:StatsBucket Frequency="0.07405" DistinctValues="20000.000000">
+      <dxl:StatsBucket Frequency="0.053295" DistinctValues="10659.000000">
         <dxl:LowerBound Closed="false" TypeMdid="0.701.1.0" Value="ZmZmZmZwj0A=" DoubleValue="1006.050000"/>
         <dxl:UpperBound Closed="false" TypeMdid="0.701.1.0" Value="ZmZmZmbgkEA=" DoubleValue="1080.100000"/>
       </dxl:StatsBucket>
-      <dxl:StatsBucket Frequency="0.462975" DistinctValues="90000.000000">
+      <dxl:StatsBucket Frequency="0.918005" DistinctValues="183601.000000">
         <dxl:LowerBound Closed="true" TypeMdid="0.701.1.0" Value="ZmZmZmbgkEA=" DoubleValue="1080.100000"/>
         <dxl:UpperBound Closed="true" TypeMdid="0.701.1.0" Value="AAAAAACwnUA=" DoubleValue="1900.000000"/>
       </dxl:StatsBucket>
