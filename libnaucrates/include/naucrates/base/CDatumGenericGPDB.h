@@ -127,6 +127,8 @@ public:
 	// stats equality
 	virtual BOOL StatsAreEqual(const IDatum *datum) const;
 
+	virtual BOOL StatsAreLessThan(const IDatum *datum) const;
+
 	// does the datum need to be padded before statistical derivation
 	virtual BOOL NeedsPadding() const;
 

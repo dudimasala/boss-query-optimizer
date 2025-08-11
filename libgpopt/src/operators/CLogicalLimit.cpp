@@ -20,6 +20,8 @@
 #include "gpopt/operators/CExpressionHandle.h"
 #include "naucrates/base/IDatumInt8.h"
 #include "naucrates/md/IMDTypeInt8.h"
+#include "naucrates/base/IDatumInt4.h"
+#include "naucrates/md/IMDTypeInt4.h"
 #include "naucrates/statistics/CLimitStatsProcessor.h"
 
 using namespace gpopt;
@@ -207,6 +209,19 @@ CLogicalLimit::DeriveMaxCard(CMemoryPool *,	 // mp
 			dynamic_cast<IDatumInt8 *>(popScalarConst->GetDatum());
 
 		return CMaxCard(pdatumInt8->Value());
+	}
+
+
+	if (NULL != pexprCount &&
+		CUtils::FScalarConstInt<IMDTypeInt4>(pexprCount) &&
+		!pexprCount->DeriveHasSubquery())
+	{
+		CScalarConst *popScalarConst =
+			CScalarConst::PopConvert(pexprCount->Pop());
+		IDatumInt4 *pdatumInt4 =
+			dynamic_cast<IDatumInt4 *>(popScalarConst->GetDatum());
+
+		return CMaxCard(pdatumInt4->Value());
 	}
 
 	// pass on max card of first child

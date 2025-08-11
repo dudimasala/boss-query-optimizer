@@ -13,6 +13,7 @@
 #include "c2bDefaultTypes.hpp"
 #include <unordered_set>
 #include <unordered_map>
+#include <any>
 
 namespace orcaextender {
 using namespace gpos;
@@ -42,6 +43,8 @@ class DynamicRegistry {
 
     std::string defaultB2CConverterName = DefaultTranslatorName;
     std::string defaultC2BConverterName = DefaultTranslatorName;
+
+    std::unordered_map<std::string, std::any> auxiliaryMap; // last case resort. In case state needs to be shared across components.
 
     // First, create a hash struct for the pair
     struct EngineStringPairHash {
@@ -474,6 +477,18 @@ class DynamicRegistry {
 
     void UseMaxCostModel(bool shouldUse) {
       gpopt::useMaxCosting = shouldUse;
+    }
+
+    void DangerousAddAuxiliaryState(std::string key, std::any value) {
+      auxiliaryMap[key] = value;
+    }
+
+    std::any GetAuxiliaryState(std::string key) {
+      return auxiliaryMap[key];
+    }
+
+    bool auxContains(std::string key) {
+      return auxiliaryMap.find(key) != auxiliaryMap.end();
     }
 };
 }  // namespace orcaextender

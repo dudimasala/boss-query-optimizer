@@ -333,9 +333,28 @@ BOOL
 CDatumGenericGPDB::StatsAreEqual(const IDatum *datum) const
 {
 	// if mapping exists, use that to compute equality
-	if (IsDatumMappableToLINT() || IsDatumMappableToDouble())
-	{
-		return IDatum::StatsAreEqual(datum);
+	// if (IsDatumMappableToLINT() || IsDatumMappableToDouble())
+	// {
+	// 	return IDatum::StatsAreEqual(datum);
+	// }
+
+	// TODO change to also use LINT. Cannot get LINT working from metadata hence just resorting to dobule for now.
+	if (IsDatumMappableToDouble()) {
+			if (this->IsNull())
+			{
+				// nulls are equal from stats point of view
+				return datum->IsNull();
+			}
+
+			if (datum->IsNull())
+			{
+				return false;
+			}
+
+			CDouble d1 = this->GetDoubleMapping();
+			CDouble d2 = datum->GetDoubleMapping();
+
+			return d1 == d2;
 	}
 
 	// take special care of nulls
@@ -358,6 +377,30 @@ CDatumGenericGPDB::StatsAreEqual(const IDatum *datum) const
 
 	return false;
 }
+
+
+BOOL
+CDatumGenericGPDB::StatsAreLessThan(const IDatum *datum) const
+{
+	GPOS_ASSERT(NULL != datum);
+
+	if (this->IsNull())
+	{
+		// nulls are less than everything else except nulls
+		return !(datum->IsNull());
+	}
+
+	if (datum->IsNull())
+	{
+		return false;
+	}
+
+	CDouble d1 = this->GetDoubleMapping();
+	CDouble d2 = datum->GetDoubleMapping();
+	return d1 < d2;
+}
+
+
 
 //---------------------------------------------------------------------------
 //	@function:

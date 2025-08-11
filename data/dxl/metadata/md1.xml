@@ -1572,34 +1572,34 @@
         <dxl:Column Name="l_suppkey" Attno="3" Mdid="0.23.1.0" Nullable="false" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="l_linenumber" Attno="4" Mdid="0.23.1.0" Nullable="false" ColWidth="4">
+        <dxl:Column Name="l_shipdate" Attno="4" Mdid="0.23.1.0" Nullable="false">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="l_quantity" Attno="5" Mdid="0.1700.1.0" Nullable="false">
+        <dxl:Column Name="l_linenumber" Attno="5" Mdid="0.23.1.0" Nullable="false" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="l_extendedprice" Attno="6" Mdid="0.1700.1.0" Nullable="false">
+        <dxl:Column Name="l_quantity" Attno="6" Mdid="0.1700.1.0" Nullable="false">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="l_discount" Attno="7" Mdid="0.1700.1.0" Nullable="false">
+        <dxl:Column Name="l_extendedprice" Attno="7" Mdid="0.1700.1.0" Nullable="false">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="l_tax" Attno="8" Mdid="0.1700.1.0" Nullable="false">
+        <dxl:Column Name="l_discount" Attno="8" Mdid="0.1700.1.0" Nullable="false">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="l_returnflag" Attno="9" Mdid="0.1042.1.0" Nullable="false">
+        <dxl:Column Name="l_tax" Attno="9" Mdid="0.1700.1.0" Nullable="false">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="l_linestatus" Attno="10" Mdid="0.1042.1.0" Nullable="false">
+        <dxl:Column Name="l_returnflag" Attno="10" Mdid="0.1042.1.0" Nullable="false">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="l_shipdate" Attno="11" Mdid="0.1082.1.0" Nullable="false">
+        <dxl:Column Name="l_linestatus" Attno="11" Mdid="0.1042.1.0" Nullable="false">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="l_commitdate" Attno="12" Mdid="0.1082.1.0" Nullable="false">
+        <dxl:Column Name="l_commitdate" Attno="12" Mdid="0.23.1.0" Nullable="false">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="l_receiptdate" Attno="13" Mdid="0.1082.1.0" Nullable="false">
+        <dxl:Column Name="l_receiptdate" Attno="13" Mdid="0.23.1.0" Nullable="false">
           <dxl:DefaultValue/>
         </dxl:Column>
         <dxl:Column Name="l_shipinstruct" Attno="14" Mdid="0.1042.1.0" Nullable="false">
@@ -1628,28 +1628,28 @@
         <dxl:Column Name="l_suppkey" Attno="3" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="l_quantity" Attno="4" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="l_shipdate" Attno="4" Mdid="0.23.1.0" Nullable="false" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="l_discount" Attno="5" Mdid="0.701.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="l_returnflag" Attno="5" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="l_linenumber" Attno="6" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="l_linestatus" Attno="6" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="l_extendedprice" Attno="7" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="l_quantity" Attno="7" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="l_tax" Attno="8" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="l_discount" Attno="8" Mdid="0.701.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="l_returnflag" Attno="9" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="l_linenumber" Attno="9" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="l_linestatus" Attno="10" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="l_extendedprice" Attno="10" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="l_shipdate" Attno="11" Mdid="0.1082.1.0" Nullable="false" ColWidth="4">
+        <dxl:Column Name="l_tax" Attno="11" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
         <dxl:Column Name="l_commitdate" Attno="12" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
@@ -1693,7 +1693,7 @@
         <dxl:Column Name="c_acctbal" Attno="6" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="c_mktsegment" Attno="7" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="c_mktsegment" Attno="7" Mdid="0.23.1.0" Nullable="true" ColWidth="11">
           <dxl:DefaultValue/>
         </dxl:Column>
         <dxl:Column Name="c_comment" Attno="8" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
@@ -1713,22 +1713,22 @@
         <dxl:Column Name="o_custkey" Attno="2" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="o_orderdate" Attno="3" Mdid="0.1082.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="o_orderdate" Attno="3" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="o_totalprice" Attno="4" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="o_shippriority" Attno="4" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="o_orderstatus" Attno="5" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="o_totalprice" Attno="5" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="o_orderpriority" Attno="6" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="o_orderstatus" Attno="6" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="o_clerk" Attno="7" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="o_orderpriority" Attno="7" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
-        <dxl:Column Name="o_shippriority" Attno="8" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
+        <dxl:Column Name="o_clerk" Attno="8" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
           <dxl:DefaultValue/>
         </dxl:Column>
         <dxl:Column Name="o_comment" Attno="9" Mdid="0.23.1.0" Nullable="true" ColWidth="4">
@@ -2268,7 +2268,7 @@
       <dxl:Commutator Mdid="0.672.1.0"/>
       <dxl:InverseOp Mdid="0.673.1.0"/>
     </dxl:GPDBScalarOp>
-        <dxl:GPDBScalarOp Mdid="0.672.1.0" Name="&lt;" ComparisonType="LT" ReturnsNullOnNullInput="true">
+    <dxl:GPDBScalarOp Mdid="0.672.1.0" Name="&lt;" ComparisonType="LT" ReturnsNullOnNullInput="true">
       <dxl:LeftType Mdid="0.701.1.0"/>
       <dxl:RightType Mdid="0.701.1.0"/>
       <dxl:ResultType Mdid="0.16.1.0"/>
@@ -3539,68 +3539,161 @@
     </dxl:ColumnStatistics>
     <dxl:ColumnStatistics Mdid="1.11111.1.1.0" Name="l_orderkey" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
       <dxl:StatsBucket Frequency="1.000000" DistinctValues="1500000.000000">
-        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="0"/>
-        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="1500001"/>
+        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="1"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="10000000"/>
       </dxl:StatsBucket>
     </dxl:ColumnStatistics>
     <dxl:ColumnStatistics Mdid="1.11111.1.1.1" Name="l_partkey" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
       <dxl:StatsBucket Frequency="1.000000" DistinctValues="200000.000000">
-        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="0"/>
-        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="200001"/>
+        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="1"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="200000"/>
       </dxl:StatsBucket>
     </dxl:ColumnStatistics>
     <dxl:ColumnStatistics Mdid="1.11111.1.1.2" Name="l_suppkey" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
       <dxl:StatsBucket Frequency="1.000000" DistinctValues="10000.000000">
-        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="0"/>
-        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="10001"/>
+        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="1"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="10000"/>
       </dxl:StatsBucket>
     </dxl:ColumnStatistics> 
+    <dxl:ColumnStatistics Mdid="1.11111.1.1.3" Name="l_shipdate" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
+      <dxl:StatsBucket Frequency="1.000000" DistinctValues="2557.000000">
+        <dxl:LowerBound Closed="true"  TypeMdid="0.23.1.0" Value="8035"/>
+        <dxl:UpperBound Closed="true"  TypeMdid="0.23.1.0" Value="10591" />
+      </dxl:StatsBucket>
+    </dxl:ColumnStatistics>
+    <dxl:ColumnStatistics Mdid="1.11111.1.1.4" Name="l_returnflag" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
+      <dxl:StatsBucket Frequency="1.000000" DistinctValues="3.000000">
+        <dxl:LowerBound Closed="true"  TypeMdid="0.23.1.0" Value="0"/>
+        <dxl:UpperBound Closed="true"  TypeMdid="0.23.1.0" Value="2" />
+      </dxl:StatsBucket>
+    </dxl:ColumnStatistics>
+    <dxl:ColumnStatistics Mdid="1.11111.1.1.5" Name="l_linestatus" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
+      <dxl:StatsBucket Frequency="1.000000" DistinctValues="2.000000">
+        <dxl:LowerBound Closed="true"  TypeMdid="0.23.1.0" Value="0"/>
+        <dxl:UpperBound Closed="true"  TypeMdid="0.23.1.0" Value="1" />
+      </dxl:StatsBucket>
+    </dxl:ColumnStatistics>  
+    <dxl:ColumnStatistics Mdid="1.11111.1.1.6" Name="l_quantity" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
+      <dxl:StatsBucket Frequency="1.000000" DistinctValues="50.000000">
+        <dxl:LowerBound Closed="true"  TypeMdid="0.23.1.0" Value="1"/>
+        <dxl:UpperBound Closed="true"  TypeMdid="0.23.1.0" Value="50" />
+      </dxl:StatsBucket>
+    </dxl:ColumnStatistics>  
+    <dxl:ColumnStatistics Mdid="1.11111.1.1.7" Name="l_discount" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
+      <dxl:StatsBucket Frequency="0.450000" DistinctValues="90000.000000">
+        <dxl:LowerBound Closed="true" TypeMdid="0.701.1.0" Value="AAAAAAAAAAA=" DoubleValue="0.000000"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.701.1.0" Value="eAskKH6MqT8=" DoubleValue="0.049900"/>
+      </dxl:StatsBucket>
+      <dxl:StatsBucket Frequency="0.100000" DistinctValues="20000.000000">
+        <dxl:LowerBound Closed="false" TypeMdid="0.701.1.0" Value="eAskKH6MqT8=" DoubleValue="0.049900"/>
+        <dxl:UpperBound Closed="false" TypeMdid="0.701.1.0" Value="B5lk5CzssT8=" DoubleValue="0.070010"/>
+      </dxl:StatsBucket>
+      <dxl:StatsBucket Frequency="0.450000" DistinctValues="90000.000000">
+        <dxl:LowerBound Closed="true" TypeMdid="0.701.1.0" Value="B5lk5CzssT8=" DoubleValue="0.070010"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.701.1.0" Value="AAAAAAAA8D8=" DoubleValue="1.000000"/>
+      </dxl:StatsBucket>
+    </dxl:ColumnStatistics>  
+
     <dxl:ColumnStatistics Mdid="1.22222.1.1.0" Name="c_custkey" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
       <dxl:StatsBucket Frequency="1.000000" DistinctValues="150000.000000">
-        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="0"/>
-        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="150001"/>
+        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="1"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="150000"/>
       </dxl:StatsBucket>
     </dxl:ColumnStatistics>
     <dxl:ColumnStatistics Mdid="1.22222.1.1.1" Name="c_nationkey" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
       <dxl:StatsBucket Frequency="1.000000" DistinctValues="25.000000">
+        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="0"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="24"/>
+      </dxl:StatsBucket>
+    </dxl:ColumnStatistics>
+    <dxl:ColumnStatistics Mdid="1.22222.1.1.6" Name="c_mktsegment" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000" ColStatsMissing="false">
+      <dxl:StatsBucket Frequency="0.200000" DistinctValues="1.000000">
+        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="0"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="0"/>
+      </dxl:StatsBucket>
+      <dxl:StatsBucket Frequency="0.200000" DistinctValues="1.000000">
         <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="1"/>
-        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="26"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="1"/>
+      </dxl:StatsBucket>
+      <dxl:StatsBucket Frequency="0.200000" DistinctValues="1.000000">
+        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="2"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="2"/>
+      </dxl:StatsBucket>
+      <dxl:StatsBucket Frequency="0.200000" DistinctValues="1.000000">
+        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="3"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="3"/>
+      </dxl:StatsBucket>
+      <dxl:StatsBucket Frequency="0.200000" DistinctValues="1.000000">
+        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="1793746843"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="1793746843"/>
       </dxl:StatsBucket>
     </dxl:ColumnStatistics>
     <dxl:ColumnStatistics Mdid="1.33333.1.1.0" Name="o_orderkey" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
       <dxl:StatsBucket Frequency="1.000000" DistinctValues="1500000.000000">
-        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="0"/>
-        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="1500001"/>
+        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="1"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="10000000"/>
       </dxl:StatsBucket>
     </dxl:ColumnStatistics>
     <dxl:ColumnStatistics Mdid="1.33333.1.1.1" Name="o_custkey" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
       <dxl:StatsBucket Frequency="1.000000" DistinctValues="150000.000000">
         <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="1"/>
-        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="150001"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="150000"/>
+      </dxl:StatsBucket>
+    </dxl:ColumnStatistics>
+    <dxl:ColumnStatistics Mdid="1.33333.1.1.2" Name="o_orderdate" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
+      <dxl:StatsBucket Frequency="1.000000" DistinctValues="2557.000000">
+        <dxl:LowerBound Closed="true"  TypeMdid="0.23.1.0" Value="8035"/>
+        <dxl:UpperBound Closed="true"  TypeMdid="0.23.1.0" Value="10440" />
+      </dxl:StatsBucket>
+    </dxl:ColumnStatistics>
+    <dxl:ColumnStatistics Mdid="1.33333.1.1.3" Name="o_shippriority" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
+      <dxl:StatsBucket Frequency="1.000000" DistinctValues="1.000000">
+        <dxl:LowerBound Closed="true"  TypeMdid="0.23.1.0" Value="0"/>
+        <dxl:UpperBound Closed="true"  TypeMdid="0.23.1.0" Value="0" />
+      </dxl:StatsBucket>
+    </dxl:ColumnStatistics>
+    <dxl:ColumnStatistics Mdid="1.33333.1.1.4" Name="o_totalprice" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
+      <dxl:StatsBucket Frequency="1.000000" DistinctValues="1500000">
+        <dxl:LowerBound Closed="true"  TypeMdid="0.23.1.0" Value="0"/>
+        <dxl:UpperBound Closed="true"  TypeMdid="0.23.1.0" Value="10000000"/>
       </dxl:StatsBucket>
     </dxl:ColumnStatistics>
     <dxl:ColumnStatistics Mdid="1.44444.1.1.0" Name="r_regionkey" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
       <dxl:StatsBucket Frequency="1.000000" DistinctValues="5.000000">
         <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="0"/>
-        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="6"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="4"/>
       </dxl:StatsBucket>
     </dxl:ColumnStatistics>
     <dxl:ColumnStatistics Mdid="1.55555.1.1.0" Name="n_nationkey" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
       <dxl:StatsBucket Frequency="1.000000" DistinctValues="25.000000">
         <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="0"/>
-        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="26"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="24"/>
       </dxl:StatsBucket>
     </dxl:ColumnStatistics>
     <dxl:ColumnStatistics Mdid="1.55555.1.1.1" Name="n_regionkey" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
       <dxl:StatsBucket Frequency="1.000000" DistinctValues="5.000000">
-        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="1"/>
-        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="6"/>
+        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="0"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="4"/>
       </dxl:StatsBucket>
     </dxl:ColumnStatistics>
     <dxl:ColumnStatistics Mdid="1.66666.1.1.0" Name="p_partkey" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
       <dxl:StatsBucket Frequency="1.000000" DistinctValues="200000.000000">
-        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="0"/>
-        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="200001"/>
+        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="1"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="200000"/>
+      </dxl:StatsBucket>
+    </dxl:ColumnStatistics>
+    <dxl:ColumnStatistics Mdid="1.66666.1.1.1" Name="p_retailprice" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
+      <dxl:StatsBucket Frequency="0.462975" DistinctValues="90000.000000">
+        <dxl:LowerBound Closed="true" TypeMdid="0.701.1.0" Value="AAAAAAAgjEA=" DoubleValue="900.000000"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.701.1.0" Value="ZmZmZmZwj0A=" DoubleValue="1006.050000"/>
+      </dxl:StatsBucket>
+      <dxl:StatsBucket Frequency="0.07405" DistinctValues="20000.000000">
+        <dxl:LowerBound Closed="false" TypeMdid="0.701.1.0" Value="ZmZmZmZwj0A=" DoubleValue="1006.050000"/>
+        <dxl:UpperBound Closed="false" TypeMdid="0.701.1.0" Value="ZmZmZmbgkEA=" DoubleValue="1080.100000"/>
+      </dxl:StatsBucket>
+      <dxl:StatsBucket Frequency="0.462975" DistinctValues="90000.000000">
+        <dxl:LowerBound Closed="true" TypeMdid="0.701.1.0" Value="ZmZmZmbgkEA=" DoubleValue="1080.100000"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.701.1.0" Value="AAAAAACwnUA=" DoubleValue="1900.000000"/>
       </dxl:StatsBucket>
     </dxl:ColumnStatistics>
     <!-- <dxl:ColumnStatistics Mdid="1.66666.1.1.1" Name="p_retailprice" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
@@ -3619,26 +3712,26 @@
     <!-- </dxl:ColumnStatistics> -->
     <dxl:ColumnStatistics Mdid="1.77777.1.1.0" Name="s_suppkey" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
       <dxl:StatsBucket Frequency="1.000000" DistinctValues="10000.000000">
-        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="0"/>
-        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="10001"/>
+        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="1"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="10000"/>
       </dxl:StatsBucket>
     </dxl:ColumnStatistics>     
     <dxl:ColumnStatistics Mdid="1.77777.1.1.1" Name="s_nationkey" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
       <dxl:StatsBucket Frequency="1.000000" DistinctValues="25.000000">
         <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="0"/>
-        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="26"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="24"/>
       </dxl:StatsBucket>
     </dxl:ColumnStatistics>
     <dxl:ColumnStatistics Mdid="1.88888.1.1.0" Name="ps_partkey" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
       <dxl:StatsBucket Frequency="1.000000" DistinctValues="200000.000000">
         <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="1"/>
-        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="10000000"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="200000"/>
       </dxl:StatsBucket>
     </dxl:ColumnStatistics>
     <dxl:ColumnStatistics Mdid="1.88888.1.1.1" Name="ps_suppkey" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
       <dxl:StatsBucket Frequency="1.000000" DistinctValues="10000.000000">
         <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="1"/>
-        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="10001"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="10000"/>
       </dxl:StatsBucket>
     </dxl:ColumnStatistics>
     <dxl:Relation EngineType="Arrow" Mdid="0.330308.1.1" Name="customer" IsTemporary="false" StorageType="Heap" DistributionPolicy="Hash" DistributionColumns="0" Keys="0">
