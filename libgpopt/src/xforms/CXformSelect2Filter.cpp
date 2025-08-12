@@ -9,6 +9,12 @@
 //		Implementation of transform
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Trialling dynamic consideration of operators to existing transforms. (added
+// "dynamic" part to Transform())
+//---------------------------------------------------------------------------
+
 #include "gpopt/xforms/CXformSelect2Filter.h"
 
 #include "gpos/base.h"

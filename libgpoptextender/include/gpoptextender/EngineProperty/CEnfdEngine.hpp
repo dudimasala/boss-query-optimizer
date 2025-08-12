@@ -1,5 +1,10 @@
 #pragma once
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: Enforceable engine property
+//---------------------------------------------------------------------------
+
 #include "gpos/base.h"
 
 #include "gpopt/base/CEnfdProp.h"

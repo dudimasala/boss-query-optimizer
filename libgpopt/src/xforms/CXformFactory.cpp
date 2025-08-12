@@ -9,6 +9,13 @@
 //		Management of the global xform set
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Changed Add(), constructor & destructor to use vector of xforms & support
+// dynamic additions / consideration of transforms. Don't instantiate until 
+// specified by the dynamic registry.
+//---------------------------------------------------------------------------
+
 #include "gpos/base.h"
 #include "gpos/memory/CMemoryPoolManager.h"
 

@@ -8,6 +8,13 @@
 //	@doc:
 //		GPDB-specific generic datum representation
 //---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: Added StatsAreLessThan() override - changed impl in .cpp
+//---------------------------------------------------------------------------
+
+
 #ifndef GPNAUCRATES_CDatumGenericGPDB_H
 #define GPNAUCRATES_CDatumGenericGPDB_H
 

@@ -1,4 +1,5 @@
 # Copyright (c) 2015, Pivotal Software, Inc. All Rights Reserved.
+# Copyright 2025, Malhar Rajpal, modifications: using libgpoptextender
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../libgpcost/include)

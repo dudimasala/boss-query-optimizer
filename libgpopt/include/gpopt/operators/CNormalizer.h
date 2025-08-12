@@ -9,6 +9,14 @@
 //		Normalization of expression trees;
 //		this currently includes predicates push down
 //---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: Used a vector to store. Decided not to make 
+// dynamically extensible in the end though.
+//---------------------------------------------------------------------------
+
+
 #ifndef GPOPT_CNormalizer_H
 #define GPOPT_CNormalizer_H
 
@@ -189,9 +197,6 @@ public:
 	static CExpression *PexprPullUpProjections(CMemoryPool *mp,
 											   CExpression *pexpr);
 
-	// static void AddPushThru(SPushThru pushThru) {
-  //     m_rgpt.push_back(pushThru);
-  // }
 
 };	// class CNormalizer
 }  // namespace gpopt

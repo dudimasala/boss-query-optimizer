@@ -10,6 +10,13 @@
 //		logical expression to be optimized
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: Changed PexprAddEqualityPreds() to not add redundant
+// equality predicates on top of projections / dynamically added projections.
+// Added code in main function to also enable dynamic rules to be applied.
+//---------------------------------------------------------------------------
+
 #include "gpopt/operators/CExpressionPreprocessor.h"
 
 #include "gpos/base.h"

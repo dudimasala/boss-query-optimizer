@@ -13,6 +13,11 @@
 //
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: added engine type token
+//---------------------------------------------------------------------------
+
 #include "naucrates/dxl/xml/dxltokens.h"
 
 #include "naucrates/dxl/xml/CDXLMemoryManager.h"

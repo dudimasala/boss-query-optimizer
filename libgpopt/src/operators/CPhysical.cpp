@@ -9,6 +9,13 @@
 //		Implementation of basic physical operator
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Added consideration of the Engine property by mimicing handling of all the
+// other properties. Created default impls of derive & require for Engine
+// property (using the dynamic registry to get engine for default operator)
+//---------------------------------------------------------------------------
+
 #include "gpopt/operators/CPhysical.h"
 
 #include "gpos/base.h"

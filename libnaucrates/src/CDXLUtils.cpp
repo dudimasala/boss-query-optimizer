@@ -9,6 +9,12 @@
 //		Implementation of the utility methods for parsing and searializing DXL.
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: Altered to use the new CCost API correctly.
+// Since CCost no longer implements CDouble
+//---------------------------------------------------------------------------
+
 #include "naucrates/dxl/CDXLUtils.h"
 
 #include <xercesc/framework/MemBufInputSource.hpp>

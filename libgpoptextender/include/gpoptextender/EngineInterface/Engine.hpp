@@ -1,5 +1,11 @@
 #pragma once
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Interface that should be implemented by all new engines trying to register
+// with the optimizer.
+//---------------------------------------------------------------------------
+
 #include "gpoptextender/DynamicRegistry/DynamicRegistry.hpp"
 
 namespace orcaextender {

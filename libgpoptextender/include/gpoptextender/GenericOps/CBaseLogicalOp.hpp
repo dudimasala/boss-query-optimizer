@@ -1,5 +1,11 @@
 #pragma once
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Base logical operator with standard properties to make it easy to create
+// a new logical operator
+//---------------------------------------------------------------------------
+
 #include "gpos/base.h"
 
 #include "gpopt/operators/CExpressionHandle.h"

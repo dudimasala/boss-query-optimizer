@@ -9,6 +9,12 @@
 //		Implementation of GPDB generic datum
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: Prioritise double comparison in StatsAreEqual() 
+// and StatsAreLessThan()
+//---------------------------------------------------------------------------
+
 #include "naucrates/base/CDatumGenericGPDB.h"
 
 #include "gpos/base.h"

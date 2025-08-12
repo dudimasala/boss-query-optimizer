@@ -9,6 +9,11 @@
 //		Class representing MD external relations
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: m_engine_name - allows storage engine to passed into md
+//---------------------------------------------------------------------------
+
 #ifndef GPMD_CMDRelationExternalGPDB_H
 #define GPMD_CMDRelationExternalGPDB_H
 

@@ -1,5 +1,10 @@
 #pragma once
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Enum for Engine Property. Is dynamically extensible
+//---------------------------------------------------------------------------
+
 #include "gpos/base.h"
 #include "gpos/utils.h"
 

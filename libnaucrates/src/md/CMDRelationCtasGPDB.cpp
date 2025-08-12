@@ -9,6 +9,11 @@
 //		Implementation of the class for representing MD cache CTAS relations
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: m_engine_name - allows storage engine to passed into md
+//---------------------------------------------------------------------------
+
 #include "naucrates/md/CMDRelationCtasGPDB.h"
 
 #include "naucrates/dxl/CDXLUtils.h"

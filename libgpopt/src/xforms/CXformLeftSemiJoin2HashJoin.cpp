@@ -9,6 +9,11 @@
 //		Implementation of transform
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: pass Exfid() into ImplementHashJoin()
+//---------------------------------------------------------------------------
+
 #include "gpopt/xforms/CXformLeftSemiJoin2HashJoin.h"
 
 #include "gpos/base.h"

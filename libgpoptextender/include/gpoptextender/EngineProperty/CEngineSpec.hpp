@@ -1,5 +1,11 @@
 #pragma once
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Description of engine order;
+// Can be used as required or derived property;
+//---------------------------------------------------------------------------
+
 #include "gpos/base.h"
 
 #include "gpoptextender/EngineProperty/EEngineType.hpp"

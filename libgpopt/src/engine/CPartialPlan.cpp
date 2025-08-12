@@ -9,6 +9,12 @@
 //		Implementation of partial plans created during optimization
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: Altered to use the new CCost API correctly.
+// Since CCost no longer implements CDouble
+//---------------------------------------------------------------------------
+
 #include "gpopt/engine/CPartialPlan.h"
 
 #include "gpos/base.h"

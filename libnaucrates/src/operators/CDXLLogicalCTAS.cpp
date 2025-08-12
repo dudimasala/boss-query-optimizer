@@ -9,6 +9,11 @@
 //		Implementation of DXL logical "CREATE TABLE AS" (CTAS) operator
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: m_engine_name - allows storage engine to passed into md
+//---------------------------------------------------------------------------
+
 #include "naucrates/dxl/operators/CDXLLogicalCTAS.h"
 
 #include "gpos/string/CWStringDynamic.h"

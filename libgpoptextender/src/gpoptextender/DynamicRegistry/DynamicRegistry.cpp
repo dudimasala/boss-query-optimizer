@@ -1,3 +1,10 @@
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Central state for dynamic components.
+//---------------------------------------------------------------------------
+
+
+
 #include "gpoptextender/DynamicRegistry/DynamicRegistry.hpp"
 #include "BOSSToCExpressionDefault.hpp"
 #include "CExpressionToBOSSDefault.hpp"

@@ -1,3 +1,9 @@
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Cost model taking into account multi-engine execution
+//---------------------------------------------------------------------------
+
+
 #include "gpoptextender/CostModel/BOSSCostModel.hpp"
 
 #include "gpopt/base/CColRefSetIter.h"

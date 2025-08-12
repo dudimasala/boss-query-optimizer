@@ -10,6 +10,12 @@
 // edited
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: Altered to use the new CCost API correctly
+// Since CCost no longer implements CDouble.
+//---------------------------------------------------------------------------
+
 
 
 #ifndef GPOPT_ICostModel_H

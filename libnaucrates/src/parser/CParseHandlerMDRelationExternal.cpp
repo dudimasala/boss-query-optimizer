@@ -10,6 +10,11 @@
 //		relation metadata.
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: m_engine_name - allows storage engine to passed into md
+//---------------------------------------------------------------------------
+
 #include "naucrates/dxl/parser/CParseHandlerMDRelationExternal.h"
 
 #include "naucrates/dxl/operators/CDXLOperatorFactory.h"

@@ -8,6 +8,12 @@
 //	@doc:
 //		Optimizer class, entry point for query optimization
 //---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: Made PexprOptimize() public for bypassing DXL.
+//---------------------------------------------------------------------------
+
 #ifndef GPOPT_COptimizer_H
 #define GPOPT_COptimizer_H
 

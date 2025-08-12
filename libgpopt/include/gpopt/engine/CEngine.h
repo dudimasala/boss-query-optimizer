@@ -8,6 +8,13 @@
 //	@doc:
 //		Optimization engine
 //---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Considering engine prop enforcing type in FProhibited() & FOptimize()
+//---------------------------------------------------------------------------
+
+
 #ifndef GPOPT_CEngine_H
 #define GPOPT_CEngine_H
 

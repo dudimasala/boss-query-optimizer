@@ -9,6 +9,11 @@
 //		Abstract class for representing metadata object ids
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: Extended EMDIdType to take dynamic values.
+//---------------------------------------------------------------------------
+
 
 
 #ifndef GPMD_IMDId_H

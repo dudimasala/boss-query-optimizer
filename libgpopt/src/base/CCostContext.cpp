@@ -9,6 +9,14 @@
 //		Implementation of cost context
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: Altered to use the new CCost API correctly.
+// Since CCost no longer implements CDouble
+// In FBEtterThan(), if using max costing, break ties with the original sum 
+// cost.
+//---------------------------------------------------------------------------
+
 #include "gpopt/base/CCostContext.h"
 
 #include "gpos/base.h"

@@ -9,6 +9,11 @@
 //		Class for representing logical "CREATE TABLE AS" (CTAS) operator
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: m_engine_name - allows storage engine to passed into md
+//---------------------------------------------------------------------------
+
 #ifndef GPDXL_CDXLLogicalCTAS_H
 #define GPDXL_CDXLLogicalCTAS_H
 

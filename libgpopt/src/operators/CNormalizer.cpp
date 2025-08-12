@@ -9,6 +9,12 @@
 //		Implementation of expression tree normalizer
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: Used a vector to store. Decided not to make 
+// dynamically extensible in the end though.
+//---------------------------------------------------------------------------
+
 #include "gpopt/operators/CNormalizer.h"
 
 #include "gpos/base.h"

@@ -11,6 +11,12 @@
 //		arrays - the native format of the Xerces parser.
 //		Constants are dynamically created during loading of the dxl library.
 //---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: engine type token
+//---------------------------------------------------------------------------
+
 #ifndef GPDXL_dxltokens_H
 #define GPDXL_dxltokens_H
 

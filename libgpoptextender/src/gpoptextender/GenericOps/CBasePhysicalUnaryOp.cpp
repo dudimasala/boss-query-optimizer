@@ -1,3 +1,10 @@
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Base physical operator with standard properties to make it easy to create
+// a new physical operator. Passes thru properties.
+//---------------------------------------------------------------------------
+
+
 #include "gpoptextender/GenericOps/CBasePhysicalUnaryOp.hpp"
 #include "gpopt/base/CDistributionSpecAny.h"
 #include "gpopt/operators/CExpressionHandle.h"

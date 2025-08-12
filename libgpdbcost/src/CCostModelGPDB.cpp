@@ -10,6 +10,11 @@
 // edited because of ICostModel.h change. Still semantically the same.
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: Altered to use the new CCost API correctly
+//---------------------------------------------------------------------------
+
 #include "gpdbcost/CCostModelGPDB.h"
 
 #include "gpopt/base/CColRefSetIter.h"

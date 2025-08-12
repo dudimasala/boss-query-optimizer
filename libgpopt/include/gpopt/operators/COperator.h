@@ -8,6 +8,14 @@
 //	@doc:
 //		Base class for all operators: logical, physical, scalar, patterns
 //---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: Added space for dynamic operators in COperator
+// enum. (by creating DynamicStart and DynamicEnd values).
+// Added enum type for engine transform operator
+//---------------------------------------------------------------------------
+
 #ifndef GPOPT_COperator_H
 #define GPOPT_COperator_H
 
@@ -86,7 +94,7 @@ protected:
 	static ULONG m_aulOpIdCounter;
 
 public:
-  // using EOperatorId = int;
+
 	// identification
 	enum EOperatorId
 	{

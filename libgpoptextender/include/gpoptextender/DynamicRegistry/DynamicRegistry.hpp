@@ -1,5 +1,10 @@
 #pragma once
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Central state for dynamic components.
+//---------------------------------------------------------------------------
+
 #include "gpoptextender/CostModel/BOSSCostModel.hpp"
 #include "gpopt/xforms/CXform.h"
 #include "gpopt/xforms/CXformFactory.h"

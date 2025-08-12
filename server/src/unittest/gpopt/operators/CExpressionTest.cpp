@@ -8,6 +8,13 @@
 //	@doc:
 //		Test for CExpression
 //---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: 'any' engine spec & satisfy enfd used to create 
+// valid ReqdPropPlans.
+//---------------------------------------------------------------------------
+
 #include "unittest/gpopt/operators/CExpressionTest.h"
 
 #include "gpos/io/COstreamString.h"

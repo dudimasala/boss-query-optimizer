@@ -9,6 +9,11 @@
 //		Specification of hashed distribution
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: Commented assert that was failing after engine property.
+//---------------------------------------------------------------------------
+
 #include "gpopt/base/CDistributionSpecHashed.h"
 
 #include "gpopt/base/CCastUtils.h"

@@ -10,6 +10,11 @@
 // edited cuz changed ICostModel.h
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: Altered to use the new CCost API correctly
+//---------------------------------------------------------------------------
+
 #include "gpdbcost/CCostModelGPDBLegacy.h"
 
 #include "gpopt/base/COrderSpec.h"

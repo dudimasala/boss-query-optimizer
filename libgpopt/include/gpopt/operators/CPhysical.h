@@ -8,6 +8,15 @@
 //	@doc:
 //		Base class for all physical operators
 //---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// GPOPT_PLAN_PROPS = 5 cuz engine property. Added SetEngineRequests(), 
+// UlEngineRequests(), PesRequire(), PesDerive(), EpetEngine(), Eem(). 
+// LookupRequests() also considers engine now.
+//---------------------------------------------------------------------------
+
+
 #ifndef GPOPT_CPhysical_H
 #define GPOPT_CPhysical_H
 

@@ -11,6 +11,11 @@
 //		the caller is responsible for freeing it.
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: MdEngineName() - allows storage engine to passed into md
+//---------------------------------------------------------------------------
+
 #include "gpopt/translate/CTranslatorDXLToExpr.h"
 
 #include "gpos/common/CAutoTimer.h"

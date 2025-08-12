@@ -8,6 +8,12 @@
 //	@doc:
 //		Derived required relational properties
 //---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Added consideration of Engine Property in required plan 
+//---------------------------------------------------------------------------
+
 #ifndef GPOPT_CReqdPropPlan_H
 #define GPOPT_CReqdPropPlan_H
 

@@ -1,3 +1,10 @@
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Description of engine order;
+// Can be used as required or derived property;
+//---------------------------------------------------------------------------
+
+
 #include "gpoptextender/EngineProperty/CEngineSpec.hpp"
 #include "gpoptextender/EngineProperty/CEnfdEngine.hpp"
 #include "gpoptextender/EngineProperty/CPhysicalEngineTransition.hpp"

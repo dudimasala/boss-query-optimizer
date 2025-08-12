@@ -12,7 +12,8 @@
 //---------------------------------------------------------------------------
 // Copyright 2025 Malhar Rajpal
 // Modifications to this file: Added AddTransformsToXFormSet() in 
-// PxfsCandidates() to enable dynamic addition of transforms .
+// PxfsCandidates() to enable dynamic addition of transforms.
+// Allow Int4 to be used to specify the limit too.
 //---------------------------------------------------------------------------
 
 #include "gpopt/operators/CLogicalLimit.h"

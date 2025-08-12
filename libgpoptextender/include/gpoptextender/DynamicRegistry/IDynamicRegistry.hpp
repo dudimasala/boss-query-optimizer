@@ -1,5 +1,11 @@
 #pragma once
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: cpp98 interface for the registry to communicate
+// with the rest of Orca.
+//---------------------------------------------------------------------------
+
 #include <vector>
 #include <string>
 #include "gpopt/xforms/CXform.h"    // for CXform::EXformId

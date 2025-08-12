@@ -1,3 +1,9 @@
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Cost model taking into account multi-engine execution
+//---------------------------------------------------------------------------
+
+
 #pragma once
 
 #include "gpos/base.h"

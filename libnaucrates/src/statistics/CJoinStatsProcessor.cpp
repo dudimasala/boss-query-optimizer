@@ -9,6 +9,11 @@
 //		Statistics helper routines for processing all join types
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Changed Join assert in DeriveJoinStats() to allow dynamic ops
+//---------------------------------------------------------------------------
+
 #include "naucrates/statistics/CJoinStatsProcessor.h"
 
 #include "gpopt/operators/CScalarNAryJoinPredList.h"

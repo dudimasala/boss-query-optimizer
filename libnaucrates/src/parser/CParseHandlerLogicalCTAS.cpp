@@ -10,6 +10,11 @@
 //		CTAS operators.
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: code to parse engine name in StartElement()
+//---------------------------------------------------------------------------
+
 #include "naucrates/dxl/parser/CParseHandlerLogicalCTAS.h"
 
 #include "naucrates/dxl/operators/CDXLOperatorFactory.h"

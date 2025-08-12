@@ -1,5 +1,8 @@
-// op that implements basic functions in the simplest way
-// e.g. passes through all properties and makes all enforcements EXCEPT engine enforcements unnecessary (because everything is passed through)
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Base physical operator with standard properties to make it easy to create
+// a new physical operator. Passes thru properties.
+//---------------------------------------------------------------------------
 
 #pragma once
 

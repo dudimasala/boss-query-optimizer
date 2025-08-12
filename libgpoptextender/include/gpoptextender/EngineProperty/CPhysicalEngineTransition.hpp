@@ -1,5 +1,10 @@
 #pragma once
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Enforcer operator for engine mismatch
+//---------------------------------------------------------------------------
+
 #include "gpos/base.h"
 
 #include "gpopt/operators/CPhysical.h"

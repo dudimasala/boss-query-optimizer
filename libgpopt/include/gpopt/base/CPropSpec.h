@@ -8,6 +8,14 @@
 //	@doc:
 //		Abstraction for specification of properties;
 //---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Added Engine to PropSpecType enum.
+//---------------------------------------------------------------------------
+
+
+
 #ifndef GPOPT_CPropSpec_H
 #define GPOPT_CPropSpec_H
 

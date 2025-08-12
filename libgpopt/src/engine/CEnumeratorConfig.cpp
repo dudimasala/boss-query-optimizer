@@ -9,6 +9,12 @@
 //		Implementation of plan enumerator config
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: Altered to use the new CCost API correctly.
+// Since CCost no longer implements CDouble
+//---------------------------------------------------------------------------
+
 #include "gpopt/engine/CEnumeratorConfig.h"
 
 #include "gpos/base.h"

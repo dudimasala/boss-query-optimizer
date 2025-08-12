@@ -9,6 +9,12 @@
 //		Parse handler for parsing a logical CTAS operator
 //
 //---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: m_engine_name - allows storage engine to passed into md
+//---------------------------------------------------------------------------
+
 #ifndef GPDXL_CParseHandlerLogicalCTAS_H
 #define GPDXL_CParseHandlerLogicalCTAS_H
 

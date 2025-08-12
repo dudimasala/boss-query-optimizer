@@ -1,5 +1,10 @@
 #pragma once
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Arguments to support the registry's HookTransformToOp()
+//---------------------------------------------------------------------------
+
 #include <map>
 #include <string>
 

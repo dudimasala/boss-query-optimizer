@@ -9,6 +9,12 @@
 //		Implementation of interface class for execution stack tracing.
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: Removed assertions in BackTrace() to enable
+// build.
+//---------------------------------------------------------------------------
+
 #include "gpos/common/CStackDescriptor.h"
 
 #include "gpos/string/CWString.h"

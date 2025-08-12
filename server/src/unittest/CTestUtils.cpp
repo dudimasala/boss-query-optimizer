@@ -9,6 +9,13 @@
 //		Implementation of test utility functions
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: InitProviderFile() now takes in arg for md file.
+// PqcGenerate() has no req sort/distr order + takes into account the engine
+// property now + uses all output cols.
+//---------------------------------------------------------------------------
+
 #include "unittest/gpopt/CTestUtils.h"
 
 #include <fstream>

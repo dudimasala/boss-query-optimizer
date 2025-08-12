@@ -9,6 +9,11 @@
 //		Implementation of expressions
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: Changed printing to also include the engine
+//---------------------------------------------------------------------------
+
 #include "gpos/base.h"
 #include "gpos/io/COstreamString.h"
 #include "gpos/string/CWStringDynamic.h"

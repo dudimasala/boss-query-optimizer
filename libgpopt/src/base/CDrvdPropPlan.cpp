@@ -9,6 +9,12 @@
 //		Derived plan properties
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Added consideration of the Engine property. Same mechanism as all the other
+// properties.
+//---------------------------------------------------------------------------
+
 #include "gpopt/base/CDrvdPropPlan.h"
 
 #include "gpos/base.h"

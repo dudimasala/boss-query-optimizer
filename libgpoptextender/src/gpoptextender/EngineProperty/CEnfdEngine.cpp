@@ -1,3 +1,9 @@
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: Enforceable engine property
+//---------------------------------------------------------------------------
+
+
 #include "gpoptextender/EngineProperty/CEnfdEngine.hpp"
 // #include "gpopt/operators/CExpressionHandle.h"
 #include "gpopt/operators/CPhysical.h"

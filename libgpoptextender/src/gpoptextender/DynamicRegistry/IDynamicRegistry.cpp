@@ -1,3 +1,11 @@
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: cpp98 interface for the registry to communicate
+// with the rest of Orca.
+//---------------------------------------------------------------------------
+
+
+
 #include "gpoptextender/DynamicRegistry/IDynamicRegistry.hpp"
 #include "gpoptextender/DynamicRegistry/DynamicRegistry.hpp"  // your full C++17 class
 

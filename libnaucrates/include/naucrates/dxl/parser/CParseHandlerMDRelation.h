@@ -9,6 +9,11 @@
 //		SAX parse handler class for relation metadata
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: m_engine_name - allows storage engine to passed into md
+//---------------------------------------------------------------------------
+
 #ifndef GPDXL_CParseHandlerMDRelation_H
 #define GPDXL_CParseHandlerMDRelation_H
 

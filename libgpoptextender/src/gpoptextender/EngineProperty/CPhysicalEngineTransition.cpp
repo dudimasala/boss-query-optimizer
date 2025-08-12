@@ -1,3 +1,9 @@
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Enforcer operator for engine mismatch
+//---------------------------------------------------------------------------
+
+
 #include "gpoptextender/EngineProperty/CPhysicalEngineTransition.hpp"
 #include "gpopt/base/CDistributionSpecAny.h"
 #include "gpopt/operators/CExpressionHandle.h"

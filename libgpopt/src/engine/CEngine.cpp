@@ -8,6 +8,13 @@
 //	@doc:
 //		Implementation of optimization engine
 //---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Added consideration of the Engine property by mimicing handling of all the
+// other properties.
+//---------------------------------------------------------------------------
+
 #include "gpopt/engine/CEngine.h"
 
 #include "gpos/base.h"
@@ -2352,7 +2359,7 @@ CEngine::FCheckReqdProps(CExpressionHandle &exprhdl, CReqdPropPlan *prpp,
 		return false;
 	}
 
-	// COME BACK TO HERE LATER
+	// TODO: COME BACK TO HERE LATER
 	BOOL fEngineReqd = EetAny != prpp->Pee()->PesRequired()->Eet();
 	if (!fEngineReqd && COperator::EopPhysicalEngineTransform == op_id)
 	{

@@ -8,6 +8,15 @@
 //	@doc:
 //		Utility functions for xforms
 //---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: Make ImplementHashJoin(), ImplementMergeJoin(), 
+// take in a transform id to do GetRelevantOperators() for transform. Still
+// a trial feature.
+//---------------------------------------------------------------------------
+
+
 #ifndef GPOPT_CXformUtils_H
 #define GPOPT_CXformUtils_H
 

@@ -8,6 +8,15 @@
 //	@doc:
 //		Management of global xform set
 //---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: Made Add() public so it can be referenced via
+// the dynamic registry. Use a vector for xforms for dynamic addition.
+//---------------------------------------------------------------------------
+
+
+
 #ifndef GPOPT_CXformFactory_H
 #define GPOPT_CXformFactory_H
 

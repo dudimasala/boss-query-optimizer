@@ -9,6 +9,11 @@
 //		Interface for relations in the metadata cache
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: MdEngineName() - allows storage engine to passed into md
+//---------------------------------------------------------------------------
+
 #ifndef GPMD_IMDRelation_H
 #define GPMD_IMDRelation_H
 

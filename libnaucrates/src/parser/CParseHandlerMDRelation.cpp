@@ -9,6 +9,11 @@
 //		Implementation of the SAX parse handler class for parsing relation metadata.
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: code to parse engine in ParseRelationAttributes()
+//---------------------------------------------------------------------------
+
 #include "naucrates/dxl/parser/CParseHandlerMDRelation.h"
 
 #include "naucrates/dxl/operators/CDXLOperatorFactory.h"

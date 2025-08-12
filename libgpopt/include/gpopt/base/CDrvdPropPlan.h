@@ -8,6 +8,12 @@
 //	@doc:
 //		Derived physical properties
 //---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Added consideration of the Engine property (thru storing CEngineSpec, Pes())
+//---------------------------------------------------------------------------
+
 #ifndef GPOPT_CDrvdPropPlan_H
 #define GPOPT_CDrvdPropPlan_H
 

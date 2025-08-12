@@ -2,6 +2,12 @@
 //	Greenplum Database
 //	Copyright (C) 2019 Pivotal Software, Inc.
 
+
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: pass Exfid() into ImplementMergeJoin()
+//---------------------------------------------------------------------------
+
 #include "gpopt/xforms/CXformImplementFullOuterMergeJoin.h"
 
 #include "gpos/base.h"

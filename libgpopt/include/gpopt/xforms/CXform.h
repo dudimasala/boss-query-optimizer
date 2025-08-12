@@ -9,6 +9,12 @@
 //		Base class for all transformations: substitution, exploration,
 //		and implementation
 //---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: Added space in EXformId for dynamic transforms.
+//---------------------------------------------------------------------------
+
 #ifndef GPOPT_CXform_H
 #define GPOPT_CXform_H
 

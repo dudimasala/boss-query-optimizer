@@ -7,8 +7,15 @@
 //
 //	@doc:
 //		Cost type
-// edited
+// 
 //---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: store a mapping of engines to double
+// Enable cost to be MAX([engine costs]) - can be toggled with original cost
+//---------------------------------------------------------------------------
+
 #ifndef GPNAUCRATES_CCost_H
 #define GPNAUCRATES_CCost_H
 

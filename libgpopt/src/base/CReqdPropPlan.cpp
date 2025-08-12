@@ -9,6 +9,12 @@
 //		Required plan properties;
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Added consideration of the Engine property by mimicing handling of all the
+// other properties.
+//---------------------------------------------------------------------------
+
 #include "gpopt/base/CReqdPropPlan.h"
 
 #include "gpos/base.h"

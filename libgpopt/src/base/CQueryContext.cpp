@@ -9,6 +9,12 @@
 //		Implementation of optimization context
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Added consideration of the Engine property whereever other properties are
+// checked.
+//---------------------------------------------------------------------------
+
 #include "gpopt/base/CQueryContext.h"
 
 #include "gpos/base.h"

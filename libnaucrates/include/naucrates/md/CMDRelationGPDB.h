@@ -9,6 +9,11 @@
 //		Class representing MD relations
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: m_engine_name - allows storage engine to passed into md
+//---------------------------------------------------------------------------
+
 
 
 #ifndef GPMD_CMDRelationGPDB_H
