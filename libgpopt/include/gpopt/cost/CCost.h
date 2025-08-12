@@ -127,6 +127,12 @@ public:
 	}
 
 	inline DOUBLE
+	Get(EEngineType engineType) const
+	{
+		return engineCostMap.at(engineType).Get();
+	}
+
+	inline DOUBLE
 	CostSum() const
 	{
 		DOUBLE cost = 0.0;
