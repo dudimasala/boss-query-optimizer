@@ -1,5 +1,11 @@
 # Copyright (c) 2015, Pivotal Software, Inc.
 
+#---------------------------------------------------------------------------
+# Copyright 2025 Malhar Rajpal
+# Modifications to this file: Support extended components
+# like dynamic registry.
+#---------------------------------------------------------------------------
+
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
 project(gpopt LANGUAGES CXX C)
 
