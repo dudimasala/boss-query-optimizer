@@ -9,6 +9,12 @@
 //		Implementation of CTE consumer operator
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: Added AddTransformsToXFormSet() in 
+// PxfsCandidates() to enable dynamic addition of transforms .
+//---------------------------------------------------------------------------
+
 #include "gpopt/operators/CLogicalCTEConsumer.h"
 
 #include "gpos/base.h"
@@ -19,6 +25,7 @@
 #include "gpopt/operators/CExpression.h"
 #include "gpopt/operators/CExpressionHandle.h"
 #include "gpopt/operators/CLogicalCTEProducer.h"
+#include "gpoptextender/DynamicRegistry/IDynamicRegistry.hpp"
 
 using namespace gpopt;
 
@@ -343,6 +350,10 @@ CLogicalCTEConsumer::PxfsCandidates(CMemoryPool *mp) const
 	CXformSet *xform_set = GPOS_NEW(mp) CXformSet(mp);
 	(void) xform_set->ExchangeSet(CXform::ExfInlineCTEConsumer);
 	(void) xform_set->ExchangeSet(CXform::ExfImplementCTEConsumer);
+
+	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
+	registry->AddTransformsToXFormSet(Eopid(), xform_set);
+
 	return xform_set;
 }
 

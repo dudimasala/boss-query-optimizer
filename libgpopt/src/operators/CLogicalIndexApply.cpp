@@ -5,11 +5,18 @@
 //	Implementation of inner / left outer index apply operator
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: Added AddTransformsToXFormSet() in 
+// PxfsCandidates() to enable dynamic addition of transforms .
+//---------------------------------------------------------------------------
+
 #include "gpopt/operators/CLogicalIndexApply.h"
 
 #include "gpos/base.h"
 
 #include "naucrates/statistics/CJoinStatsProcessor.h"
+#include "gpoptextender/DynamicRegistry/IDynamicRegistry.hpp"
 
 using namespace gpopt;
 
@@ -49,6 +56,10 @@ CLogicalIndexApply::PxfsCandidates(CMemoryPool *mp) const
 {
 	CXformSet *xform_set = GPOS_NEW(mp) CXformSet(mp);
 	(void) xform_set->ExchangeSet(CXform::ExfImplementIndexApply);
+
+	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
+	registry->AddTransformsToXFormSet(Eopid(), xform_set);
+
 	return xform_set;
 }
 

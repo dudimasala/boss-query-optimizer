@@ -9,6 +9,12 @@
 //		Implementation of logical MaxOneRow operator
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: Added AddTransformsToXFormSet() in 
+// PxfsCandidates() to enable dynamic addition of transforms .
+//---------------------------------------------------------------------------
+
 #include "gpopt/operators/CLogicalMaxOneRow.h"
 
 #include "gpos/base.h"
@@ -78,6 +84,10 @@ CLogicalMaxOneRow::PxfsCandidates(CMemoryPool *mp) const
 {
 	CXformSet *xform_set = GPOS_NEW(mp) CXformSet(mp);
 	(void) xform_set->ExchangeSet(CXform::ExfMaxOneRow2Assert);
+
+	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
+	registry->AddTransformsToXFormSet(Eopid(), xform_set);
+
 	return xform_set;
 }
 

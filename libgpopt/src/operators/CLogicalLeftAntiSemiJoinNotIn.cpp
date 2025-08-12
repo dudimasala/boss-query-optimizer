@@ -9,6 +9,12 @@
 //		Implementation of left anti semi join operator
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: Added AddTransformsToXFormSet() in 
+// PxfsCandidates() to enable dynamic addition of transforms .
+//---------------------------------------------------------------------------
+
 #include "gpopt/operators/CLogicalLeftAntiSemiJoinNotIn.h"
 
 #include "gpos/base.h"
@@ -16,6 +22,8 @@
 #include "gpopt/base/CColRefSet.h"
 #include "gpopt/operators/CExpression.h"
 #include "gpopt/operators/CExpressionHandle.h"
+
+#include "gpoptextender/DynamicRegistry/IDynamicRegistry.hpp"
 
 using namespace gpopt;
 
@@ -57,6 +65,10 @@ CLogicalLeftAntiSemiJoinNotIn::PxfsCandidates(CMemoryPool *mp) const
 	(void) xform_set->ExchangeSet(CXform::ExfLeftAntiSemiJoinNotIn2NLJoinNotIn);
 	(void) xform_set->ExchangeSet(
 		CXform::ExfLeftAntiSemiJoinNotIn2HashJoinNotIn);
+
+	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
+	registry->AddTransformsToXFormSet(Eopid(), xform_set);
+
 	return xform_set;
 }
 

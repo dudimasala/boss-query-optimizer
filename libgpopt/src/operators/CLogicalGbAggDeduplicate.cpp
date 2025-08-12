@@ -9,6 +9,12 @@
 //		Implementation of aggregate operator for deduplicating semijoin outputs
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: Added AddTransformsToXFormSet() in 
+// PxfsCandidates() to enable dynamic addition of transforms .
+//---------------------------------------------------------------------------
+
 #include "gpopt/operators/CLogicalGbAggDeduplicate.h"
 
 #include "gpos/base.h"
@@ -16,6 +22,7 @@
 #include "gpopt/base/CKeyCollection.h"
 #include "gpopt/operators/CExpression.h"
 #include "gpopt/operators/CExpressionHandle.h"
+#include "gpoptextender/DynamicRegistry/IDynamicRegistry.hpp"
 
 using namespace gpopt;
 
@@ -221,6 +228,10 @@ CLogicalGbAggDeduplicate::PxfsCandidates(CMemoryPool *mp) const
 	(void) xform_set->ExchangeSet(CXform::ExfSplitGbAggDedup);
 	(void) xform_set->ExchangeSet(CXform::ExfGbAggDedup2HashAggDedup);
 	(void) xform_set->ExchangeSet(CXform::ExfGbAggDedup2StreamAggDedup);
+
+	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
+	registry->AddTransformsToXFormSet(Eopid(), xform_set);
+
 	return xform_set;
 }
 

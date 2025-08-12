@@ -9,7 +9,14 @@
 //		Implementation of left outer correlated apply operator
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: Added AddTransformsToXFormSet() in 
+// PxfsCandidates() to enable dynamic addition of transforms .
+//---------------------------------------------------------------------------
+
 #include "gpopt/operators/CLogicalLeftOuterCorrelatedApply.h"
+#include "gpoptextender/DynamicRegistry/IDynamicRegistry.hpp"
 
 #include "gpos/base.h"
 
@@ -58,6 +65,9 @@ CLogicalLeftOuterCorrelatedApply::PxfsCandidates(CMemoryPool *mp) const
 {
 	CXformSet *xform_set = GPOS_NEW(mp) CXformSet(mp);
 	(void) xform_set->ExchangeSet(CXform::ExfImplementLeftOuterCorrelatedApply);
+
+	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
+	registry->AddTransformsToXFormSet(Eopid(), xform_set);
 
 	return xform_set;
 }

@@ -9,7 +9,14 @@
 //		Implementation of left anti-semi-apply operator with NotIn semantics
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: Added AddTransformsToXFormSet() in 
+// PxfsCandidates() to enable dynamic addition of transforms .
+//---------------------------------------------------------------------------
+
 #include "gpopt/operators/CLogicalLeftAntiSemiApplyNotIn.h"
+#include "gpoptextender/DynamicRegistry/IDynamicRegistry.hpp"
 
 #include "gpos/base.h"
 
@@ -31,6 +38,9 @@ CLogicalLeftAntiSemiApplyNotIn::PxfsCandidates(CMemoryPool *mp) const
 		CXform::ExfLeftAntiSemiApplyNotIn2LeftAntiSemiJoinNotIn);
 	(void) xform_set->ExchangeSet(
 		CXform::ExfLeftAntiSemiApplyNotIn2LeftAntiSemiJoinNotInNoCorrelations);
+
+	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
+	registry->AddTransformsToXFormSet(Eopid(), xform_set);
 
 	return xform_set;
 }

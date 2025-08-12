@@ -9,6 +9,12 @@
 //		Implementation of logical limit operator
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: Added AddTransformsToXFormSet() in 
+// PxfsCandidates() to enable dynamic addition of transforms .
+//---------------------------------------------------------------------------
+
 #include "gpopt/operators/CLogicalLimit.h"
 
 #include "gpos/base.h"
@@ -23,6 +29,8 @@
 #include "naucrates/base/IDatumInt4.h"
 #include "naucrates/md/IMDTypeInt4.h"
 #include "naucrates/statistics/CLimitStatsProcessor.h"
+
+#include "gpoptextender/DynamicRegistry/IDynamicRegistry.hpp"
 
 using namespace gpopt;
 
@@ -244,6 +252,9 @@ CLogicalLimit::PxfsCandidates(CMemoryPool *mp) const
 
 	(void) xform_set->ExchangeSet(CXform::ExfImplementLimit);
 	(void) xform_set->ExchangeSet(CXform::ExfSplitLimit);
+
+	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
+	registry->AddTransformsToXFormSet(Eopid(), xform_set);
 
 	return xform_set;
 }

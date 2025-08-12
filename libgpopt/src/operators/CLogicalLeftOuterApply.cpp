@@ -9,7 +9,14 @@
 //		Implementation of left outer apply operator
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: Added AddTransformsToXFormSet() in 
+// PxfsCandidates() to enable dynamic addition of transforms .
+//---------------------------------------------------------------------------
+
 #include "gpopt/operators/CLogicalLeftOuterApply.h"
+#include "gpoptextender/DynamicRegistry/IDynamicRegistry.hpp"
 
 #include "gpos/base.h"
 
@@ -94,6 +101,9 @@ CLogicalLeftOuterApply::PxfsCandidates(CMemoryPool *mp) const
 	(void) xform_set->ExchangeSet(CXform::ExfLeftOuterApply2LeftOuterJoin);
 	(void) xform_set->ExchangeSet(
 		CXform::ExfLeftOuterApply2LeftOuterJoinNoCorrelations);
+
+	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
+	registry->AddTransformsToXFormSet(Eopid(), xform_set);
 
 	return xform_set;
 }

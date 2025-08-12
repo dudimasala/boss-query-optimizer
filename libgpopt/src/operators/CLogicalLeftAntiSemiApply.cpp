@@ -9,6 +9,12 @@
 //		Implementation of left anti-semi-apply operator
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: Added AddTransformsToXFormSet() in 
+// PxfsCandidates() to enable dynamic addition of transforms .
+//---------------------------------------------------------------------------
+
 #include "gpopt/operators/CLogicalLeftAntiSemiApply.h"
 
 #include "gpos/base.h"
@@ -16,6 +22,7 @@
 #include "gpopt/base/CColRefSet.h"
 #include "gpopt/operators/CExpression.h"
 #include "gpopt/operators/CExpressionHandle.h"
+#include "gpoptextender/DynamicRegistry/IDynamicRegistry.hpp"
 
 using namespace gpopt;
 
@@ -70,6 +77,9 @@ CLogicalLeftAntiSemiApply::PxfsCandidates(CMemoryPool *mp) const
 		CXform::ExfLeftAntiSemiApply2LeftAntiSemiJoin);
 	(void) xform_set->ExchangeSet(
 		CXform::ExfLeftAntiSemiApply2LeftAntiSemiJoinNoCorrelations);
+
+	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
+	registry->AddTransformsToXFormSet(Eopid(), xform_set);
 
 	return xform_set;
 }

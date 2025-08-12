@@ -9,6 +9,12 @@
 //		Implementation of n-ary inner join operator
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: Added AddTransformsToXFormSet() in 
+// PxfsCandidates() to enable dynamic addition of transforms .
+//---------------------------------------------------------------------------
+
 #include "gpopt/operators/CLogicalNAryJoin.h"
 
 #include "gpos/base.h"
@@ -17,6 +23,8 @@
 #include "gpopt/base/COptCtxt.h"
 #include "gpopt/operators/CPredicateUtils.h"
 #include "naucrates/statistics/CStatisticsUtils.h"
+
+#include "gpoptextender/DynamicRegistry/IDynamicRegistry.hpp"
 
 using namespace gpopt;
 
@@ -213,6 +221,9 @@ CLogicalNAryJoin::PxfsCandidates(CMemoryPool *mp) const
 	(void) xform_set->ExchangeSet(CXform::ExfExpandNAryJoinDP);
 	(void) xform_set->ExchangeSet(CXform::ExfExpandNAryJoinGreedy);
 	(void) xform_set->ExchangeSet(CXform::ExfExpandNAryJoinDPv2);
+
+	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
+	registry->AddTransformsToXFormSet(Eopid(), xform_set);
 
 	return xform_set;
 }

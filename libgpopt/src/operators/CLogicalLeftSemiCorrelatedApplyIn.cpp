@@ -9,7 +9,14 @@
 //		Implementation of left semi correlated apply with IN semantics
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: Added AddTransformsToXFormSet() in 
+// PxfsCandidates() to enable dynamic addition of transforms .
+//---------------------------------------------------------------------------
+
 #include "gpopt/operators/CLogicalLeftSemiCorrelatedApplyIn.h"
+#include "gpoptextender/DynamicRegistry/IDynamicRegistry.hpp"
 
 #include "gpos/base.h"
 
@@ -57,6 +64,9 @@ CLogicalLeftSemiCorrelatedApplyIn::PxfsCandidates(CMemoryPool *mp) const
 	CXformSet *xform_set = GPOS_NEW(mp) CXformSet(mp);
 	(void) xform_set->ExchangeSet(
 		CXform::ExfImplementLeftSemiCorrelatedApplyIn);
+
+	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
+	registry->AddTransformsToXFormSet(Eopid(), xform_set);
 
 	return xform_set;
 }

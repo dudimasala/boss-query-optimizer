@@ -9,9 +9,16 @@
 //		Implementation of inner apply operator
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to this file: Added AddTransformsToXFormSet() in 
+// PxfsCandidates() to enable dynamic addition of transforms .
+//---------------------------------------------------------------------------
+
 #include "gpopt/operators/CLogicalInnerApply.h"
 
 #include "gpos/base.h"
+#include "gpoptextender/DynamicRegistry/IDynamicRegistry.hpp"
 
 using namespace gpopt;
 
@@ -95,6 +102,9 @@ CLogicalInnerApply::PxfsCandidates(CMemoryPool *mp) const
 	(void) xform_set->ExchangeSet(
 		CXform::ExfInnerApply2InnerJoinNoCorrelations);
 	(void) xform_set->ExchangeSet(CXform::ExfInnerApplyWithOuterKey2InnerJoin);
+
+	orcaextender::IDynamicRegistry *registry = orcaextender::CreateDynamicRegistry();
+	registry->AddTransformsToXFormSet(Eopid(), xform_set);
 
 	return xform_set;
 }
