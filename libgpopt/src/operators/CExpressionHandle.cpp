@@ -13,6 +13,12 @@
 //		expression or a stand-alone tree;
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: Added new function PopDescendant() to descent through
+// previous operators when assigning a cost.
+//---------------------------------------------------------------------------
+
 #include "gpopt/operators/CExpressionHandle.h"
 
 #include "gpos/base.h"
@@ -1232,6 +1238,70 @@ CExpressionHandle::Pop(ULONG child_index) const
 
 	return NULL;
 }
+
+COperator *
+CExpressionHandle::PopDescendant(std::vector<ULONG> child_index, CCostContext **context) const
+{
+	if (child_index.size() == 0) {
+		return Pop();
+	}
+
+	GPOS_ASSERT(child_index[0] < Arity());
+
+	if (context) {
+		*context = NULL;
+	}
+
+	if (NULL != m_pexpr) {
+		GPOS_ASSERT(NULL == m_pcc);
+
+		CExpression *childExpr = (*m_pexpr)[child_index[0]];
+
+		for (size_t i = 1; i < child_index.size(); ++i) {
+			if (NULL != childExpr) {
+				childExpr = (*childExpr)[child_index[i]];
+			}
+		}
+
+		if (NULL != childExpr) {
+			return childExpr->Pop();
+		}
+
+		return NULL;
+	}
+
+	if (NULL != m_pcc)
+	{
+		COptimizationContext *pocChild = (*m_pcc->Pdrgpoc())[child_index[0]];
+		GPOS_ASSERT(NULL != pocChild);
+
+		CCostContext *pccChild = pocChild->PccBest();
+		GPOS_ASSERT(NULL != pccChild);
+
+		for (size_t i = 1; i < child_index.size(); ++i) {
+			if (pccChild != NULL) {
+				pocChild = (*pccChild->Pdrgpoc())[child_index[i]];
+				if (pocChild != NULL) {
+					pccChild = pocChild->PccBest();
+				}
+			}
+		}
+
+		if (NULL != pocChild) {
+			if (context) {
+				*context = pccChild;
+			}
+
+			return pccChild->Pgexpr()->Pop();
+		}
+
+	}
+
+	return NULL;
+
+}
+
+
 
 COperator *
 CExpressionHandle::PopGrandchild(ULONG child_index, ULONG grandchild_index,

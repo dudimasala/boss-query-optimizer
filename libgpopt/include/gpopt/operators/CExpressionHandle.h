@@ -10,6 +10,14 @@
 //		context, i.e. operator and the properties of its children but no
 //		access to the children is needed.
 //---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+// Copyright 2025 Malhar Rajpal
+// Modifications to file: Added new function PopDescendant() to descent through
+// previous operators when assigning a cost.
+//---------------------------------------------------------------------------
+
+
 #ifndef GPOPT_CExpressionHandle_H
 #define GPOPT_CExpressionHandle_H
 
@@ -211,6 +219,10 @@ public:
 
 	// accessor for grandchild operator
 	COperator *PopGrandchild(ULONG child_index, ULONG grandchild_index,
+							 CCostContext **grandchildContext) const;
+
+	// accessor for grandchild operator
+	COperator *PopDescendant(std::vector<ULONG> indices,
 							 CCostContext **grandchildContext) const;
 
 	// accessor for expression
