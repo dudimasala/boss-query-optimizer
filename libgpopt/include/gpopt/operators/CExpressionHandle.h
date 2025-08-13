@@ -32,6 +32,8 @@
 #include "gpopt/search/CGroupExpression.h"
 #include "naucrates/statistics/CStatistics.h"
 
+#include <vector>
+
 
 namespace gpopt
 {
