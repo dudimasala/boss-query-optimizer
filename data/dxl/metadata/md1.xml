@@ -3624,8 +3624,8 @@
         <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="3"/>
       </dxl:StatsBucket>
       <dxl:StatsBucket Frequency="0.200000" DistinctValues="1.000000">
-        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="1793746843"/>
-        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="1793746843"/>
+        <dxl:LowerBound Closed="true" TypeMdid="0.23.1.0" Value="308810421"/>
+        <dxl:UpperBound Closed="true" TypeMdid="0.23.1.0" Value="308810421"/>
       </dxl:StatsBucket>
     </dxl:ColumnStatistics>
     <dxl:ColumnStatistics Mdid="1.33333.1.1.0" Name="o_orderkey" Width="4.000000" NullFreq="0.000000" NdvRemain="0.000000" FreqRemain="0.000000">
